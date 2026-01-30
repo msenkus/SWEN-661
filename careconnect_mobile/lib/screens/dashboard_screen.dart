@@ -23,17 +23,44 @@ class DashboardScreen extends StatelessWidget {
 
     final completed = tasks.where((t) => t.completed).length;
     final percent = completed / tasks.length;
+    final hasMissedTasks =
+    tasks.any((t) => !t.completed && !t.current);
+
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Today's Tasks"),
         actions: [
+          Stack(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.notifications_outlined),
+                onPressed: () => context.go('/missed-tasks'),
+              ),
+
+              if (hasMissedTasks)
+                Positioned(
+                  right: 10,
+                  top: 10,
+                  child: Container(
+                    width: 10,
+                    height: 10,
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () => context.go('/accessibility'),
           ),
         ],
       ),
+
       body: ListView(
         padding: EdgeInsets.all(isTablet ? 24 : 16),
         children: [
@@ -68,7 +95,7 @@ class DashboardScreen extends StatelessWidget {
                 if (t.type == 'medication') {
                   context.go('/medications');
                 } else if (t.current) {
-                  context.go('/task');
+                  context.go('/step-task');
                 }
               },
             ),
