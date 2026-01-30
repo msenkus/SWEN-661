@@ -1,35 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DashboardScreen extends StatelessWidget {
+import '../models/task.dart';
+import '../providers/task_provider.dart';
+
+class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final orientation = MediaQuery.of(context).orientation;
     final width = MediaQuery.of(context).size.width;
     final isTablet = width >= 700;
 
-    final tasks = [
-      _Task('8:00 AM', 'Take Morning Medication', true, 'medication'),
-      _Task('9:00 AM', 'Breakfast', true, 'meal'),
-      _Task('10:30 AM', 'Physical Therapy Exercises', false, 'exercise',
-          current: true),
-      _Task('12:00 PM', 'Lunch', false, 'meal'),
-      _Task('2:00 PM', 'Doctor Appointment', false, 'appointment'),
-      _Task('6:00 PM', 'Take Evening Medication', false, 'medication'),
-      _Task('7:00 PM', 'Dinner', false, 'meal'),
-    ];
+    final tasks = ref.watch(taskProvider);
 
-    final completed = tasks.where((t) => t.completed).length;
+    final completed =
+        ref.watch(taskProvider.notifier).completedCount;
+
     final percent = completed / tasks.length;
-    final hasMissedTasks =
-    tasks.any((t) => !t.completed && !t.current);
 
+    final hasMissedTasks =
+        ref.watch(taskProvider.notifier).hasMissedTasks;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Today's Tasks"),
+
         actions: [
           Stack(
             children: [
@@ -39,16 +37,12 @@ class DashboardScreen extends StatelessWidget {
               ),
 
               if (hasMissedTasks)
-                Positioned(
+                const Positioned(
                   right: 10,
                   top: 10,
-                  child: Container(
-                    width: 10,
-                    height: 10,
-                    decoration: const BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle,
-                    ),
+                  child: CircleAvatar(
+                    radius: 5,
+                    backgroundColor: Colors.red,
                   ),
                 ),
             ],
@@ -110,19 +104,6 @@ class DashboardScreen extends StatelessWidget {
   }
 }
 
-/* ---------------- MODELS ---------------- */
-
-class _Task {
-  final String time;
-  final String title;
-  final bool completed;
-  final bool current;
-  final String type;
-
-  _Task(this.time, this.title, this.completed, this.type,
-      {this.current = false});
-}
-
 /* ---------------- PROGRESS CARD ---------------- */
 
 class _ProgressCard extends StatelessWidget {
@@ -155,8 +136,10 @@ class _ProgressCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Today's Progress",
-                      style: TextStyle(color: Colors.white70)),
+                  const Text(
+                    "Today's Progress",
+                    style: TextStyle(color: Colors.white70),
+                  ),
                   Text(
                     "$completed/$total",
                     style: TextStyle(
@@ -179,13 +162,17 @@ class _ProgressCard extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  const Text("Complete",
-                      style: TextStyle(color: Colors.white70)),
+                  const Text(
+                    "Complete",
+                    style: TextStyle(color: Colors.white70),
+                  ),
                 ],
               ),
             ],
           ),
+
           const SizedBox(height: 16),
+
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: LinearProgressIndicator(
@@ -216,7 +203,8 @@ class _QuickActionsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cols = isTablet && orientation == Orientation.landscape ? 3 : 2;
+    final cols =
+        isTablet && orientation == Orientation.landscape ? 3 : 2;
 
     return GridView.count(
       crossAxisCount: cols,
@@ -275,7 +263,10 @@ class _QuickButton extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: TextStyle(color: color, fontWeight: FontWeight.w600),
+        style: TextStyle(
+          color: color,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
@@ -284,7 +275,7 @@ class _QuickButton extends StatelessWidget {
 /* ---------------- TASK TILE ---------------- */
 
 class _TaskTile extends StatelessWidget {
-  final _Task task;
+  final Task task;
   final VoidCallback onTap;
 
   const _TaskTile({

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'router.dart';
 import 'theme/app_theme.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(const CareConnectApp());
+   runApp(const ProviderScope(child: CareConnectApp()));
 }
 
 class CareConnectApp extends StatelessWidget {
