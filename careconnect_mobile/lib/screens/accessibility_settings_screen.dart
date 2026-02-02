@@ -41,28 +41,36 @@ class _AccessibilitySettingsScreenState
             title: "Visual",
             children: [
               _settingTile(
-                "High Contrast Mode",
-                "Increase contrast for better visibility",
-                settings['highContrast']!,
-                () => toggle('highContrast'),
+                tileKey: const Key('toggle_high_contrast'),
+                switchKey: const Key('toggle_high_contrast_switch'),
+                title: "High Contrast Mode",
+                subtitle: "Increase contrast for better visibility",
+                enabled: settings['highContrast']!,
+                onTap: () => toggle('highContrast'),
               ),
               _settingTile(
-                "Large Text",
-                "Increase text size throughout the app",
-                settings['largeText']!,
-                () => toggle('largeText'),
+                tileKey: const Key('toggle_large_text'),
+                switchKey: const Key('toggle_large_text_switch'),
+                title: "Large Text",
+                subtitle: "Increase text size throughout the app",
+                enabled: settings['largeText']!,
+                onTap: () => toggle('largeText'),
               ),
               _settingTile(
-                "Visual Alerts",
-                "Show flashing indicators",
-                settings['visualAlerts']!,
-                () => toggle('visualAlerts'),
+                tileKey: const Key('toggle_visual_alerts'),
+                switchKey: const Key('toggle_visual_alerts_switch'),
+                title: "Visual Alerts",
+                subtitle: "Show flashing indicators",
+                enabled: settings['visualAlerts']!,
+                onTap: () => toggle('visualAlerts'),
               ),
               _settingTile(
-                "Reduce Motion",
-                "Minimize animations",
-                settings['reducedMotion']!,
-                () => toggle('reducedMotion'),
+                tileKey: const Key('toggle_reduce_motion'),
+                switchKey: const Key('toggle_reduce_motion_switch'),
+                title: "Reduce Motion",
+                subtitle: "Minimize animations",
+                enabled: settings['reducedMotion']!,
+                onTap: () => toggle('reducedMotion'),
               ),
             ],
           ),
@@ -72,16 +80,20 @@ class _AccessibilitySettingsScreenState
             title: "Audio",
             children: [
               _settingTile(
-                "Sound Alerts",
-                "Play sounds for notifications",
-                settings['soundAlerts']!,
-                () => toggle('soundAlerts'),
+                tileKey: const Key('toggle_sound_alerts'),
+                switchKey: const Key('toggle_sound_alerts_switch'),
+                title: "Sound Alerts",
+                subtitle: "Play sounds for notifications",
+                enabled: settings['soundAlerts']!,
+                onTap: () => toggle('soundAlerts'),
               ),
               _settingTile(
-                "Voice Announcements",
-                "Speak reminders aloud",
-                settings['voiceAnnouncements']!,
-                () => toggle('voiceAnnouncements'),
+                tileKey: const Key('toggle_voice'),
+                switchKey: const Key('toggle_voice_switch'),
+                title: "Voice Announcements",
+                subtitle: "Speak reminders aloud",
+                enabled: settings['voiceAnnouncements']!,
+                onTap: () => toggle('voiceAnnouncements'),
               ),
             ],
           ),
@@ -91,10 +103,12 @@ class _AccessibilitySettingsScreenState
             title: "Haptic",
             children: [
               _settingTile(
-                "Vibration Alerts",
-                "Vibrate for notifications",
-                settings['vibrationAlerts']!,
-                () => toggle('vibrationAlerts'),
+                tileKey: const Key('toggle_vibration'),
+                switchKey: const Key('toggle_vibration_switch'),
+                title: "Vibration",
+                subtitle: "Vibrate for notifications",
+                enabled: settings['vibrationAlerts']!,
+                onTap: () => toggle('vibrationAlerts'),
               ),
             ],
           ),
@@ -106,6 +120,7 @@ class _AccessibilitySettingsScreenState
           const SizedBox(height: 24),
 
           ElevatedButton(
+            key: const Key('asl_help_button'),
             onPressed: () => context.go('/asl-help'),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 18),
@@ -124,6 +139,7 @@ class _AccessibilitySettingsScreenState
 
   Widget _headerCard() {
     return Container(
+      key: const Key('accessibility_header'),
       margin: const EdgeInsets.only(bottom: 24),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -162,9 +178,11 @@ class _AccessibilitySettingsScreenState
         Row(children: [
           Icon(icon, color: Colors.blue),
           const SizedBox(width: 8),
-          Text(title,
-              style:
-                  const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          Text(
+            title,
+            style:
+                const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
         ]),
         const SizedBox(height: 12),
         ...children,
@@ -173,9 +191,16 @@ class _AccessibilitySettingsScreenState
     );
   }
 
-  Widget _settingTile(
-      String title, String subtitle, bool enabled, VoidCallback onTap) {
+  Widget _settingTile({
+    required Key tileKey,
+    required Key switchKey,
+    required String title,
+    required String subtitle,
+    required bool enabled,
+    required VoidCallback onTap,
+  }) {
     return Card(
+      key: tileKey,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
@@ -184,6 +209,7 @@ class _AccessibilitySettingsScreenState
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
         subtitle: Text(subtitle),
         trailing: Switch(
+          key: switchKey,
           value: enabled,
           onChanged: (_) => onTap(),
         ),
@@ -195,6 +221,7 @@ class _AccessibilitySettingsScreenState
     final large = settings['largeText']!;
 
     return Container(
+      key: const Key('text_preview'),
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.only(bottom: 24),
       decoration: BoxDecoration(
@@ -205,8 +232,10 @@ class _AccessibilitySettingsScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("Text Size Preview",
-              style: TextStyle(fontWeight: FontWeight.bold)),
+          const Text(
+            "Text Size Preview",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 8),
           Text(
             "This is how your text will appear in the app.",
@@ -220,20 +249,29 @@ class _AccessibilitySettingsScreenState
   Widget _notificationChips() {
     List<Widget> chips = [];
 
-    if (settings['soundAlerts']!)
+    if (settings['soundAlerts']!) {
       chips.add(_chip("Sound", Colors.blue));
-    if (settings['vibrationAlerts']!)
+    }
+    if (settings['vibrationAlerts']!) {
       chips.add(_chip("Vibration", Colors.purple));
-    if (settings['visualAlerts']!)
+    }
+    if (settings['visualAlerts']!) {
       chips.add(_chip("Visual", Colors.amber));
-    if (settings['voiceAnnouncements']!)
+    }
+    if (settings['voiceAnnouncements']!) {
       chips.add(_chip("Voice", Colors.green));
+    }
 
-    return Wrap(spacing: 8, children: chips);
+    return Wrap(
+      key: const Key('notification_chips'),
+      spacing: 8,
+      children: chips,
+    );
   }
 
   Widget _chip(String label, Color color) {
     return Chip(
+      key: Key('chip_$label'),
       label: Text(label),
       backgroundColor: color.withOpacity(.15),
       labelStyle: TextStyle(color: color),
