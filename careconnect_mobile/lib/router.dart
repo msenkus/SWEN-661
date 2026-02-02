@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'screens/login_screen.dart';
 import 'screens/dashboard_screen.dart';
 import 'screens/sos_screen.dart';
 import 'screens/medications_screen.dart';
@@ -15,7 +16,7 @@ final router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const DashboardScreen(),
+      builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
       path: '/dashboard',
