@@ -290,11 +290,15 @@ class _QuickButton extends StatelessWidget {
           key: Key('quick_$label'),
           onPressed: onTap,
           style: OutlinedButton.styleFrom(
-            padding: const EdgeInsets.all(16),
-            side: BorderSide(color: color.shade200, width: 2),
+            padding: const EdgeInsets.symmetric(
+              vertical: 10,   // 👈 thinner height
+              horizontal: 16,
+            ),
+            minimumSize: const Size.fromHeight(44), // 👈 flatter look
+            side: BorderSide(color: color.shade200, width: 1.5),
             backgroundColor: color.shade50,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(14),
             ),
           ),
           child: Text(
@@ -309,6 +313,7 @@ class _QuickButton extends StatelessWidget {
     );
   }
 }
+
 
 class _QuickActionsGrid extends StatelessWidget {
   final bool isTablet;
