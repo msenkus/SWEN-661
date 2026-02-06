@@ -211,7 +211,7 @@ class MissedTaskAlertScreen extends StatelessWidget {
                   child: const Text(
                     "💡 Tip: Set reminders to help you stay on track with your daily tasks. "
                     "You can adjust notification settings in the Accessibility menu.",
-                    style: TextStyle(fontSize: 13),
+                    style: TextStyle(fontSize: 13, color: Colors.black87),
                   ),
                 )
               ],
