@@ -75,11 +75,25 @@ void main() {
 
   testWidgets('SOS button renders', (tester) async {
     await tester.pumpWidget(_harness(router: router));
+
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('btn_sos')),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+
     expect(find.byKey(const Key('btn_sos')), findsOneWidget);
   });
 
   testWidgets('SOS button navigates', (tester) async {
     await tester.pumpWidget(_harness(router: router));
+
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('btn_sos')),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
 
     await tester.tap(find.byKey(const Key('btn_sos')));
     await tester.pumpAndSettle();

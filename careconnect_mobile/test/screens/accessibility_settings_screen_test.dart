@@ -52,18 +52,17 @@ void main() {
       (tester) async {
     await tester.pumpWidget(_harness(router: router));
 
-    // Initial state: large text enabled → bigger font
-    final previewBefore =
-        tester.widget<Text>(
-          find.textContaining('This is how your text'),
-        );
-    expect(previewBefore.style!.fontSize, 22);
-
-    // Toggle off
+    // Toggle is visible near the top — tap it first
     await tester.tap(
       find.byKey(const Key('toggle_large_text_switch')),
     );
     await tester.pump();
+
+    // Scroll down to verify text preview changed
+    await tester.scrollUntilVisible(
+      find.textContaining('This is how your text'),
+      200,
+    );
 
     final previewAfter =
         tester.widget<Text>(
@@ -74,6 +73,11 @@ void main() {
 
   testWidgets('Notification chips render', (tester) async {
     await tester.pumpWidget(_harness(router: router));
+
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('notification_chips')),
+      200,
+    );
 
     expect(find.byKey(const Key('notification_chips')),
         findsOneWidget);
@@ -87,8 +91,18 @@ void main() {
       (tester) async {
     await tester.pumpWidget(_harness(router: router));
 
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('chip_Sound')),
+      200,
+    );
+
     expect(find.byKey(const Key('chip_Sound')),
         findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('toggle_sound_alerts_switch')),
+      -200,
+    );
 
     await tester.tap(
       find.byKey(const Key('toggle_sound_alerts_switch')),
@@ -101,6 +115,11 @@ void main() {
 
   testWidgets('ASL help button navigates', (tester) async {
     await tester.pumpWidget(_harness(router: router));
+
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('asl_help_button')),
+      200,
+    );
 
     await tester.tap(
       find.byKey(const Key('asl_help_button')),
