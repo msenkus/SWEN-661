@@ -186,7 +186,11 @@ class _StepByStepTaskScreenState extends State<StepByStepTaskScreen> {
           ),
           child: Text(
             instruction,
-            style: const TextStyle(fontSize: 20, height: 1.4),
+            style: const TextStyle(
+              fontSize: 20,
+              height: 1.4,
+              color: Colors.black87,
+            ),
           ),
         ),
       ],
