@@ -243,6 +243,18 @@ class MissedTaskAlertScreen extends StatelessWidget {
                 const SizedBox(height: 10),
 
                 OutlinedButton.icon(
+                  onPressed: () => context.go('/asl-help'),
+                  icon: const Icon(Icons.accessibility),
+                  label: const Text("ASL Help Videos"),
+                  style: OutlinedButton.styleFrom(
+                    minimumSize:
+                        const Size.fromHeight(52),
+                  ),
+                ),
+
+                const SizedBox(height: 10),
+
+                OutlinedButton.icon(
                   onPressed: () => context.go('/'),
                   icon: const Icon(Icons.close),
                   label: const Text("Dismiss Alerts"),
