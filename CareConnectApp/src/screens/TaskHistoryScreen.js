@@ -7,6 +7,7 @@ import {
   Pressable,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { ArrowLeft } from 'lucide-react-native';
 
 const TaskHistoryScreen = ({
   onNavigate,
@@ -66,6 +67,19 @@ const TaskHistoryScreen = ({
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      {/* Header */}
+      <View style={styles.header}>
+        <Pressable
+          onPress={() => onNavigate('dashboard')}
+          accessibilityRole="button"
+          accessibilityLabel="Go back to dashboard"
+          style={styles.backButton}
+        >
+          <ArrowLeft size={24} color="#334155" />
+        </Pressable>
+        <Text style={styles.headerTitle}>Task History</Text>
+      </View>
+
       {/* Weekly Stats */}
       <View style={styles.statsCard}>
         <View style={styles.statsHeader}>
@@ -208,6 +222,21 @@ const Filter = ({ label, active }) => (
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F8FAFC' },
   content: { padding: 16 },
+
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  backButton: {
+    padding: 8,
+    marginRight: 8,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#0F172A',
+  },
 
   statsCard: {
     backgroundColor: '#16A34A',
