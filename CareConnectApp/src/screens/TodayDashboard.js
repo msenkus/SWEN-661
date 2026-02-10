@@ -72,7 +72,7 @@ const TodayDashboard = ({
             { backgroundColor: '#EDE9FE', borderColor: '#C4B5FD' },
           ]}
         >
-          <Text style={styles.quickActionText}>Medications</Text>
+          <Text numberOfLines={1} adjustsFontSizeToFit style={styles.quickActionText}>Medications</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -82,7 +82,7 @@ const TodayDashboard = ({
             { backgroundColor: '#EDE9FE', borderColor: '#C4B5FD' },
           ]}
         >
-          <Text style={styles.quickActionText}>Appointments</Text>
+          <Text numberOfLines={1} adjustsFontSizeToFit style={styles.quickActionText}>Appointments</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -92,7 +92,7 @@ const TodayDashboard = ({
             { backgroundColor: '#EDE9FE', borderColor: '#C4B5FD' },
           ]}
         >
-          <Text style={styles.quickActionText}>History</Text>
+          <Text numberOfLines={1} adjustsFontSizeToFit style={styles.quickActionText}>History</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -102,7 +102,7 @@ const TodayDashboard = ({
           { backgroundColor: '#EDE9FE', borderColor: '#C4B5FD' },
         ]}
       >
-        <Text style={styles.quickActionText}>Settings</Text>
+        <Text numberOfLines={1} adjustsFontSizeToFit style={styles.quickActionText}>Settings</Text>
       </TouchableOpacity>
 
       </View>
@@ -211,16 +211,24 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
 
-  grid: { gap: 12, marginBottom: 24 },
-  gridTwo: { flexDirection: 'row', flexWrap: 'wrap' },
-  gridThree: { flexDirection: 'row', flexWrap: 'wrap' },
+  grid: { marginBottom: 24, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' },
+  gridTwo: {},
+  gridThree: {},
 
   quickAction: {
-    flex: 1,
+    width: '47%',
     borderRadius: 16,
-    padding: 16,
-    margin: 6,
+    paddingVertical: 16,
+    paddingHorizontal: 8,
+    marginBottom: 12,
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  quickActionText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#334155',
+    textAlign: 'center',
   },
 
   sectionTitle: {
