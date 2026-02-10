@@ -7,7 +7,14 @@ import {
   Pressable,
   TouchableOpacity,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {
+  CheckCircle2,
+  Circle,
+  CircleDot,
+  Clock,
+  AlertCircle,
+  Phone,
+} from 'lucide-react-native';
 
 const TodayDashboard = ({
   onNavigate,
@@ -123,27 +130,17 @@ const TodayDashboard = ({
           }}
         >
           <View style={styles.taskRow}>
-            <Ionicons
-              name={
-                task.completed
-                  ? 'checkmark-circle'
-                  : task.current
-                  ? 'radio-button-on'
-                  : 'radio-button-off'
-              }
-              size={24}
-              color={
-                task.completed
-                  ? '#22C55E'
-                  : task.current
-                  ? '#2563EB'
-                  : '#CBD5E1'
-              }
-            />
+            {task.completed ? (
+              <CheckCircle2 size={24} color="#22C55E" />
+            ) : task.current ? (
+              <CircleDot size={24} color="#2563EB" />
+            ) : (
+              <Circle size={24} color="#CBD5E1" />
+            )}
 
             <View style={styles.taskContent}>
               <View style={styles.taskMeta}>
-                <Ionicons name="time-outline" size={14} color="#64748B" />
+                <Clock size={14} color="#64748B" />
                 <Text style={styles.taskTime}>{task.time}</Text>
                 {task.current && <Text style={styles.currentBadge}>Current</Text>}
               </View>
@@ -163,7 +160,7 @@ const TodayDashboard = ({
             </View>
 
             {task.current && (
-              <Ionicons name="alert-circle" size={20} color="#2563EB" />
+              <AlertCircle size={20} color="#2563EB" />
             )}
           </View>
         </Pressable>
@@ -171,7 +168,7 @@ const TodayDashboard = ({
 
       {/* SOS Button */}
       <Pressable style={styles.sosButton} onPress={() => onNavigate('sos')}>
-        <Ionicons name="call" size={24} color="#FFFFFF" />
+        <Phone size={24} color="#FFFFFF" />
         <Text style={styles.sosText}>Emergency SOS</Text>
       </Pressable>
     </ScrollView>

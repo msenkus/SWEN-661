@@ -6,8 +6,14 @@ import {
   ScrollView,
   Pressable,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { ArrowLeft } from 'lucide-react-native';
+import {
+  ArrowLeft,
+  CheckCircle2,
+  XCircle,
+  Clock,
+  Calendar,
+  TrendingUp,
+} from 'lucide-react-native';
 
 const TaskHistoryScreen = ({
   onNavigate,
@@ -83,7 +89,7 @@ const TaskHistoryScreen = ({
       {/* Weekly Stats */}
       <View style={styles.statsCard}>
         <View style={styles.statsHeader}>
-          <Ionicons name="trending-up" size={32} color="#FFFFFF" />
+          <TrendingUp size={32} color="#FFFFFF" />
           <View>
             <Text style={styles.statsLabel}>This Week</Text>
             <Text style={styles.statsTitle}>
@@ -115,7 +121,7 @@ const TaskHistoryScreen = ({
           <View key={index} style={styles.dayBlock}>
             <View style={styles.dayHeader}>
               <View style={styles.dayLeft}>
-                <Ionicons name="calendar" size={20} color="#2563EB" />
+                <Calendar size={20} color="#2563EB" />
                 <View>
                   <Text style={styles.dayTitle}>{day.date}</Text>
                   <Text style={styles.daySubtitle}>{day.fullDate}</Text>
@@ -143,11 +149,11 @@ const TaskHistoryScreen = ({
                   !task.completed && styles.taskMissed,
                 ]}
               >
-                <Ionicons
-                  name={task.completed ? 'checkmark-circle' : 'close-circle'}
-                  size={20}
-                  color={task.completed ? '#22C55E' : '#EF4444'}
-                />
+                {task.completed ? (
+                  <CheckCircle2 size={20} color="#22C55E" />
+                ) : (
+                  <XCircle size={20} color="#EF4444" />
+                )}
 
                 <View style={styles.taskContent}>
                   <Text style={[
@@ -158,7 +164,7 @@ const TaskHistoryScreen = ({
                   </Text>
 
                   <View style={styles.taskMeta}>
-                    <Ionicons name="time-outline" size={12} color="#64748B" />
+                    <Clock size={12} color="#64748B" />
                     <Text style={styles.taskTime}>{task.time}</Text>
                     <Text style={[styles.taskType, typeStyle(task.type)]}>
                       • {task.type}
