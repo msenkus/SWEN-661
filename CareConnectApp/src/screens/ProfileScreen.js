@@ -15,6 +15,7 @@ import {
   Edit2,
   ShieldAlert,
   HeartPulse,
+  ArrowLeft,
 } from 'lucide-react-native';
 
 const ProfileScreen = ({ onNavigate }) => {
@@ -39,6 +40,19 @@ const ProfileScreen = ({ onNavigate }) => {
 
   return (
     <ScrollView style={styles.container}>
+      {/* Back Button */}
+      <View style={styles.backHeader}>
+        <Pressable
+          onPress={() => onNavigate('dashboard')}
+          accessibilityRole="button"
+          accessibilityLabel="Go back to dashboard"
+          style={styles.backButton}
+        >
+          <ArrowLeft size={24} color="#334155" />
+        </Pressable>
+        <Text style={styles.backHeaderTitle}>Profile</Text>
+      </View>
+
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerTop} />
@@ -144,6 +158,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8FAFC',
     padding: 16,
+  },
+
+  backHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  backButton: {
+    padding: 8,
+    marginRight: 8,
+  },
+  backHeaderTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#0F172A',
   },
 
   header: {

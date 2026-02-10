@@ -12,6 +12,7 @@ import {
   Vibrate,
   Bell,
   Type,
+  ArrowLeft,
 } from 'lucide-react-native';
 
 const AccessibilitySettings = ({ onNavigate, hasMissedTasks }) => {
@@ -103,6 +104,19 @@ const AccessibilitySettings = ({ onNavigate, hasMissedTasks }) => {
 
   return (
     <ScrollView style={styles.container}>
+      {/* Back Button */}
+      <View style={styles.backHeader}>
+        <Pressable
+          onPress={() => onNavigate('dashboard')}
+          accessibilityRole="button"
+          accessibilityLabel="Go back to dashboard"
+          style={styles.backButton}
+        >
+          <ArrowLeft size={24} color="#334155" />
+        </Pressable>
+        <Text style={styles.backHeaderTitle}>Accessibility</Text>
+      </View>
+
       {/* Header */}
       <View style={styles.headerCard}>
         <Eye size={32} color="#FFFFFF" />
@@ -196,6 +210,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8FAFC',
     padding: 16,
+  },
+
+  backHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  backButton: {
+    padding: 8,
+    marginRight: 8,
+  },
+  backHeaderTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#0F172A',
   },
 
   /* Header Card (green gradient) */

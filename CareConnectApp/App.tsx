@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, SafeAreaView, StyleSheet } from 'react-native';
 
 /* Screens */
 import WelcomeScreen from './src/screens/WelcomeScreen';
@@ -48,55 +48,56 @@ export default function App() {
     hasMissedTasks,
   };
 
-  switch (screen) {
-    case 'welcome':
-      return <WelcomeScreen {...sharedProps} />;
+  const renderScreen = () => {
+    switch (screen) {
+      case 'welcome':
+        return <WelcomeScreen {...sharedProps} />;
+      case 'login':
+        return <LoginScreen {...sharedProps} />;
+      case 'register':
+        return <RegisterScreen {...sharedProps} />;
+      case 'dashboard':
+        return <Dashboard {...sharedProps} />;
+      case 'medications':
+        return <MedicationsScreen {...sharedProps} />;
+      case 'appointments':
+        return <AppointmentList {...sharedProps} />;
+      case 'appointment-detail':
+        return <AppointmentDetail {...sharedProps} />;
+      case 'task-history':
+        return <TaskHistory {...sharedProps} />;
+      case 'accessibility':
+        return <AccessibilitySettings {...sharedProps} />;
+      case 'asl-help':
+        return <ASLHelpScreen {...sharedProps} />;
+      case 'step-task':
+        return <StepByStepTask {...sharedProps} />;
+      case 'sos':
+        return <SOSConfirmation {...sharedProps} />;
+      case 'profile':
+        return <ProfileScreen {...sharedProps} />;
+      case 'missed-tasks':
+        return (
+          <MissedTaskAlert
+            {...sharedProps}
+            onDismiss={() => setHasMissedTasks(false)}
+          />
+        );
+      default:
+        return <View />;
+    }
+  };
 
-    case 'login':
-      return <LoginScreen {...sharedProps} />;
-
-    case 'register':
-      return <RegisterScreen {...sharedProps} />;
-
-    case 'dashboard':
-      return <Dashboard {...sharedProps} />;
-
-    case 'medications':
-      return <MedicationsScreen {...sharedProps} />;
-
-    case 'appointments':
-      return <AppointmentList {...sharedProps} />;
-
-    case 'appointment-detail':
-      return <AppointmentDetail {...sharedProps} />;
-
-    case 'task-history':
-      return <TaskHistory {...sharedProps} />;
-
-    case 'accessibility':
-      return <AccessibilitySettings {...sharedProps} />;
-
-    case 'asl-help':
-      return <ASLHelpScreen {...sharedProps} />;
-
-    case 'step-task':
-      return <StepByStepTask {...sharedProps} />;
-
-    case 'sos':
-      return <SOSConfirmation {...sharedProps} />;
-
-    case 'profile':
-      return <ProfileScreen {...sharedProps} />;
-
-    case 'missed-tasks':
-      return (
-        <MissedTaskAlert
-          {...sharedProps}
-          onDismiss={() => setHasMissedTasks(false)}
-        />
-      );
-
-    default:
-      return <View />;
-  }
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      {renderScreen()}
+    </SafeAreaView>
+  );
 }
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#F8FAFC',
+  },
+});

@@ -12,6 +12,7 @@ import {
   Phone,
   AlertCircle,
   ChevronRight,
+  ArrowLeft,
 } from 'lucide-react-native';
 
 const SLIDER_WIDTH = 320;
@@ -96,6 +97,19 @@ export default function SOSConfirmation({ onNavigate }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      {/* Back Button */}
+      <View style={styles.backHeader}>
+        <Pressable
+          onPress={() => onNavigate('dashboard')}
+          accessibilityRole="button"
+          accessibilityLabel="Go back to dashboard"
+          style={styles.backButton}
+        >
+          <ArrowLeft size={24} color="#334155" />
+        </Pressable>
+        <Text style={styles.backHeaderTitle}>SOS</Text>
+      </View>
+
       {/* Warning */}
       <View style={styles.warning}>
         <AlertCircle size={36} color="#FFFFFF" />
@@ -159,6 +173,21 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: '#F8FAFC',
     flexGrow: 1,
+  },
+
+  backHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  backButton: {
+    padding: 8,
+    marginRight: 8,
+  },
+  backHeaderTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#0F172A',
   },
 
   warning: {

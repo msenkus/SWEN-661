@@ -12,6 +12,7 @@ import {
   MapPin,
   Video,
   ChevronRight,
+  ArrowLeft,
 } from 'lucide-react-native';
 
 const AppointmentList = ({ onNavigate }) => {
@@ -64,6 +65,19 @@ const AppointmentList = ({ onNavigate }) => {
 
   return (
     <ScrollView style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>
+        <Pressable
+          onPress={() => onNavigate('dashboard')}
+          accessibilityRole="button"
+          accessibilityLabel="Go back to dashboard"
+          style={styles.backButton}
+        >
+          <ArrowLeft size={24} color="#334155" />
+        </Pressable>
+        <Text style={styles.headerTitle}>Appointments</Text>
+      </View>
+
       {/* Summary Card */}
       <View style={styles.summaryCard}>
         <View>
@@ -139,6 +153,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8FAFC',
     padding: 16,
+  },
+
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+
+  backButton: {
+    padding: 8,
+    marginRight: 8,
+  },
+
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#0F172A',
   },
 
   summaryCard: {

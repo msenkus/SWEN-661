@@ -76,6 +76,19 @@ export default function StepByStepTask({ onNavigate }) {
 
   return (
     <View style={styles.container}>
+      {/* Back Button */}
+      <View style={styles.backHeader}>
+        <Pressable
+          onPress={() => onNavigate('dashboard')}
+          accessibilityRole="button"
+          accessibilityLabel="Go back to dashboard"
+          style={styles.backButton}
+        >
+          <ArrowLeft size={24} color="#334155" />
+        </Pressable>
+        <Text style={styles.backHeaderTitle}>Exercise Task</Text>
+      </View>
+
       {/* Progress */}
       <View style={styles.progressHeader}>
         <View style={styles.progressRow}>
@@ -156,6 +169,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8FAFC',
+  },
+
+  backHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    paddingBottom: 0,
+  },
+  backButton: {
+    padding: 8,
+    marginRight: 8,
+  },
+  backHeaderTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#0F172A',
   },
 
   /* Progress */

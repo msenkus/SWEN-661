@@ -14,11 +14,25 @@ import {
   Mail,
   FileText,
   Navigation,
+  ArrowLeft,
 } from 'lucide-react-native';
 
 const AppointmentDetail = ({ onNavigate }) => {
   return (
     <ScrollView style={styles.container}>
+      {/* Back Button */}
+      <View style={styles.backHeader}>
+        <Pressable
+          onPress={() => onNavigate('appointments')}
+          accessibilityRole="button"
+          accessibilityLabel="Go back to appointments"
+          style={styles.backButton}
+        >
+          <ArrowLeft size={24} color="#334155" />
+        </Pressable>
+        <Text style={styles.backHeaderTitle}>Appointment Details</Text>
+      </View>
+
       {/* Header Card */}
       <View style={styles.headerCard}>
         <View style={styles.headerTop}>
@@ -145,6 +159,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8FAFC',
     padding: 16,
+  },
+
+  backHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+
+  backButton: {
+    padding: 8,
+    marginRight: 8,
+  },
+
+  backHeaderTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#0F172A',
   },
 
   headerCard: {
