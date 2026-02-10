@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,16 +6,22 @@ import {
   ScrollView,
   Pressable,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {
+  ArrowLeft,
+  Calendar,
+  CheckCircle2,
+  AlertCircle,
+  Clock,
+} from 'lucide-react-native';
 
 const MedicationsScreen = ({
   onNavigate,
   isTablet = false,
   orientation = 'portrait',
   hasMissedTasks = false,
-  
+
 }) => {
-  const medicationsByDate = [
+  const [medications, setMedications] = useState([
     {
       date: 'Today',
       fullDate: 'January 21, 2026',
@@ -34,23 +40,34 @@ const MedicationsScreen = ({
         { id: 6, name: 'Vitamin D', time: '6:00 PM', taken: true },
       ],
     },
-  ];
+  ]);
+
+  const toggleMed = (medId) => {
+    setMedications(prev =>
+      prev.map(day => ({
+        ...day,
+        meds: day.meds.map(med =>
+          med.id === medId ? { ...med, taken: !med.taken } : med
+        ),
+      }))
+    );
+  };
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <View style={styles.header}>
         <Pressable onPress={() => onNavigate('dashboard')} hitSlop={10}>
-          <Ionicons name="arrow-back" size={24} color="#2563EB" />
+          <ArrowLeft size={24} color="#2563EB" />
         </Pressable>
 
         <Text style={styles.screenTitle}>Medications</Text>
       </View>
 
 
-      {medicationsByDate.map((day, index) => (
+      {medications.map((day, index) => (
         <View key={index} style={styles.dayBlock}>
           <View style={styles.dayHeader}>
-            <Ionicons name="calendar" size={20} color="#7C3AED" />
+            <Calendar size={20} color="#7C3AED" />
             <View>
               <Text style={styles.dayTitle}>{day.date}</Text>
               <Text style={styles.daySubtitle}>{day.fullDate}</Text>
@@ -64,18 +81,21 @@ const MedicationsScreen = ({
                 styles.medCard,
                 !med.taken && styles.medMissed,
               ]}
-              onPress={() => onNavigate('step-task')}
+              onPress={() => toggleMed(med.id)}
+              accessibilityRole="checkbox"
+              accessibilityState={{ checked: med.taken }}
+              accessibilityLabel={`${med.name} at ${med.time}, ${med.taken ? 'taken' : 'not taken'}`}
             >
-              <Ionicons
-                name={med.taken ? 'checkmark-circle' : 'alert-circle'}
-                size={22}
-                color={med.taken ? '#22C55E' : '#F97316'}
-              />
+              {med.taken ? (
+                <CheckCircle2 size={22} color="#22C55E" />
+              ) : (
+                <AlertCircle size={22} color="#F97316" />
+              )}
 
               <View style={styles.medContent}>
                 <Text style={styles.medName}>{med.name}</Text>
                 <View style={styles.medMeta}>
-                  <Ionicons name="time-outline" size={12} color="#64748B" />
+                  <Clock size={12} color="#64748B" />
                   <Text style={styles.medTime}>{med.time}</Text>
                 </View>
               </View>
