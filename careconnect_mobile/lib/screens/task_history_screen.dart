@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../widgets/bottom_navigation_bar.dart';
 
 class TaskHistoryScreen extends StatelessWidget {
   const TaskHistoryScreen({super.key});
@@ -7,6 +8,9 @@ class TaskHistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isTablet = MediaQuery.of(context).size.width > 700;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDark = theme.brightness == Brightness.dark;
 
     final weeklyStats = {
       "total": 49,
@@ -82,7 +86,20 @@ class TaskHistoryScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Task History")),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+          if (context.canPop()) {
+            context.pop();
+          } else {
+            context.go('/dashboard');
+          }
+        },
+          tooltip: 'Back',
+        ),
+        title: const Text("Task History"),
+      ),
       body: ListView(
         padding: EdgeInsets.all(isTablet ? 24 : 16),
         children: [
@@ -90,54 +107,64 @@ class TaskHistoryScreen extends StatelessWidget {
           // WEEKLY CARD
           // ====================
 
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Colors.green, Colors.teal],
-              ),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    const Icon(Icons.trending_up,
-                        color: Colors.white, size: 30),
-                    const SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("This Week",
-                            style:
-                                TextStyle(color: Colors.white70)),
-                        Text(
-                          "${weeklyStats["rate"]}% Complete",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize:
-                                isTablet ? 28 : 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )
-                      ],
-                    )
-                  ],
+          Semantics(
+            label: 'This Week, ${weeklyStats["rate"]} percent complete, ${weeklyStats["total"]} total tasks, ${weeklyStats["completed"]} completed, ${weeklyStats["missed"]} missed',
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                gradient: isDark ? null : const LinearGradient(
+                  colors: [Colors.green, Colors.teal],
                 ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    _statBox(
-                        weeklyStats["total"]!, "Total"),
-                    _statBox(
-                        weeklyStats["completed"]!,
-                        "Completed"),
-                    _statBox(
-                        weeklyStats["missed"]!,
-                        "Missed"),
-                  ],
-                )
-              ],
+                color: isDark ? colorScheme.primary : null,
+                borderRadius: BorderRadius.circular(20),
+                border: isDark ? Border.all(color: colorScheme.onPrimary, width: 2) : null,
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Semantics(
+                        label: 'Trending up icon',
+                        image: true,
+                        excludeSemantics: true,
+                        child: Icon(Icons.trending_up,
+                            color: isDark ? colorScheme.onPrimary : Colors.white, size: 30),
+                      ),
+                      const SizedBox(width: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("This Week",
+                              style: TextStyle(
+                                  color: isDark ? colorScheme.onPrimary.withOpacity(0.9) : Colors.white70)),
+                          Text(
+                            "${weeklyStats["rate"]}% Complete",
+                            style: TextStyle(
+                              color: isDark ? colorScheme.onPrimary : Colors.white,
+                              fontSize:
+                                  isTablet ? 28 : 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      _statBox(context,
+                          weeklyStats["total"]!, "Total", isDark),
+                      _statBox(context,
+                          weeklyStats["completed"]!,
+                          "Completed", isDark),
+                      _statBox(context,
+                          weeklyStats["missed"]!,
+                          "Missed", isDark),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
 
@@ -161,9 +188,9 @@ class TaskHistoryScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.calendar_today,
+                    Icon(Icons.calendar_today,
                         size: 18,
-                        color: Colors.blue),
+                        color: isDark ? colorScheme.primary : Colors.blue),
                     const SizedBox(width: 8),
                     Column(
                       crossAxisAlignment:
@@ -174,9 +201,9 @@ class TaskHistoryScreen extends StatelessWidget {
                                 fontWeight:
                                     FontWeight.bold)),
                         Text(dayMap["full"]!,
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 11,
-                                color: Colors.grey)),
+                                color: isDark ? colorScheme.onSurfaceVariant : Colors.grey)),
                       ],
                     ),
                     const Spacer(),
@@ -186,12 +213,13 @@ class TaskHistoryScreen extends StatelessWidget {
                             style: TextStyle(
                                 fontWeight:
                                     FontWeight.bold,
-                                color: percent >= 80
-                                    ? Colors.green
-                                    : Colors.orange)),
+                                color: isDark
+                                    ? (percent >= 80 ? colorScheme.primary : colorScheme.tertiary)
+                                    : (percent >= 80 ? Colors.green : Colors.orange))),
                         Text("$done/${tasks.length}",
-                            style: const TextStyle(
-                                fontSize: 11)),
+                            style: TextStyle(
+                                fontSize: 11,
+                                color: isDark ? colorScheme.onSurface : null)),
                       ],
                     )
                   ],
@@ -207,15 +235,15 @@ class TaskHistoryScreen extends StatelessWidget {
                         const EdgeInsets.only(bottom: 8),
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: done
-                          ? Colors.white
-                          : Colors.red.shade50,
+                      color: isDark
+                          ? (done ? colorScheme.surfaceContainerHighest : colorScheme.errorContainer)
+                          : (done ? Colors.white : Colors.red.shade50),
                       borderRadius:
                           BorderRadius.circular(14),
                       border: Border.all(
-                          color: done
-                              ? Colors.grey.shade300
-                              : Colors.red.shade200),
+                          color: isDark
+                              ? (done ? colorScheme.outlineVariant : colorScheme.error)
+                              : (done ? Colors.grey.shade300 : Colors.red.shade200)),
                     ),
                     child: Row(
                       children: [
@@ -223,9 +251,9 @@ class TaskHistoryScreen extends StatelessWidget {
                           done
                               ? Icons.check_circle
                               : Icons.cancel,
-                          color: done
-                              ? Colors.green
-                              : Colors.red,
+                          color: isDark
+                              ? (done ? colorScheme.primary : colorScheme.error)
+                              : (done ? Colors.green : Colors.red),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
@@ -237,19 +265,20 @@ class TaskHistoryScreen extends StatelessWidget {
                                   style: TextStyle(
                                       fontWeight:
                                           FontWeight.w600,
-                                      color: done
-                                          ? Colors.black
-                                          : Colors.red)),
+                                      color: isDark
+                                          ? (done ? colorScheme.onSurface : colorScheme.onErrorContainer)
+                                          : (done ? Colors.black : Colors.red))),
                               const SizedBox(height: 4),
                               Row(
                                 children: [
-                                  const Icon(Icons.schedule,
+                                  Icon(Icons.schedule,
                                       size: 14,
-                                      color: Colors.grey),
+                                      color: isDark ? colorScheme.onSurfaceVariant : Colors.grey),
                                   const SizedBox(width: 4),
                                   Text(task["time"]!,
-                                      style: const TextStyle(
-                                          fontSize: 12)),
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: isDark ? colorScheme.onSurfaceVariant : null)),
                                   const SizedBox(width: 6),
                                   Text(
                                     "• ${task["type"]}",
@@ -269,11 +298,12 @@ class TaskHistoryScreen extends StatelessWidget {
                                   horizontal: 10,
                                   vertical: 4),
                           decoration: BoxDecoration(
-                            color: done
-                                ? Colors.green.shade100
-                                : Colors.red.shade100,
+                            color: isDark
+                                ? (done ? colorScheme.primaryContainer : colorScheme.errorContainer)
+                                : (done ? Colors.green.shade100 : Colors.red.shade100),
                             borderRadius:
                                 BorderRadius.circular(12),
+                            border: isDark ? Border.all(color: done ? colorScheme.primary : colorScheme.error) : null,
                           ),
                           child: Text(
                             done ? "Done" : "Missed",
@@ -281,9 +311,10 @@ class TaskHistoryScreen extends StatelessWidget {
                                 fontSize: 11,
                                 fontWeight:
                                     FontWeight.bold,
-                                color: done
-                                    ? Colors.green
-                                    : Colors.red),
+                                color: isDark
+                                    ? (done ? colorScheme.onPrimaryContainer : colorScheme.onErrorContainer)
+                                    : (done ? Colors.green : Colors.red),
+                            ),
                           ),
                         )
                       ],
@@ -300,9 +331,16 @@ class TaskHistoryScreen extends StatelessWidget {
           // LOAD MORE
           // ====================
 
-          OutlinedButton(
-            onPressed: () {},
-            child: const Text("Load More History"),
+          Semantics(
+            label: 'Load More History, button',
+            button: true,
+            child: OutlinedButton(
+              onPressed: () {},
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size.fromHeight(48), // WCAG 2.1: Minimum touch target
+              ),
+              child: const Text("Load More History"),
+            ),
           ),
 
           const SizedBox(height: 20),
@@ -314,57 +352,65 @@ class TaskHistoryScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
+              gradient: isDark ? null : LinearGradient(
                 colors: [
                   Colors.blue.shade50,
                   Colors.purple.shade50
                 ],
               ),
+              color: isDark ? colorScheme.surfaceContainerHighest : null,
               borderRadius: BorderRadius.circular(16),
-              border:
-                  Border.all(color: Colors.blue.shade200),
+              border: Border.all(
+                  color: isDark ? colorScheme.outlineVariant : Colors.blue.shade200),
             ),
             child: Column(
               children: [
-                const Text(
+                Text(
                   "🎉 Great job this week!",
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? colorScheme.onSurface : null),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   "You've maintained an ${weeklyStats["rate"]}% completion rate. Keep it up!",
                   textAlign: TextAlign.center,
+                  style: TextStyle(color: isDark ? colorScheme.onSurface : null),
                 )
               ],
             ),
           )
         ],
       ),
+      bottomNavigationBar: CareConnectBottomNavBar(
+        currentRoute: GoRouter.of(context).routerDelegate.currentConfiguration.uri.path,
+      ),
     );
   }
 
-  Widget _statBox(int value, String label) {
+  Widget _statBox(BuildContext context, int value, String label, bool isDark) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Expanded(
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 4),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.white24,
+          color: isDark ? colorScheme.onPrimary.withOpacity(0.24) : Colors.white24,
           borderRadius: BorderRadius.circular(14),
         ),
         child: Column(
           children: [
             Text(
               "$value",
-              style: const TextStyle(
-                  color: Colors.white,
+              style: TextStyle(
+                  color: isDark ? colorScheme.onPrimary : Colors.white,
                   fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
             Text(label,
-                style: const TextStyle(
-                    color: Colors.white70, fontSize: 11))
+                style: TextStyle(
+                    color: isDark ? colorScheme.onPrimary.withOpacity(0.9) : Colors.white70,
+                    fontSize: 11))
           ],
         ),
       ),

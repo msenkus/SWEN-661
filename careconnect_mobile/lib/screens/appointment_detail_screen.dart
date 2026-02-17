@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../widgets/bottom_navigation_bar.dart';
 
 class AppointmentDetailScreen extends StatelessWidget {
   const AppointmentDetailScreen({super.key});
@@ -7,7 +8,20 @@ class AppointmentDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Appointment Details')),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+          if (context.canPop()) {
+            context.pop();
+          } else {
+            context.go('/dashboard');
+          }
+        },
+          tooltip: 'Back',
+        ),
+        title: const Text('Appointment Details'),
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -24,64 +38,75 @@ class AppointmentDetailScreen extends StatelessWidget {
           _actions(context),
         ],
       ),
+      bottomNavigationBar: CareConnectBottomNavBar(
+        currentRoute: GoRouter.of(context).routerDelegate.currentConfiguration.uri.path,
+      ),
     );
   }
 
   // ---------------------------------------------------
 
   Widget _headerCard() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 24),
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Colors.blue, Colors.indigo],
-        ),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              const Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Dr. Sarah Johnson",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold)),
-                    SizedBox(height: 4),
-                    Text("Primary Care Physician",
-                        style: TextStyle(color: Colors.white70)),
-                    Text("Internal Medicine",
-                        style: TextStyle(color: Colors.white54)),
-                  ],
-                ),
-              ),
-              CircleAvatar(
-                backgroundColor: Colors.white24,
-                child: const Icon(Icons.calendar_today, color: Colors.white),
-              )
-            ],
+    return Semantics(
+      label: 'Appointment with Dr. Sarah Johnson, Primary Care Physician, Internal Medicine, Today at 2:00 PM, 30 minutes duration',
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 24),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Colors.blue, Colors.indigo],
           ),
-          const SizedBox(height: 16),
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.white12,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          children: [
+            Row(
               children: [
-                _InfoBlock("Date & Time", "Today at 2:00 PM"),
-                _InfoBlock("Duration", "30 min"),
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Dr. Sarah Johnson",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold)),
+                      SizedBox(height: 4),
+                      Text("Primary Care Physician",
+                          style: TextStyle(color: Colors.white70)),
+                      Text("Internal Medicine",
+                          style: TextStyle(color: Colors.white54)),
+                    ],
+                  ),
+                ),
+                Semantics(
+                  label: 'Calendar icon',
+                  image: true,
+                  excludeSemantics: true,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white24,
+                    child: const Icon(Icons.calendar_today, color: Colors.white),
+                  ),
+                )
               ],
             ),
-          ),
-        ],
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white12,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _InfoBlock("Date & Time", "Today at 2:00 PM"),
+                  _InfoBlock("Duration", "30 min"),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -99,10 +124,17 @@ class AppointmentDetailScreen extends StatelessWidget {
           const Text("Springfield, IL 62701",
               style: TextStyle(color: Colors.grey)),
           const SizedBox(height: 12),
-          OutlinedButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.navigation),
-            label: const Text("Get Directions"),
+          Semantics(
+            label: 'Get Directions, button',
+            button: true,
+            child: OutlinedButton.icon(
+              onPressed: () {},
+              icon: const Icon(Icons.navigation),
+              label: const Text("Get Directions"),
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size.fromHeight(48), // WCAG 2.1: Minimum touch target
+              ),
+            ),
           )
         ],
       ),
@@ -166,14 +198,19 @@ class AppointmentDetailScreen extends StatelessWidget {
   Widget _actions(BuildContext context) {
     return Column(
       children: [
-        ElevatedButton(
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 18),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16)),
+        Semantics(
+          label: 'Add to Calendar, button',
+          button: true,
+          child: ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 18),
+              minimumSize: const Size.fromHeight(48), // WCAG 2.1: Minimum touch target
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
+            ),
+            child: const Text("Add to Calendar"),
           ),
-          child: const Text("Add to Calendar"),
         ),
 
         const SizedBox(height: 12),
@@ -181,19 +218,31 @@ class AppointmentDetailScreen extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: ElevatedButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.phone),
-                label: const Text("Call Office"),
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green),
+              child: Semantics(
+                label: 'Call Office, button',
+                button: true,
+                child: ElevatedButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.phone),
+                  label: const Text("Call Office"),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      minimumSize: const Size.fromHeight(48)), // WCAG 2.1: Minimum touch target
+                ),
               ),
             ),
             const SizedBox(width: 12),
             Expanded(
-              child: OutlinedButton(
-                onPressed: () {},
-                child: const Text("Reschedule"),
+              child: Semantics(
+                label: 'Reschedule, button',
+                button: true,
+                child: OutlinedButton(
+                  onPressed: () {},
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(48), // WCAG 2.1: Minimum touch target
+                  ),
+                  child: const Text("Reschedule"),
+                ),
               ),
             ),
           ],
@@ -201,13 +250,42 @@ class AppointmentDetailScreen extends StatelessWidget {
 
         const SizedBox(height: 12),
 
-        OutlinedButton(
-          onPressed: () {},
-          style: OutlinedButton.styleFrom(
-            foregroundColor: Colors.red,
-            side: const BorderSide(color: Colors.red),
+        Semantics(
+          label: 'Cancel Appointment, button',
+          button: true,
+          child: OutlinedButton(
+            onPressed: () {
+              // WCAG 2.1: Error prevention - show confirmation dialog
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Cancel Appointment'),
+                  content: const Text(
+                    'Are you sure you want to cancel this appointment?',
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('Keep Appointment'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.red,
+                      ),
+                      child: const Text('Cancel Appointment'),
+                    ),
+                  ],
+                ),
+              );
+            },
+            style: OutlinedButton.styleFrom(
+              foregroundColor: Colors.red,
+              side: const BorderSide(color: Colors.red),
+              minimumSize: const Size.fromHeight(48), // WCAG 2.1: Minimum touch target
+            ),
+            child: const Text("Cancel Appointment"),
           ),
-          child: const Text("Cancel Appointment"),
         ),
       ],
     );

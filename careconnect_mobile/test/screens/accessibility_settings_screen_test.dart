@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:careconnect_mobile/screens/accessibility_settings_screen.dart';
 
 Widget _harness({required GoRouter router}) {
-  return MaterialApp.router(routerConfig: router);
+  return ProviderScope(
+    child: MaterialApp.router(routerConfig: router),
+  );
 }
 
 void main() {
@@ -90,24 +93,22 @@ void main() {
   testWidgets('Toggling sound alerts removes chip',
       (tester) async {
     await tester.pumpWidget(_harness(router: router));
+    await tester.pumpAndSettle();
 
     await tester.scrollUntilVisible(
-      find.byKey(const Key('chip_Sound')),
+      find.byKey(const Key('toggle_sound_alerts_switch')),
       200,
+      scrollable: find.byType(Scrollable).first,
     );
+    await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('chip_Sound')),
         findsOneWidget);
 
-    await tester.scrollUntilVisible(
-      find.byKey(const Key('toggle_sound_alerts_switch')),
-      -200,
-    );
-
     await tester.tap(
       find.byKey(const Key('toggle_sound_alerts_switch')),
     );
-    await tester.pump();
+    await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('chip_Sound')),
         findsNothing);

@@ -1,0 +1,28 @@
+# Critical flow 2: From dashboard open Medications
+# Ensures quick action and medications screen load.
+# Uses coordinate tap for Medications (Flutter semantics often not exposed to Maestro on Android).
+
+appId: com.example.careconnect_mobile
+---
+- launchApp
+- extendedWaitUntil:
+    visible: "Sign In"
+    timeout: 10000
+- tapOn:
+    point: "50%, 42%"
+- inputText: "test@example.com"
+- pressKey: enter
+- waitForAnimationToEnd
+- inputText: "password123"
+- tapOn: "Sign In"
+- extendedWaitUntil:
+    visible: "Today's Tasks"
+    timeout: 20000
+# Tap first quick action (Medications) by position; text "Medications" often not in tree
+- tapOn:
+    point: "25%, 48%"
+- waitForAnimationToEnd
+- extendedWaitUntil:
+    visible: "Medications"
+    timeout: 10000
+- assertVisible: "Medications"

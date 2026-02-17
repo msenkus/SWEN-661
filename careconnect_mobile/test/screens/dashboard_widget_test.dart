@@ -98,6 +98,10 @@ void main() {
     await tester.tap(find.byKey(const Key('btn_sos')));
     await tester.pumpAndSettle();
 
+    // Dialog appears; tap "Activate SOS" to navigate
+    await tester.tap(find.text('Activate SOS'));
+    await tester.pumpAndSettle();
+
     expect(find.text('SOS Screen'), findsOneWidget);
   });
 }

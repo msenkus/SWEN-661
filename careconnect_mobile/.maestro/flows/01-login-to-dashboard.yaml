@@ -1,0 +1,22 @@
+# Critical flow 1: Login and reach dashboard
+# Ensures the primary entry flow works (email, password, submit → dashboard).
+
+appId: com.example.careconnect_mobile
+---
+- launchApp
+- extendedWaitUntil:
+    visible: "Sign In"
+    timeout: 10000
+# Tap email, type email, Enter (keyboard Next) moves focus to password, then type password
+- tapOn:
+    point: "50%, 42%"
+- inputText: "test@example.com"
+- pressKey: enter
+- waitForAnimationToEnd
+- inputText: "password123"
+- tapOn: "Sign In"
+- extendedWaitUntil:
+    visible: "Today's Tasks"
+    timeout: 20000
+- assertVisible: "Today's Tasks"
+- assertVisible: "Welcome, Finn Jackson"

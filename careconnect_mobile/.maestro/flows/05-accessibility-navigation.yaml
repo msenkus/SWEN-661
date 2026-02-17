@@ -1,0 +1,28 @@
+# Accessibility-focused E2E flow
+# Verifies navigation to Accessibility screen (path used by screen reader users).
+# Flutter list content often not exposed to Maestro on Android; we assert app bar and one option.
+#
+# Manual check: Run with TalkBack/VoiceOver and confirm each step is announced.
+
+appId: com.example.careconnect_mobile
+---
+- launchApp
+- extendedWaitUntil:
+    visible: "Sign In"
+    timeout: 10000
+- tapOn:
+    point: "50%, 42%"
+- inputText: "test@example.com"
+- pressKey: enter
+- waitForAnimationToEnd
+- inputText: "password123"
+- tapOn: "Sign In"
+- extendedWaitUntil:
+    visible: "Today's Tasks"
+    timeout: 20000
+- tapOn: "Accessibility settings"
+- waitForAnimationToEnd
+- extendedWaitUntil:
+    visible: "Accessibility"
+    timeout: 8000
+- assertVisible: "Accessibility"

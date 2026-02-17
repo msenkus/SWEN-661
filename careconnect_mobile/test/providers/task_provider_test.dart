@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:careconnect_mobile/models/task.dart';
 import 'package:careconnect_mobile/providers/task_provider.dart';
@@ -98,6 +99,40 @@ void main() {
       ]);
 
       expect(notifier.hasMissedTasks, false);
+    });
+
+    test('markCompleted marks task and clears current', () {
+      final tasks = [
+        const Task(
+          time: '8:00 AM',
+          title: 'Task A',
+          completed: false,
+          current: true,
+          type: 'test',
+        ),
+        const Task(
+          time: '9:00 AM',
+          title: 'Task B',
+          completed: false,
+          type: 'test',
+        ),
+      ];
+      final notifier = TaskNotifier(initialTasks: tasks);
+      notifier.markCompleted(notifier.state.first);
+
+      expect(notifier.state.first.completed, true);
+      expect(notifier.state.first.current, false);
+      expect(notifier.state.last.completed, false);
+    });
+
+    test('taskProvider supplies TaskNotifier with default tasks when no initial', () {
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      final list = container.read(taskProvider);
+      expect(list.length, 7);
+      expect(list.any((t) => t.title == 'Take Morning Medication'), true);
+      expect(list.any((t) => t.title == 'Breakfast'), true);
     });
   });
 }
