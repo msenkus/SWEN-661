@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Pressable,
   ScrollView,
+  Platform,
 } from 'react-native';
 import {
   Eye,
@@ -36,6 +37,8 @@ const AccessibilitySettings = ({ onNavigate, hasMissedTasks }) => {
         styles.toggleTrack,
         { backgroundColor: enabled ? '#3B82F6' : '#CBD5E1' },
       ]}
+      importantForAccessibility="no"
+      accessibilityElementsHidden={true}
     >
       <View
         style={[
@@ -108,13 +111,15 @@ const AccessibilitySettings = ({ onNavigate, hasMissedTasks }) => {
       <View style={styles.backHeader}>
         <Pressable
           onPress={() => onNavigate('dashboard')}
+          accessible={true}
           accessibilityRole="button"
           accessibilityLabel="Go back to dashboard"
+          accessibilityHint="Returns to the dashboard"
           style={styles.backButton}
         >
           <ArrowLeft size={24} color="#334155" />
         </Pressable>
-        <Text style={styles.backHeaderTitle}>Accessibility</Text>
+        <Text style={styles.backHeaderTitle} accessibilityRole="header">Accessibility</Text>
       </View>
 
       {/* Header */}
@@ -130,13 +135,18 @@ const AccessibilitySettings = ({ onNavigate, hasMissedTasks }) => {
         <View key={section.title} style={styles.section}>
           <View style={styles.sectionHeader}>
             <section.icon size={20} color="#2563EB" />
-            <Text style={styles.sectionTitle}>{section.title}</Text>
+            <Text style={styles.sectionTitle} accessibilityRole="header">{section.title}</Text>
           </View>
 
           {section.items.map((item) => (
             <Pressable
               key={item.key}
               onPress={() => toggleSetting(item.key)}
+              accessible={true}
+              accessibilityRole="switch"
+              accessibilityState={{ checked: settings[item.key] }}
+              accessibilityLabel={item.label}
+              accessibilityHint={item.description}
               style={styles.settingRow}
             >
               <View style={{ flex: 1 }}>
@@ -174,7 +184,7 @@ const AccessibilitySettings = ({ onNavigate, hasMissedTasks }) => {
       <View style={styles.notificationCard}>
         <View style={styles.sectionHeader}>
           <Bell size={20} color="#2563EB" />
-          <Text style={styles.sectionTitle}>Notification Style</Text>
+          <Text style={styles.sectionTitle} accessibilityRole="header">Notification Style</Text>
         </View>
 
         <View style={styles.badgeRow}>
@@ -195,6 +205,10 @@ const AccessibilitySettings = ({ onNavigate, hasMissedTasks }) => {
       <Pressable
         style={styles.helpButton}
         onPress={() => onNavigate('asl-help')}
+        accessible={true}
+        accessibilityRole="button"
+        accessibilityLabel="Watch ASL help videos"
+        accessibilityHint="Opens ASL video library"
       >
         <Text style={styles.helpButtonText}>Watch ASL Help Videos</Text>
       </Pressable>
@@ -220,6 +234,8 @@ const styles = StyleSheet.create({
   backButton: {
     padding: 8,
     marginRight: 8,
+    minWidth: 44,
+    minHeight: 44,
   },
   backHeaderTitle: {
     fontSize: 20,
@@ -252,7 +268,7 @@ const styles = StyleSheet.create({
   },
   headerSubtitle: {
     fontSize: 13,
-    color: '#DCFCE7',
+    color: '#FFFFFF',
     marginTop: 4,
   },
 
@@ -286,6 +302,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'space-between',
     gap: 12,
+    minHeight: 48,
   },
   settingLabel: {
     fontSize: 16,

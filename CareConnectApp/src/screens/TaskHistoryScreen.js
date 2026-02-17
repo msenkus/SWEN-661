@@ -77,17 +77,19 @@ const TaskHistoryScreen = ({
       <View style={styles.header}>
         <Pressable
           onPress={() => onNavigate('dashboard')}
+          accessible={true}
           accessibilityRole="button"
           accessibilityLabel="Go back to dashboard"
+          accessibilityHint="Returns to the dashboard"
           style={styles.backButton}
         >
           <ArrowLeft size={24} color="#334155" />
         </Pressable>
-        <Text style={styles.headerTitle}>Task History</Text>
+        <Text style={styles.headerTitle} accessibilityRole="header">Task History</Text>
       </View>
 
       {/* Weekly Stats */}
-      <View style={styles.statsCard}>
+      <View style={styles.statsCard} accessible={true} accessibilityLabel="This week: 86 percent complete, 49 total tasks, 42 completed, 7 missed">
         <View style={styles.statsHeader}>
           <TrendingUp size={32} color="#FFFFFF" />
           <View>
@@ -123,7 +125,7 @@ const TaskHistoryScreen = ({
               <View style={styles.dayLeft}>
                 <Calendar size={20} color="#2563EB" />
                 <View>
-                  <Text style={styles.dayTitle}>{day.date}</Text>
+                  <Text style={styles.dayTitle} accessibilityRole="header">{day.date}</Text>
                   <Text style={styles.daySubtitle}>{day.fullDate}</Text>
                 </View>
               </View>
@@ -148,6 +150,8 @@ const TaskHistoryScreen = ({
                   styles.taskCard,
                   !task.completed && styles.taskMissed,
                 ]}
+                accessible={true}
+                accessibilityLabel={`${task.title}, ${task.time}, ${task.type}, ${task.completed ? 'completed' : 'missed'}`}
               >
                 {task.completed ? (
                   <CheckCircle2 size={20} color="#22C55E" />
@@ -187,12 +191,18 @@ const TaskHistoryScreen = ({
       })}
 
       {/* Load More */}
-      <Pressable style={styles.loadMore}>
+      <Pressable
+        style={styles.loadMore}
+        accessible={true}
+        accessibilityRole="button"
+        accessibilityLabel="Load more history"
+        accessibilityHint="Loads older task history"
+      >
         <Text style={styles.loadMoreText}>Load More History</Text>
       </Pressable>
 
       {/* Motivation */}
-      <View style={styles.motivation}>
+      <View style={styles.motivation} accessible={true} accessibilityLabel="Great job this week! You've maintained an 86 percent completion rate">
         <Text style={styles.motivationTitle}>🎉 Great job this week!</Text>
         <Text style={styles.motivationText}>
           You’ve maintained an {weeklyStats.completionRate}% completion rate. Keep up the excellent work!
@@ -212,10 +222,16 @@ const Stat = ({ label, value }) => (
 );
 
 const Filter = ({ label, active }) => (
-  <View style={[
-    styles.filterButton,
-    active && styles.filterActive,
-  ]}>
+  <View
+    style={[
+      styles.filterButton,
+      active && styles.filterActive,
+    ]}
+    accessible={true}
+    accessibilityRole="tab"
+    accessibilityLabel={label}
+    accessibilityState={active ? { selected: true } : { selected: false }}
+  >
     <Text style={[
       styles.filterText,
       active && styles.filterTextActive,
@@ -237,6 +253,8 @@ const styles = StyleSheet.create({
   backButton: {
     padding: 8,
     marginRight: 8,
+    minWidth: 44,
+    minHeight: 44,
   },
   headerTitle: {
     fontSize: 20,
@@ -251,7 +269,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   statsHeader: { flexDirection: 'row', gap: 12, marginBottom: 16 },
-  statsLabel: { color: '#DCFCE7', fontSize: 12 },
+  statsLabel: { color: '#FFFFFF', fontSize: 12 },
   statsTitle: { color: '#FFF', fontSize: 24, fontWeight: '700' },
 
   statsGrid: { flexDirection: 'row', gap: 12 },
@@ -263,7 +281,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   statValue: { color: '#FFF', fontSize: 20, fontWeight: '700' },
-  statLabel: { color: '#DCFCE7', fontSize: 12 },
+  statLabel: { color: '#FFFFFF', fontSize: 12 },
 
   filters: { marginBottom: 16 },
   filterButton: {

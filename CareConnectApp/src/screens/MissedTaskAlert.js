@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Pressable,
   ScrollView,
+  Platform,
 } from 'react-native';
 import {
   AlertCircle,
@@ -37,9 +38,15 @@ const MissedTaskAlert = ({ onNavigate, onDismiss }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} accessibilityViewIsModal={true}>
       {/* Header */}
-      <View style={styles.header}>
+      <View
+        style={styles.header}
+        accessible={true}
+        accessibilityRole="alert"
+        accessibilityLabel="You have 2 missed tasks. Please complete these as soon as possible"
+        accessibilityLiveRegion="assertive"
+      >
         <View style={styles.headerRow}>
           <View style={styles.iconWrapper}>
             <AlertCircle size={40} color="#DC2626" />
@@ -49,7 +56,7 @@ const MissedTaskAlert = ({ onNavigate, onDismiss }) => {
           </View>
 
           <View>
-            <Text style={styles.headerTitle}>You Have Missed Tasks</Text>
+            <Text style={styles.headerTitle} accessibilityRole="header">You Have Missed Tasks</Text>
             <Text style={styles.headerSubtitle}>
               Please complete these as soon as possible
             </Text>
@@ -68,6 +75,8 @@ const MissedTaskAlert = ({ onNavigate, onDismiss }) => {
                 ? styles.highBorder
                 : styles.mediumBorder,
             ]}
+            accessible={true}
+            accessibilityLabel={`${task.title}, scheduled at ${task.scheduledTime}, missed by ${task.missedBy}, ${task.priority} priority`}
           >
             {/* Priority Bar */}
             <View
@@ -77,6 +86,8 @@ const MissedTaskAlert = ({ onNavigate, onDismiss }) => {
                   ? styles.highPriority
                   : styles.mediumPriority,
               ]}
+              accessible={true}
+              accessibilityLabel={`${task.priority} priority`}
             >
               <Text style={styles.priorityText}>
                 {task.priority.toUpperCase()} PRIORITY
@@ -111,6 +122,10 @@ const MissedTaskAlert = ({ onNavigate, onDismiss }) => {
                     : styles.mediumPriority,
                 ]}
                 onPress={() => onNavigate('step-task')}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel={`Complete ${task.title} now`}
+                accessibilityHint="Opens step-by-step task guide"
               >
                 <Text style={styles.completeText}>Complete Now</Text>
                 <ChevronRight size={18} color="#FFFFFF" />
@@ -134,11 +149,22 @@ const MissedTaskAlert = ({ onNavigate, onDismiss }) => {
         <Pressable
           style={styles.primaryButton}
           onPress={() => onNavigate('dashboard')}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel="View all tasks"
+          accessibilityHint="Returns to dashboard to see all tasks"
         >
           <Text style={styles.primaryText}>View All Tasks</Text>
         </Pressable>
 
-        <Pressable style={styles.dismissButton} onPress={handleDismissAll}>
+        <Pressable
+          style={styles.dismissButton}
+          onPress={handleDismissAll}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel="Dismiss alerts"
+          accessibilityHint="Dismisses missed task alerts and returns to dashboard"
+        >
           <X size={18} color="#475569" />
           <Text style={styles.dismissText}>Dismiss Alerts</Text>
         </Pressable>

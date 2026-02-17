@@ -44,13 +44,15 @@ const ProfileScreen = ({ onNavigate }) => {
       <View style={styles.backHeader}>
         <Pressable
           onPress={() => onNavigate('dashboard')}
+          accessible={true}
           accessibilityRole="button"
           accessibilityLabel="Go back to dashboard"
+          accessibilityHint="Returns to the dashboard"
           style={styles.backButton}
         >
           <ArrowLeft size={24} color="#334155" />
         </Pressable>
-        <Text style={styles.backHeaderTitle}>Profile</Text>
+        <Text style={styles.backHeaderTitle} accessibilityRole="header">Profile</Text>
       </View>
 
       {/* Header */}
@@ -62,6 +64,9 @@ const ProfileScreen = ({ onNavigate }) => {
               uri: 'https://images.unsplash.com/photo-1617216939864-e5f02a2a545d',
             }}
             style={styles.avatar}
+            accessible={true}
+            accessibilityRole="image"
+            accessibilityLabel="Profile photo of Eleanor Rigby"
           />
 
           <View style={styles.headerInfo}>
@@ -69,7 +74,13 @@ const ProfileScreen = ({ onNavigate }) => {
             <Text style={styles.subText}>Patient ID: #8839210</Text>
           </View>
 
-          <Pressable style={styles.editButton}>
+          <Pressable
+            style={styles.editButton}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="Edit profile"
+            accessibilityHint="Opens profile editing"
+          >
             <Edit2 size={16} color="#2563EB" />
             <Text style={styles.editText}>Edit</Text>
           </Pressable>
@@ -98,7 +109,7 @@ const ProfileScreen = ({ onNavigate }) => {
 
       {/* Allergies */}
       <Section title="Allergies & Alerts" icon={ShieldAlert}>
-        <View style={styles.badgeWrap}>
+        <View style={styles.badgeWrap} accessible={true} accessibilityLabel={`Allergies: ${patientData.allergies.join(', ')}`}>
           {patientData.allergies.map((a, i) => (
             <View key={i} style={styles.badge}>
               <Text style={styles.badgeText}>{a}</Text>
@@ -115,7 +126,13 @@ const ProfileScreen = ({ onNavigate }) => {
               <Text style={styles.contactName}>{c.name}</Text>
               <Text style={styles.subText}>{c.relation}</Text>
             </View>
-            <Pressable style={styles.callButton}>
+            <Pressable
+              style={styles.callButton}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel={`Call ${c.name}`}
+              accessibilityHint="Places a phone call to this contact"
+            >
               <Phone size={18} color="#FFFFFF" />
             </Pressable>
           </View>
@@ -126,6 +143,10 @@ const ProfileScreen = ({ onNavigate }) => {
       <Pressable
         style={styles.logout}
         onPress={() => onNavigate('login')}
+        accessible={true}
+        accessibilityRole="button"
+        accessibilityLabel="Sign out"
+        accessibilityHint="Signs you out and returns to login screen"
       >
         <LogOut size={20} color="#FFFFFF" />
         <Text style={styles.logoutText}>Sign Out</Text>
@@ -140,14 +161,14 @@ const Section = ({ title, icon: Icon, children }) => (
   <View style={styles.section}>
     <View style={styles.sectionHeader}>
       <Icon size={20} color="#2563EB" />
-      <Text style={styles.sectionTitle}>{title}</Text>
+      <Text style={styles.sectionTitle} accessibilityRole="header">{title}</Text>
     </View>
     {children}
   </View>
 );
 
 const Stat = ({ label, value }) => (
-  <View style={styles.stat}>
+  <View style={styles.stat} accessible={true} accessibilityLabel={`${label}: ${value}`}>
     <Text style={styles.statLabel}>{label}</Text>
     <Text style={styles.statValue}>{value}</Text>
   </View>
@@ -168,6 +189,8 @@ const styles = StyleSheet.create({
   backButton: {
     padding: 8,
     marginRight: 8,
+    minWidth: 44,
+    minHeight: 44,
   },
   backHeaderTitle: {
     fontSize: 20,
@@ -222,6 +245,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 6,
     padding: 8,
+    minWidth: 44,
+    minHeight: 44,
   },
 
   editText: {
@@ -329,9 +354,9 @@ const styles = StyleSheet.create({
 
   callButton: {
     backgroundColor: '#16A34A',
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     alignItems: 'center',
     justifyContent: 'center',
   },

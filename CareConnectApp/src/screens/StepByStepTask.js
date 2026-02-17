@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Pressable,
   ScrollView,
+  Platform,
 } from 'react-native';
 import {
   ChevronRight,
@@ -80,17 +81,26 @@ export default function StepByStepTask({ onNavigate }) {
       <View style={styles.backHeader}>
         <Pressable
           onPress={() => onNavigate('dashboard')}
+          accessible={true}
           accessibilityRole="button"
           accessibilityLabel="Go back to dashboard"
+          accessibilityHint="Returns to the dashboard"
           style={styles.backButton}
         >
           <ArrowLeft size={24} color="#334155" />
         </Pressable>
-        <Text style={styles.backHeaderTitle}>Exercise Task</Text>
+        <Text style={styles.backHeaderTitle} accessibilityRole="header">Exercise Task</Text>
       </View>
 
       {/* Progress */}
-      <View style={styles.progressHeader}>
+      <View
+        style={styles.progressHeader}
+        accessible={true}
+        accessibilityRole="progressbar"
+        accessibilityValue={{ min: 0, max: steps.length, now: currentStep + 1 }}
+        accessibilityLabel={`Step ${currentStep + 1} of ${steps.length}, ${Math.round(progress)} percent complete`}
+        accessibilityLiveRegion="polite"
+      >
         <View style={styles.progressRow}>
           <Text style={styles.progressText}>
             Step {currentStep + 1} of {steps.length}
@@ -111,14 +121,18 @@ export default function StepByStepTask({ onNavigate }) {
         </View>
 
         {/* Title + Instruction */}
-        <Text style={styles.title}>{step.title}</Text>
+        <Text style={styles.title} accessibilityRole="header">{step.title}</Text>
 
         <View style={styles.instructionCard}>
           <Text style={styles.instructionText}>{step.instruction}</Text>
         </View>
 
         {/* Step Dots */}
-        <View style={styles.dots}>
+        <View
+          style={styles.dots}
+          accessible={true}
+          accessibilityLabel={`Step ${currentStep + 1} of ${steps.length}`}
+        >
           {steps.map((_, i) => (
             <View
               key={i}
@@ -135,7 +149,14 @@ export default function StepByStepTask({ onNavigate }) {
       {/* Buttons */}
       <View style={styles.footer}>
         {currentStep > 0 && (
-          <Pressable style={styles.prevButton} onPress={previous}>
+          <Pressable
+            style={styles.prevButton}
+            onPress={previous}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="Previous step"
+            accessibilityHint="Goes back to the previous exercise step"
+          >
             <ArrowLeft size={18} color="#374151" />
             <Text style={styles.prevText}>Previous</Text>
           </Pressable>
@@ -147,6 +168,10 @@ export default function StepByStepTask({ onNavigate }) {
             isLast && styles.completeButton,
           ]}
           onPress={next}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel={isLast ? 'Complete task' : 'Next step'}
+          accessibilityHint={isLast ? 'Completes exercise and returns to dashboard' : 'Advances to the next exercise step'}
         >
           {isLast ? (
             <>
@@ -180,6 +205,8 @@ const styles = StyleSheet.create({
   backButton: {
     padding: 8,
     marginRight: 8,
+    minWidth: 44,
+    minHeight: 44,
   },
   backHeaderTitle: {
     fontSize: 20,

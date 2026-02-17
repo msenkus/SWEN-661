@@ -69,17 +69,19 @@ const AppointmentList = ({ onNavigate }) => {
       <View style={styles.header}>
         <Pressable
           onPress={() => onNavigate('dashboard')}
+          accessible={true}
           accessibilityRole="button"
           accessibilityLabel="Go back to dashboard"
+          accessibilityHint="Returns to the dashboard"
           style={styles.backButton}
         >
           <ArrowLeft size={24} color="#334155" />
         </Pressable>
-        <Text style={styles.headerTitle}>Appointments</Text>
+        <Text style={styles.headerTitle} accessibilityRole="header">Appointments</Text>
       </View>
 
       {/* Summary Card */}
-      <View style={styles.summaryCard}>
+      <View style={styles.summaryCard} accessible={true} accessibilityLabel="4 upcoming appointments">
         <View>
           <Text style={styles.summaryLabel}>Upcoming Appointments</Text>
           <Text style={styles.summaryCount}>{appointments.length}</Text>
@@ -89,9 +91,9 @@ const AppointmentList = ({ onNavigate }) => {
 
       {/* Filters */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filters}>
-        <Text style={styles.filterActive}>Upcoming</Text>
-        <Text style={styles.filter}>Past</Text>
-        <Text style={styles.filter}>Canceled</Text>
+        <Text style={styles.filterActive} accessible={true} accessibilityRole="tab" accessibilityLabel="Upcoming appointments filter, selected" accessibilityState={{ selected: true }}>Upcoming</Text>
+        <Text style={styles.filter} accessible={true} accessibilityRole="tab" accessibilityLabel="Past appointments filter">Past</Text>
+        <Text style={styles.filter} accessible={true} accessibilityRole="tab" accessibilityLabel="Canceled appointments filter">Canceled</Text>
       </ScrollView>
 
       {/* Appointment Cards */}
@@ -100,6 +102,10 @@ const AppointmentList = ({ onNavigate }) => {
           key={appointment.id}
           style={styles.card}
           onPress={() => onNavigate('appointment-detail')}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel={`${appointment.title}, ${appointment.date} at ${appointment.time}, ${appointment.type}`}
+          accessibilityHint="View appointment details"
         >
           {/* Card Header */}
           <View style={[styles.cardHeader, { backgroundColor: appointment.color }]}>
@@ -139,7 +145,13 @@ const AppointmentList = ({ onNavigate }) => {
       ))}
 
       {/* Add Appointment */}
-      <Pressable style={styles.addButton}>
+      <Pressable
+        style={styles.addButton}
+        accessible={true}
+        accessibilityRole="button"
+        accessibilityLabel="Schedule new appointment"
+        accessibilityHint="Opens appointment scheduling"
+      >
         <Text style={styles.addButtonText}>+ Schedule New Appointment</Text>
       </Pressable>
     </ScrollView>
@@ -164,6 +176,8 @@ const styles = StyleSheet.create({
   backButton: {
     padding: 8,
     marginRight: 8,
+    minWidth: 44,
+    minHeight: 44,
   },
 
   headerTitle: {
@@ -183,7 +197,7 @@ const styles = StyleSheet.create({
   },
 
   summaryLabel: {
-    color: '#FED7AA',
+    color: '#FFFFFF',
     fontSize: 14,
   },
 

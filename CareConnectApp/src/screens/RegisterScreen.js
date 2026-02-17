@@ -38,13 +38,15 @@ const RegisterScreen = ({ onNavigate, isTablet = false }) => {
       <View style={styles.header}>
         <Pressable
           onPress={() => onNavigate('welcome')}
+          accessible={true}
           accessibilityRole="button"
           accessibilityLabel="Go back to welcome screen"
+          accessibilityHint="Returns to the welcome screen"
           style={styles.backButton}
         >
           <Ionicons name="arrow-back" size={24} color="#334155" />
         </Pressable>
-        <Text style={styles.headerTitle}>Create Account</Text>
+        <Text style={styles.headerTitle} accessibilityRole="header">Create Account</Text>
       </View>
 
       <ScrollView
@@ -78,7 +80,9 @@ const RegisterScreen = ({ onNavigate, isTablet = false }) => {
                 onChangeText={text => handleChange('name', text)}
                 placeholder="John Doe"
                 style={styles.input}
+                accessible={true}
                 accessibilityLabel="Full name"
+                accessibilityHint="Enter your full name"
               />
             </View>
 
@@ -92,7 +96,9 @@ const RegisterScreen = ({ onNavigate, isTablet = false }) => {
                 keyboardType="email-address"
                 autoCapitalize="none"
                 style={styles.input}
+                accessible={true}
                 accessibilityLabel="Email address"
+                accessibilityHint="Enter your email address"
               />
             </View>
 
@@ -106,14 +112,18 @@ const RegisterScreen = ({ onNavigate, isTablet = false }) => {
                   placeholder="Create a password"
                   secureTextEntry={!showPassword}
                   style={styles.input}
+                  accessible={true}
                   accessibilityLabel="Password"
+                  accessibilityHint="Create a password for your account"
                 />
                 <Pressable
                   onPress={() => setShowPassword(!showPassword)}
+                  accessible={true}
                   accessibilityRole="button"
                   accessibilityLabel={
                     showPassword ? 'Hide password' : 'Show password'
                   }
+                  accessibilityHint="Toggles password visibility"
                   style={styles.eyeButton}
                 >
                   <Ionicons
@@ -136,7 +146,9 @@ const RegisterScreen = ({ onNavigate, isTablet = false }) => {
                 placeholder="Confirm your password"
                 secureTextEntry
                 style={styles.input}
+                accessible={true}
                 accessibilityLabel="Confirm password"
+                accessibilityHint="Re-enter your password to confirm"
               />
             </View>
 
@@ -144,8 +156,11 @@ const RegisterScreen = ({ onNavigate, isTablet = false }) => {
             <Pressable
               onPress={handleRegister}
               disabled={loading}
+              accessible={true}
               accessibilityRole="button"
               accessibilityLabel="Create a new account"
+              accessibilityHint="Creates your account and navigates to dashboard"
+              accessibilityState={{ disabled: loading, busy: loading }}
               style={({ pressed }) => [
                 styles.submitButton,
                 pressed && styles.pressed,
@@ -169,6 +184,10 @@ const RegisterScreen = ({ onNavigate, isTablet = false }) => {
               <Text
                 style={styles.linkText}
                 onPress={() => onNavigate('login')}
+                accessible={true}
+                accessibilityRole="link"
+                accessibilityLabel="Sign in to existing account"
+                accessibilityHint="Navigates to sign in form"
               >
                 Sign In
               </Text>
@@ -200,6 +219,8 @@ const styles = StyleSheet.create({
   backButton: {
     padding: 8,
     borderRadius: 20,
+    minWidth: 44,
+    minHeight: 44,
   },
 
   headerTitle: {
@@ -289,9 +310,13 @@ const styles = StyleSheet.create({
 
   eyeButton: {
     position: 'absolute',
-    right: 16,
+    right: 8,
     top: '50%',
-    transform: [{ translateY: -10 }],
+    transform: [{ translateY: -22 }],
+    minWidth: 44,
+    minHeight: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   submitButton: {
@@ -303,6 +328,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 8,
+    minHeight: 48,
   },
 
   submitText: {
