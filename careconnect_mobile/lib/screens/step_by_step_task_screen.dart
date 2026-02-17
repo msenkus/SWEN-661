@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../widgets/bottom_navigation_bar.dart';
 
 class StepByStepTaskScreen extends StatefulWidget {
   const StepByStepTaskScreen({super.key});
@@ -59,7 +60,7 @@ class _StepByStepTaskScreenState extends State<StepByStepTaskScreen> {
     if (currentStep < steps.length - 1) {
       setState(() => currentStep++);
     } else {
-      context.go('/'); // back to dashboard
+      context.pop(); // back to previous screen (dashboard or missed tasks)
     }
   }
 
@@ -76,7 +77,20 @@ class _StepByStepTaskScreenState extends State<StepByStepTaskScreen> {
     final isLast = currentStep == steps.length - 1;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Physical Therapy')),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+          if (context.canPop()) {
+            context.pop();
+          } else {
+            context.go('/dashboard');
+          }
+        },
+          tooltip: 'Back',
+        ),
+        title: const Text('Physical Therapy'),
+      ),
       body: Column(
         children: [
           _progressBar(progress),
@@ -100,42 +114,50 @@ class _StepByStepTaskScreenState extends State<StepByStepTaskScreen> {
           _navigationButtons(isLast),
         ],
       ),
+      bottomNavigationBar: CareConnectBottomNavBar(
+        currentRoute: GoRouter.of(context).routerDelegate.currentConfiguration.uri.path,
+      ),
     );
   }
 
   // -------------------------------------------------
 
   Widget _progressBar(double progress) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      color: Colors.blue.shade50,
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Step ${currentStep + 1} of ${steps.length}',
-                style: const TextStyle(fontWeight: FontWeight.w600),
-              ),
-              Text(
-                '${(progress * 100).round()}% Complete',
-                style: const TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w600,
+    final progressPercent = (progress * 100).round();
+    return Semantics(
+      label: 'Step ${currentStep + 1} of ${steps.length}, $progressPercent percent complete',
+      value: '$progressPercent percent',
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        color: Colors.blue.shade50,
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Step ${currentStep + 1} of ${steps.length}',
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: LinearProgressIndicator(
-              value: progress,
-              minHeight: 10,
+                Text(
+                  '$progressPercent% Complete',
+                  style: const TextStyle(
+                    color: Colors.blue,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
+            const SizedBox(height: 10),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: LinearProgressIndicator(
+                value: progress,
+                minHeight: 10,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -165,35 +187,41 @@ class _StepByStepTaskScreenState extends State<StepByStepTaskScreen> {
   // -------------------------------------------------
 
   Widget _instruction(String title, String instruction) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 26,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 12),
-
-        Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.blue.shade50,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.blue.shade200),
-          ),
-          child: Text(
-            instruction,
+    return Semantics(
+      header: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
             style: const TextStyle(
-              fontSize: 20,
-              height: 1.4,
-              color: Colors.black87,
+              fontSize: 26,
+              fontWeight: FontWeight.bold,
             ),
           ),
-        ),
-      ],
+          const SizedBox(height: 12),
+
+          Semantics(
+            label: instruction,
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.blue.shade50,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.blue.shade200),
+              ),
+              child: Text(
+                instruction,
+                style: const TextStyle(
+                  fontSize: 20,
+                  height: 1.4,
+                  color: Colors.black87,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -241,16 +269,21 @@ class _StepByStepTaskScreenState extends State<StepByStepTaskScreen> {
       child: Row(
         children: [
           if (currentStep > 0)
-            ElevatedButton.icon(
-              onPressed: previousStep,
-              icon: const Icon(Icons.arrow_back),
-              label: const Text('Previous'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey.shade200,
-                foregroundColor: Colors.black,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 16,
+            Semantics(
+              label: 'Previous step, button',
+              button: true,
+              child: ElevatedButton.icon(
+                onPressed: previousStep,
+                icon: const Icon(Icons.arrow_back),
+                label: const Text('Previous'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.grey.shade200,
+                  foregroundColor: Colors.black,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 16,
+                  ),
+                  minimumSize: const Size.fromHeight(48), // WCAG 2.1: Minimum touch target
                 ),
               ),
             ),
@@ -258,15 +291,20 @@ class _StepByStepTaskScreenState extends State<StepByStepTaskScreen> {
           const SizedBox(width: 12),
 
           Expanded(
-            child: ElevatedButton.icon(
-              onPressed: nextStep,
-              icon: Icon(isLast ? Icons.check : Icons.chevron_right),
-              label: Text(isLast ? 'Complete Task' : 'Next Step'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    isLast ? Colors.green : Colors.blue,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 18,
+            child: Semantics(
+              label: isLast ? 'Complete Task, button' : 'Next Step, button',
+              button: true,
+              child: ElevatedButton.icon(
+                onPressed: nextStep,
+                icon: Icon(isLast ? Icons.check : Icons.chevron_right),
+                label: Text(isLast ? 'Complete Task' : 'Next Step'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      isLast ? Colors.green : Colors.blue,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 18,
+                  ),
+                  minimumSize: const Size.fromHeight(48), // WCAG 2.1: Minimum touch target
                 ),
               ),
             ),

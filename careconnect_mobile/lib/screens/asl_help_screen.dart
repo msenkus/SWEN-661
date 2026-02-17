@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../widgets/bottom_navigation_bar.dart';
 
 class ASLHelpScreen extends StatefulWidget {
   const ASLHelpScreen({super.key});
@@ -42,7 +44,20 @@ class _ASLHelpScreenState extends State<ASLHelpScreen> {
         MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("ASL Help Videos")),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+          if (context.canPop()) {
+            context.pop();
+          } else {
+            context.go('/dashboard');
+          }
+        },
+          tooltip: 'Back',
+        ),
+        title: const Text("ASL Help Videos"),
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -88,6 +103,9 @@ class _ASLHelpScreenState extends State<ASLHelpScreen> {
 
           _accessibilityInfo(),
         ],
+      ),
+      bottomNavigationBar: CareConnectBottomNavBar(
+        currentRoute: GoRouter.of(context).routerDelegate.currentConfiguration.uri.path,
       ),
     );
   }
@@ -167,34 +185,47 @@ class _ASLHelpScreenState extends State<ASLHelpScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(
-                      iconSize: 36,
-                      color: Colors.white,
-                      onPressed: () {
-                        setState(() => isPlaying = !isPlaying);
-                      },
-                      icon: Icon(
-                          isPlaying ? Icons.pause : Icons.play_arrow),
+                    Semantics(
+                      label: isPlaying ? 'Pause video' : 'Play video',
+                      button: true,
+                      child: IconButton(
+                        iconSize: 36,
+                        color: Colors.white,
+                        onPressed: () {
+                          setState(() => isPlaying = !isPlaying);
+                        },
+                        icon: Icon(
+                            isPlaying ? Icons.pause : Icons.play_arrow),
+                      ),
                     ),
                     Row(
                       children: [
-                        IconButton(
-                          icon: Icon(isMuted
-                              ? Icons.volume_off
-                              : Icons.volume_up),
-                          color: Colors.white,
-                          onPressed: () {
-                            setState(() => isMuted = !isMuted);
-                          },
+                        Semantics(
+                          label: isMuted ? 'Unmute audio' : 'Mute audio',
+                          button: true,
+                          child: IconButton(
+                            icon: Icon(isMuted
+                                ? Icons.volume_off
+                                : Icons.volume_up),
+                            color: Colors.white,
+                            onPressed: () {
+                              setState(() => isMuted = !isMuted);
+                            },
+                          ),
                         ),
-                        IconButton(
-                          icon: Icon(Icons.subtitles,
-                              color: showCaptions
-                                  ? Colors.blue
-                                  : Colors.white),
-                          onPressed: () {
-                            setState(() => showCaptions = !showCaptions);
-                          },
+                        Semantics(
+                          label: showCaptions ? 'Hide captions' : 'Show captions',
+                          button: true,
+                          selected: showCaptions,
+                          child: IconButton(
+                            icon: Icon(Icons.subtitles,
+                                color: showCaptions
+                                    ? Colors.blue
+                                    : Colors.white),
+                            onPressed: () {
+                              setState(() => showCaptions = !showCaptions);
+                            },
+                          ),
                         ),
                       ],
                     )
@@ -232,69 +263,85 @@ class _ASLHelpScreenState extends State<ASLHelpScreen> {
   // ===============================
 
   Widget _videoTile(Map<String, String> video) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade300),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 64,
-            height: 64,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              gradient: LinearGradient(
-                colors: [Colors.blue.shade100, Colors.blue.shade200],
+    final videoLabel = '${video["title"]!}, ${video["duration"]!}, ASL and captions available';
+    return Semantics(
+      label: videoLabel,
+      button: true,
+      hint: 'Tap to play video',
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.grey.shade300),
+        ),
+        child: Row(
+          children: [
+            Semantics(
+              label: 'Video thumbnail',
+              image: true,
+              excludeSemantics: true,
+              child: Container(
+                width: 64,
+                height: 64,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  gradient: LinearGradient(
+                    colors: [Colors.blue.shade100, Colors.blue.shade200],
+                  ),
+                ),
+                child: Center(
+                  child: Text(video["emoji"]!,
+                      style: const TextStyle(fontSize: 28)),
+                ),
               ),
             ),
-            child: Center(
-              child: Text(video["emoji"]!,
-                  style: const TextStyle(fontSize: 28)),
-            ),
-          ),
 
-          const SizedBox(width: 12),
+            const SizedBox(width: 12),
 
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  video["title"]!,
-                  style: const TextStyle(fontWeight: FontWeight.w600),
-                ),
-                const SizedBox(height: 6),
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.blue.shade100,
-                        borderRadius: BorderRadius.circular(12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    video["title"]!,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.blue.shade100,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Text(
+                          "ASL + Captions",
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.blue),
+                        ),
                       ),
-                      child: const Text(
-                        "ASL + Captions",
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.blue),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(video["duration"]!,
-                        style: const TextStyle(
-                            fontSize: 12, color: Colors.grey)),
-                  ],
-                ),
-              ],
+                      const SizedBox(width: 8),
+                      Text(video["duration"]!,
+                          style: const TextStyle(
+                              fontSize: 12, color: Colors.grey)),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
 
-          const Icon(Icons.chevron_right, color: Colors.grey),
-        ],
+            Semantics(
+              label: 'Play video',
+              image: true,
+              excludeSemantics: true,
+              child: const Icon(Icons.chevron_right, color: Colors.grey),
+            ),
+          ],
+        ),
       ),
     );
   }

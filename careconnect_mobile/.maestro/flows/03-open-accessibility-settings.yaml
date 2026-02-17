@@ -1,0 +1,26 @@
+# Critical flow 3: Open Accessibility settings from app bar
+# Ensures the accessibility settings entry point works (settings icon → Accessibility screen).
+# Asserts app bar only; list content may not be exposed to Maestro on Android.
+
+appId: com.example.careconnect_mobile
+---
+- launchApp
+- extendedWaitUntil:
+    visible: "Sign In"
+    timeout: 10000
+- tapOn:
+    point: "50%, 42%"
+- inputText: "test@example.com"
+- pressKey: enter
+- waitForAnimationToEnd
+- inputText: "password123"
+- tapOn: "Sign In"
+- extendedWaitUntil:
+    visible: "Today's Tasks"
+    timeout: 20000
+- tapOn: "Accessibility settings"
+- waitForAnimationToEnd
+- extendedWaitUntil:
+    visible: "Accessibility"
+    timeout: 8000
+- assertVisible: "Accessibility"

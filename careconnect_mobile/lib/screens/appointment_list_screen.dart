@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../widgets/bottom_navigation_bar.dart';
 
 class AppointmentListScreen extends StatelessWidget {
   const AppointmentListScreen({super.key});
@@ -56,7 +57,20 @@ class AppointmentListScreen extends StatelessWidget {
         MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Appointments")),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+          if (context.canPop()) {
+            context.pop();
+          } else {
+            context.go('/dashboard');
+          }
+        },
+          tooltip: 'Back',
+        ),
+        title: const Text("Appointments"),
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -88,17 +102,25 @@ class AppointmentListScreen extends StatelessWidget {
 
           const SizedBox(height: 24),
 
-          OutlinedButton(
-            style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 18),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+          Semantics(
+            label: 'Schedule New Appointment, button',
+            button: true,
+            child: OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 18),
+                minimumSize: const Size.fromHeight(48), // WCAG 2.1: Minimum touch target
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
               ),
+              onPressed: () {},
+              child: const Text("+ Schedule New Appointment"),
             ),
-            onPressed: () {},
-            child: const Text("+ Schedule New Appointment"),
           ),
         ],
+      ),
+      bottomNavigationBar: CareConnectBottomNavBar(
+        currentRoute: GoRouter.of(context).routerDelegate.currentConfiguration.uri.path,
       ),
     );
   }
@@ -108,38 +130,46 @@ class AppointmentListScreen extends StatelessWidget {
   // ============================
 
   Widget _summaryCard(int count) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Colors.orange, Colors.deepOrange],
-        ),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "Upcoming Appointments",
-                style: TextStyle(color: Colors.white70),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                "$count",
-                style: const TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ],
+    return Semantics(
+      label: 'Upcoming Appointments, $count appointments',
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Colors.orange, Colors.deepOrange],
           ),
-          const Icon(Icons.calendar_today,
-              color: Colors.white70, size: 48),
-        ],
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Upcoming Appointments",
+                  style: TextStyle(color: Colors.white70),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  "$count",
+                  style: const TextStyle(
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+            Semantics(
+              label: 'Calendar icon',
+              image: true,
+              excludeSemantics: true,
+              child: const Icon(Icons.calendar_today,
+                  color: Colors.white70, size: 48),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -162,12 +192,19 @@ class AppointmentListScreen extends StatelessWidget {
   }
 
   Widget _filterChip(String label, {bool selected = false}) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: ChoiceChip(
-        label: Text(label),
-        selected: selected,
-        onSelected: (_) {},
+    return Semantics(
+      label: '$label filter, ${selected ? "selected" : "not selected"}',
+      button: true,
+      selected: selected,
+      child: Padding(
+        padding: const EdgeInsets.only(right: 8),
+        child: ChoiceChip(
+          label: Text(label),
+          selected: selected,
+          onSelected: (_) {},
+          // WCAG 2.1: Minimum touch target
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        ),
       ),
     );
   }
@@ -177,10 +214,16 @@ class AppointmentListScreen extends StatelessWidget {
   // ============================
 
   Widget _appointmentCard(BuildContext context, Map<String, dynamic> data) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(20),
-      onTap: () => context.go('/appointment-detail'),
-      child: Container(
+    final appointmentLabel = '${data["title"]}, ${data["specialty"]}, ${data["date"]} at ${data["time"]}, ${data["type"]} appointment, ${data["duration"]} duration';
+    
+    return Semantics(
+      label: appointmentLabel,
+      button: true,
+      hint: 'Tap to view appointment details',
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: () => context.push('/appointment-detail'),
+        child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: Colors.grey.shade200),
@@ -274,6 +317,7 @@ class AppointmentListScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }

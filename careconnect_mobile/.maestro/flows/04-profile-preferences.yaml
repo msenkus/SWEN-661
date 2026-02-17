@@ -1,0 +1,35 @@
+# Critical flow 4: Profile → Preferences & Accessibility
+# Ensures profile tab and preferences screen are reachable.
+# Profile tab tapped by position (bottom nav text often not exposed to Maestro).
+
+appId: com.example.careconnect_mobile
+---
+- launchApp
+- extendedWaitUntil:
+    visible: "Sign In"
+    timeout: 10000
+- tapOn:
+    point: "50%, 42%"
+- inputText: "test@example.com"
+- pressKey: enter
+- waitForAnimationToEnd
+- inputText: "password123"
+- tapOn: "Sign In"
+- extendedWaitUntil:
+    visible: "Today's Tasks"
+    timeout: 20000
+# Tap Profile tab (rightmost); 93% = in nav bar, not below it
+- tapOn:
+    point: "92%, 93%"
+- waitForAnimationToEnd
+# Scroll down so Preferences & Accessibility tile is on screen
+- scroll
+- scroll
+- scroll
+# Tap Preferences tile (after scroll it's roughly in the center)
+- tapOn:
+    point: "50%, 50%"
+- extendedWaitUntil:
+    visible: "Accessibility"
+    timeout: 8000
+- assertVisible: "Accessibility"

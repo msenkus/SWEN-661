@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../providers/dark_mode_provider.dart';
+import '../providers/high_contrast_provider.dart';
+import '../widgets/bottom_navigation_bar.dart';
 
-class AccessibilitySettingsScreen extends StatefulWidget {
+class AccessibilitySettingsScreen extends ConsumerStatefulWidget {
   const AccessibilitySettingsScreen({super.key});
 
   @override
-  State<AccessibilitySettingsScreen> createState() =>
+  ConsumerState<AccessibilitySettingsScreen> createState() =>
       _AccessibilitySettingsScreenState();
 }
 
 class _AccessibilitySettingsScreenState
-    extends State<AccessibilitySettingsScreen> {
+    extends ConsumerState<AccessibilitySettingsScreen> {
   final Map<String, bool> settings = {
-    'highContrast': false,
     'largeText': true,
     'soundAlerts': true,
     'vibrationAlerts': true,
@@ -28,9 +31,29 @@ class _AccessibilitySettingsScreenState
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final darkModeAsync = ref.watch(darkModeProvider);
+    final highContrastAsync = ref.watch(highContrastProvider);
+    final isDarkMode = darkModeAsync.valueOrNull ?? false;
+    final isHighContrast = highContrastAsync.valueOrNull ?? false;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Accessibility')),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+          if (context.canPop()) {
+            context.pop();
+          } else {
+            context.go('/dashboard');
+          }
+        },
+          tooltip: 'Back',
+        ),
+        title: Semantics(
+          label: 'Accessibility',
+          child: const Text('Accessibility'),
+        ),
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -44,9 +67,11 @@ class _AccessibilitySettingsScreenState
                 tileKey: const Key('toggle_high_contrast'),
                 switchKey: const Key('toggle_high_contrast_switch'),
                 title: "High Contrast Mode",
-                subtitle: "Increase contrast for better visibility",
-                enabled: settings['highContrast']!,
-                onTap: () => toggle('highContrast'),
+                subtitle: "Increase contrast for visibility",
+                enabled: isHighContrast,
+                onTap: () => ref
+                    .read(highContrastProvider.notifier)
+                    .setHighContrast(!isHighContrast),
               ),
               _settingTile(
                 tileKey: const Key('toggle_large_text'),
@@ -55,6 +80,16 @@ class _AccessibilitySettingsScreenState
                 subtitle: "Increase text size throughout the app",
                 enabled: settings['largeText']!,
                 onTap: () => toggle('largeText'),
+              ),
+              _settingTile(
+                tileKey: const Key('toggle_dark_mode'),
+                switchKey: const Key('toggle_dark_mode_switch'),
+                title: "Dark Mode",
+                subtitle: "Use dark theme for reduced eye strain",
+                enabled: isDarkMode,
+                onTap: () => ref
+                    .read(darkModeProvider.notifier)
+                    .setDarkMode(!isDarkMode),
               ),
               _settingTile(
                 tileKey: const Key('toggle_visual_alerts'),
@@ -119,18 +154,26 @@ class _AccessibilitySettingsScreenState
 
           const SizedBox(height: 24),
 
-          ElevatedButton(
-            key: const Key('asl_help_button'),
-            onPressed: () => context.go('/asl-help'),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 18),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+          Semantics(
+            label: 'Watch ASL Help Videos, button',
+            button: true,
+            child: ElevatedButton(
+              key: const Key('asl_help_button'),
+              onPressed: () => context.push('/asl-help'),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 18),
+                minimumSize: const Size.fromHeight(48), // WCAG 2.1: Minimum touch target
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
               ),
+              child: const Text("Watch ASL Help Videos"),
             ),
-            child: const Text("Watch ASL Help Videos"),
           ),
         ],
+      ),
+      bottomNavigationBar: CareConnectBottomNavBar(
+        currentRoute: GoRouter.of(context).routerDelegate.currentConfiguration.uri.path,
       ),
     );
   }
@@ -138,28 +181,31 @@ class _AccessibilitySettingsScreenState
   // -------------------------------------------------
 
   Widget _headerCard() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     return Container(
       key: const Key('accessibility_header'),
       margin: const EdgeInsets.only(bottom: 24),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Colors.green, Colors.teal],
-        ),
+        color: colorScheme.primary,
         borderRadius: BorderRadius.circular(20),
+        border: colorScheme.brightness == Brightness.dark
+            ? Border.all(color: colorScheme.onPrimary, width: 2)
+            : null,
       ),
       child: Row(
-        children: const [
+        children: [
           CircleAvatar(
-            backgroundColor: Colors.white24,
+            backgroundColor: colorScheme.onPrimary.withOpacity(0.24),
             radius: 24,
-            child: Icon(Icons.visibility, color: Colors.white),
+            child: Icon(Icons.visibility, color: colorScheme.onPrimary),
           ),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           Expanded(
             child: Text(
               "Customize Your Experience\nAdjust settings to match your needs",
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: colorScheme.onPrimary),
             ),
           ),
         ],
@@ -172,11 +218,12 @@ class _AccessibilitySettingsScreenState
     required String title,
     required List<Widget> children,
   }) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(children: [
-          Icon(icon, color: Colors.blue),
+          Icon(icon, color: colorScheme.primary),
           const SizedBox(width: 8),
           Text(
             title,
@@ -199,19 +246,30 @@ class _AccessibilitySettingsScreenState
     required bool enabled,
     required VoidCallback onTap,
   }) {
-    return Card(
-      key: tileKey,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: ListTile(
-        onTap: onTap,
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
-        subtitle: Text(subtitle),
-        trailing: Switch(
-          key: switchKey,
-          value: enabled,
-          onChanged: (_) => onTap(),
+    return Semantics(
+      label: '$title, $subtitle, switch, ${enabled ? "on" : "off"}',
+      value: enabled ? 'on' : 'off',
+      child: Card(
+        key: tileKey,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: ListTile(
+          onTap: onTap,
+          title: Semantics(
+            label: title,
+            child: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
+          ),
+          subtitle: Text(subtitle),
+          trailing: Semantics(
+            label: '$title switch, ${enabled ? "on" : "off"}',
+            value: enabled ? 'on' : 'off',
+            child: Switch(
+              key: switchKey,
+              value: enabled,
+              onChanged: (_) => onTap(),
+            ),
+          ),
         ),
       ),
     );
@@ -219,15 +277,16 @@ class _AccessibilitySettingsScreenState
 
   Widget _textPreview(ThemeData theme) {
     final large = settings['largeText']!;
+    final colorScheme = theme.colorScheme;
 
     return Container(
       key: const Key('text_preview'),
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.only(bottom: 24),
       decoration: BoxDecoration(
-        color: Colors.blue.shade50,
+        color: colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.blue.shade200),
+        border: Border.all(color: colorScheme.outline, width: colorScheme.brightness == Brightness.dark ? 2 : 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

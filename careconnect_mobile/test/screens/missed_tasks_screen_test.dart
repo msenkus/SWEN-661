@@ -7,13 +7,22 @@ import 'package:careconnect_mobile/screens/missed_task_alert_screen.dart';
 
 void main() {
   testWidgets('ASL button renders', (tester) async {
+    final router = GoRouter(
+      routes: [
+        GoRoute(
+          path: '/',
+          builder: (_, __) => const MissedTaskAlertScreen(),
+        ),
+      ],
+    );
     await tester.pumpWidget(
       ProviderScope(
-        child: MaterialApp(
-          home: const MissedTaskAlertScreen(),
+        child: MaterialApp.router(
+          routerConfig: router,
         ),
       ),
     );
+    await tester.pumpAndSettle();
 
     expect(find.textContaining('ASL'), findsOneWidget);
   });

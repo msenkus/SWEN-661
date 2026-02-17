@@ -1,0 +1,9 @@
+# Maestro E2E test config for CareConnect (Flutter)
+# See: https://maestro.mobile.dev/getting-started/installation
+#
+# Install: curl -Ls "https://get.maestro.mobile.dev" | bash
+# Run all: maestro test .maestro/flows/
+# Run one:  maestro test .maestro/flows/01-login-to-dashboard.yaml
+
+env:
+  APP_ID: com.example.careconnect_mobile

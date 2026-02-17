@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../widgets/bottom_navigation_bar.dart';
 
 class MissedTaskAlertScreen extends StatelessWidget {
   const MissedTaskAlertScreen({super.key});
@@ -26,64 +27,88 @@ class MissedTaskAlertScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Missed Tasks")),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+          if (context.canPop()) {
+            context.pop();
+          } else {
+            context.go('/dashboard');
+          }
+        },
+          tooltip: 'Back',
+        ),
+        title: const Text("Missed Tasks"),
+      ),
       body: Column(
         children: [
           // ========================
           // ALERT HEADER
           // ========================
 
-          Container(
-            width: double.infinity,
-            color: Colors.red.shade50,
-            padding: const EdgeInsets.all(20),
-            child: Row(
-              children: [
-                Stack(
-                  children: [
-                    Icon(
-                      Icons.error_outline,
-                      size: isTablet ? 48 : 40,
-                      color: Colors.red,
-                    ),
-                    Positioned(
-                      right: -2,
-                      top: -2,
-                      child: CircleAvatar(
-                        radius: 12,
-                        backgroundColor: Colors.red,
-                        child: Text(
-                          "${missedTasks.length}",
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12),
+          Semantics(
+            label: 'Alert: You have ${missedTasks.length} missed tasks. Please complete these as soon as possible.',
+            child: Container(
+              width: double.infinity,
+              color: Colors.red.shade50,
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                children: [
+                  Stack(
+                    children: [
+                      Semantics(
+                        label: 'Error icon',
+                        image: true,
+                        excludeSemantics: true,
+                        child: Icon(
+                          Icons.error_outline,
+                          size: isTablet ? 48 : 40,
+                          color: Colors.red,
                         ),
                       ),
-                    )
-                  ],
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        "You Have Missed Tasks",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.red),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        "Please complete these as soon as possible",
-                        style: TextStyle(color: Colors.redAccent),
-                      ),
+                      Positioned(
+                        right: -2,
+                        top: -2,
+                        child: Semantics(
+                          label: '${missedTasks.length} missed tasks',
+                          child: CircleAvatar(
+                            radius: 12,
+                            backgroundColor: Colors.red,
+                            child: Text(
+                              "${missedTasks.length}",
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12),
+                            ),
+                          ),
+                        ),
+                      )
                     ],
                   ),
-                )
-              ],
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "You Have Missed Tasks",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: Colors.red),
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          "Please complete these as soon as possible",
+                          style: TextStyle(color: Colors.redAccent),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
 
@@ -172,23 +197,28 @@ class MissedTaskAlertScreen extends StatelessWidget {
 
                               const SizedBox(height: 14),
 
-                              ElevatedButton.icon(
-                                onPressed: () =>
-                                    context.go('/step-task'),
-                                icon: const Icon(Icons.chevron_right),
-                                label:
-                                    const Text("Complete Now"),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: high
-                                      ? Colors.red
-                                      : Colors.orange,
-                                  padding:
-                                      const EdgeInsets.symmetric(
-                                          vertical: 14),
-                                  shape:
-                                      RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(14),
+                              Semantics(
+                                label: 'Complete ${task["title"]} now, button, ${high ? "high priority" : "medium priority"}',
+                                button: true,
+                                child: ElevatedButton.icon(
+                                  onPressed: () =>
+                                      context.push('/step-task'),
+                                  icon: const Icon(Icons.chevron_right),
+                                  label:
+                                      const Text("Complete Now"),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: high
+                                        ? Colors.red
+                                        : Colors.orange,
+                                    padding:
+                                        const EdgeInsets.symmetric(
+                                            vertical: 14),
+                                    minimumSize: const Size.fromHeight(48), // WCAG 2.1: Minimum touch target
+                                    shape:
+                                        RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(14),
+                                    ),
                                   ),
                                 ),
                               )
@@ -226,47 +256,62 @@ class MissedTaskAlertScreen extends StatelessWidget {
             padding: EdgeInsets.all(isTablet ? 24 : 16),
             child: Column(
               children: [
-                ElevatedButton(
-                  onPressed: () => context.go('/'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    minimumSize:
-                        const Size.fromHeight(52),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(14),
+                Semantics(
+                  label: 'View All Tasks, button',
+                  button: true,
+                  child: ElevatedButton(
+                    onPressed: () => context.go('/'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      minimumSize:
+                          const Size.fromHeight(52),
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(14),
+                      ),
+                    ),
+                    child: const Text("View All Tasks"),
+                  ),
+                ),
+
+                const SizedBox(height: 10),
+
+                Semantics(
+                  label: 'ASL Help Videos, button',
+                  button: true,
+                  child: OutlinedButton.icon(
+                    onPressed: () => context.push('/asl-help'),
+                    icon: const Icon(Icons.accessibility),
+                    label: const Text("ASL Help Videos"),
+                    style: OutlinedButton.styleFrom(
+                      minimumSize:
+                          const Size.fromHeight(52),
                     ),
                   ),
-                  child: const Text("View All Tasks"),
                 ),
 
                 const SizedBox(height: 10),
 
-                OutlinedButton.icon(
-                  onPressed: () => context.go('/asl-help'),
-                  icon: const Icon(Icons.accessibility),
-                  label: const Text("ASL Help Videos"),
-                  style: OutlinedButton.styleFrom(
-                    minimumSize:
-                        const Size.fromHeight(52),
-                  ),
-                ),
-
-                const SizedBox(height: 10),
-
-                OutlinedButton.icon(
-                  onPressed: () => context.go('/'),
-                  icon: const Icon(Icons.close),
-                  label: const Text("Dismiss Alerts"),
-                  style: OutlinedButton.styleFrom(
-                    minimumSize:
-                        const Size.fromHeight(52),
+                Semantics(
+                  label: 'Dismiss Alerts, button',
+                  button: true,
+                  child: OutlinedButton.icon(
+                    onPressed: () => context.go('/'),
+                    icon: const Icon(Icons.close),
+                    label: const Text("Dismiss Alerts"),
+                    style: OutlinedButton.styleFrom(
+                      minimumSize:
+                          const Size.fromHeight(52),
+                    ),
                   ),
                 ),
               ],
             ),
           )
         ],
+      ),
+      bottomNavigationBar: CareConnectBottomNavBar(
+        currentRoute: GoRouter.of(context).routerDelegate.currentConfiguration.uri.path,
       ),
     );
   }

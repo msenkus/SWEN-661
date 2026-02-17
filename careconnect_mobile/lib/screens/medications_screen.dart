@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../widgets/bottom_navigation_bar.dart';
 
 class Medication {
   final int id;
@@ -84,7 +85,23 @@ class _MedicationsScreenState extends State<MedicationsScreen> {
     final takenCount = medications.where((m) => m.taken).length;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Medications')),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+          if (context.canPop()) {
+            context.pop();
+          } else {
+            context.go('/dashboard');
+          }
+        },
+          tooltip: 'Back',
+        ),
+        title: Semantics(
+          label: 'Medications',
+          child: const Text('Medications'),
+        ),
+      ),
       body: ListView(
         padding: EdgeInsets.all(isTablet ? 24 : 16),
         children: [
@@ -92,43 +109,54 @@ class _MedicationsScreenState extends State<MedicationsScreen> {
 
           const SizedBox(height: 20),
 
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount:
-                  isTablet && orientation == Orientation.landscape ? 2 : 1,
-              childAspectRatio: 2.7,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-            ),
-            itemCount: medications.length,
-            itemBuilder: (_, i) => _MedicationCard(
-              medication: medications[i],
-              onMarkTaken: () {
-                setState(() => medications[i].taken = true);
-              },
+          Semantics(
+            label: 'Medications list',
+            child: GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount:
+                    isTablet && orientation == Orientation.landscape ? 2 : 1,
+                childAspectRatio: 1.85,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+              ),
+              itemCount: medications.length,
+              itemBuilder: (_, i) => _MedicationCard(
+                medication: medications[i],
+                onMarkTaken: () {
+                  setState(() => medications[i].taken = true);
+                },
+              ),
             ),
           ),
 
           const SizedBox(height: 24),
 
-          OutlinedButton(
-            onPressed: () => context.go('/asl-help'),
-            style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              side: BorderSide(color: Colors.blue.shade200, width: 2),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+          Semantics(
+            label: 'Need Help? Watch ASL Guide, button',
+            button: true,
+            child: OutlinedButton(
+              onPressed: () => context.push('/asl-help'),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                minimumSize: const Size.fromHeight(48), // WCAG 2.1: Minimum touch target
+                side: BorderSide(color: Colors.blue.shade200, width: 2),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                backgroundColor: Colors.blue.shade50,
               ),
-              backgroundColor: Colors.blue.shade50,
-            ),
-            child: const Text(
-              'Need Help? Watch ASL Guide',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              child: const Text(
+                'Need Help? Watch ASL Guide',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ),
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: CareConnectBottomNavBar(
+        currentRoute: GoRouter.of(context).routerDelegate.currentConfiguration.uri.path,
       ),
     );
   }
@@ -142,37 +170,48 @@ class _SummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Colors.purple, Colors.deepPurple],
-        ),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Medications Today',
-                style: TextStyle(color: Colors.white70),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                '$taken of $total Taken',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
+    return Semantics(
+      label: 'Medications Today, $taken of $total taken',
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Colors.purple, Colors.deepPurple],
           ),
-          const Icon(Icons.medication, size: 48, color: Colors.white70),
-        ],
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Semantics(
+                  label: 'Medications Today',
+                  child: const Text(
+                    'Medications Today',
+                    style: TextStyle(color: Colors.white70),
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  '$taken of $total Taken',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            Semantics(
+              label: 'Medication icon',
+              image: true,
+              excludeSemantics: true,
+              child: const Icon(Icons.medication, size: 48, color: Colors.white70),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -189,98 +228,138 @@ class _MedicationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-        side: BorderSide(
-          color: medication.taken
-              ? Colors.green.shade200
-              : Colors.grey.shade300,
-          width: 2,
+    final statusLabel = medication.taken
+        ? '${medication.name}, ${medication.dosage}, scheduled for ${medication.time}, taken'
+        : '${medication.name}, ${medication.dosage}, scheduled for ${medication.time}, not taken';
+
+    return Semantics(
+      label: statusLabel,
+      child: Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(
+            color: medication.taken
+                ? Colors.green.shade200
+                : Colors.grey.shade300,
+            width: 2,
+          ),
         ),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(14),
-            color: medication.headerColor,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    medication.name,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(14),
+              color: medication.headerColor,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      medication.name,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
                     ),
                   ),
-                ),
-                if (medication.taken)
-                  const Icon(Icons.check_circle, color: Colors.white),
-              ],
+                  if (medication.taken)
+                    Semantics(
+                      label: 'Taken',
+                      image: true,
+                      excludeSemantics: true,
+                      child: const Icon(Icons.check_circle, color: Colors.white),
+                    ),
+                ],
+              ),
             ),
-          ),
 
-          Padding(
-            padding: const EdgeInsets.all(14),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(14),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const Icon(Icons.schedule, size: 18),
-                    const SizedBox(width: 6),
-                    Text(medication.time),
-                  ],
-                ),
-                const SizedBox(height: 8),
+                    Semantics(
+                      label: 'Time: ${medication.time}',
+                      child: Row(
+                        children: [
+                          const Icon(Icons.schedule, size: 18),
+                          const SizedBox(width: 6),
+                          Text(medication.time),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 8),
 
-                Row(
-                  children: [
-                    const Icon(Icons.info_outline, size: 18),
-                    const SizedBox(width: 6),
-                    Expanded(child: Text(medication.notes)),
-                  ],
-                ),
-
-                const SizedBox(height: 12),
-
-                medication.taken
-                    ? Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.green.shade50,
-                          borderRadius: BorderRadius.circular(12),
-                          border:
-                              Border.all(color: Colors.green.shade200, width: 2),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Marked as Taken',
-                            style: TextStyle(
-                              color: Colors.green,
-                              fontWeight: FontWeight.w600,
+                    Semantics(
+                      label: 'Notes: ${medication.notes}',
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Icon(Icons.info_outline, size: 18),
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: Text(
+                              medication.notes,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
                             ),
                           ),
-                        ),
-                      )
-                    : ElevatedButton(
-                        onPressed: onMarkTaken,
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                        ),
-                        child: const Text('Mark as Taken'),
+                        ],
                       ),
-              ],
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    medication.taken
+                        ? Semantics(
+                            label: 'Taken',
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              decoration: BoxDecoration(
+                                color: Colors.green.shade50,
+                                borderRadius: BorderRadius.circular(12),
+                                border:
+                                    Border.all(color: Colors.green.shade200, width: 2),
+                              ),
+                              child: const Center(
+                                child: Text(
+                                  'Taken',
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : Semantics(
+                            label: 'Mark ${medication.name} as taken, button',
+                            button: true,
+                            child: ElevatedButton(
+                              onPressed: onMarkTaken,
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                minimumSize: const Size.fromHeight(48), // WCAG 2.1: Minimum touch target
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                              ),
+                              child: const Text('Mark as Taken'),
+                            ),
+                          ),
+                  ],
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
+

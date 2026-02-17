@@ -10,6 +10,8 @@ import 'screens/appointment_detail_screen.dart';
 import 'screens/asl_help_screen.dart';
 import 'screens/missed_task_alert_screen.dart';
 import 'screens/task_history_screen.dart';
+import 'screens/messages_screen.dart';
+import 'screens/profile_screen.dart';
 
 
 final router = GoRouter(
@@ -26,13 +28,9 @@ final router = GoRouter(
       path: '/sos',
       builder: (context, state) => const SosScreen(),
     ),
-     GoRoute(
+    GoRoute(
       path: '/medications',
       builder: (context, state) => const MedicationsScreen(),
-    ),
-    GoRoute(
-      path: '/sos',
-      builder: (context, state) => const SosScreen(),
     ),
     GoRoute(
       path: '/step-task',
@@ -62,10 +60,21 @@ final router = GoRouter(
       const MissedTaskAlertScreen(),
     ),
     GoRoute(
-  path: '/history',
-  builder: (context, state) =>
-      const TaskHistoryScreen(),
+      path: '/history',
+      builder: (context, state) =>
+          const TaskHistoryScreen(),
     ),
-
+    GoRoute(
+      path: '/messages',
+      builder: (context, state) => const MessagesScreen(),
+    ),
+    GoRoute(
+      path: '/profile',
+      builder: (context, state) => const ProfileScreen(),
+    ),
+    GoRoute(
+      path: '/health',
+      builder: (context, state) => const MedicationsScreen(),
+    ),
   ],
 );

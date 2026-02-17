@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/task.dart';
 import '../providers/task_provider.dart';
+import '../widgets/bottom_navigation_bar.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
@@ -31,9 +32,14 @@ class DashboardScreen extends ConsumerWidget {
     // SAFE percent (prevents NaN/Infinity)
     final percent = tasks.isEmpty ? 0.0 : completed / tasks.length;
 
+    final currentRoute = GoRouter.of(context).routerDelegate.currentConfiguration.uri.path;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Today's Tasks"),
+        title: Semantics(
+          label: "Today's Tasks",
+          child: const Text("Today's Tasks"),
+        ),
         actions: [
           Semantics(
             label: hasMissedTasks
@@ -47,7 +53,7 @@ class DashboardScreen extends ConsumerWidget {
                   child: IconButton(
                     key: const Key('btn_missed_tasks'),
                     icon: const Icon(Icons.notifications_outlined),
-                    onPressed: () => context.go('/missed-tasks'),
+                    onPressed: () => context.push('/missed-tasks'),
                   ),
                 ),
                 if (hasMissedTasks)
@@ -70,7 +76,7 @@ class DashboardScreen extends ConsumerWidget {
               child: IconButton(
                 key: const Key('btn_accessibility'),
                 icon: const Icon(Icons.settings),
-                onPressed: () => context.go('/accessibility'),
+                onPressed: () => context.push('/accessibility'),
               ),
             ),
           ),
@@ -79,6 +85,17 @@ class DashboardScreen extends ConsumerWidget {
       body: ListView(
         padding: EdgeInsets.all(isTablet ? 24 : 16),
         children: [
+          Semantics(
+            header: true,
+            child: Text(
+              'Welcome, Finn Jackson',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
           _ProgressCard(
             completed: completed,
             total: tasks.length,
@@ -89,12 +106,15 @@ class DashboardScreen extends ConsumerWidget {
           _QuickActionsGrid(
             isTablet: isTablet,
             orientation: orientation,
-            onNavigate: context.go,
+            onNavigate: context.push,
           ),
           const SizedBox(height: 20),
-          Text(
-            "Today's Schedule",
-            style: Theme.of(context).textTheme.titleLarge,
+          Semantics(
+            header: true,
+            child: Text(
+              "Today's Schedule",
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
           ),
           const SizedBox(height: 12),
 
@@ -105,18 +125,19 @@ class DashboardScreen extends ConsumerWidget {
               task: t,
               onTap: () {
                 if (t.type == 'medication') {
-                  context.go('/medications');
+                  context.push('/medications');
                 } else if (t.current) {
-                  context.go('/step-task');
+                  context.push('/step-task');
                 }
               },
             ),
           ),
 
           const SizedBox(height: 24),
-          _SOSButton(onTap: () => context.go('/sos')),
+          _SOSButton(onTap: () => context.push('/sos')),
         ],
       ),
+      bottomNavigationBar: CareConnectBottomNavBar(currentRoute: currentRoute),
     );
   }
 
@@ -195,7 +216,7 @@ class _ProgressCard extends StatelessWidget {
     final percentText = total == 0 ? '0%' : '${(percent * 100).round()}%';
 
     return Semantics(
-      label: 'Daily progress',
+      label: 'Daily progress, $completed of $total tasks completed, $percentText complete',
       value: '$percentText complete',
       child: Container(
         key: const Key('progress_card'),
@@ -294,7 +315,7 @@ class _QuickButton extends StatelessWidget {
               vertical: 10,   // 👈 thinner height
               horizontal: 16,
             ),
-            minimumSize: const Size.fromHeight(44), // 👈 flatter look
+            minimumSize: const Size.fromHeight(48), // WCAG 2.1: Minimum touch target
             side: BorderSide(color: color.shade200, width: 1.5),
             backgroundColor: color.shade50,
             shape: RoundedRectangleBorder(
@@ -441,19 +462,51 @@ class _SOSButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-      key: const Key('btn_sos'),
-      onPressed: onTap,
-      icon: const Icon(Icons.phone),
-      label: const Text(
-        "Emergency SOS",
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      ),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.red,
-        padding: const EdgeInsets.symmetric(vertical: 22),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+    return Semantics(
+      label: 'Emergency SOS button. Alerts all caregivers with your current location.',
+      button: true,
+      child: ElevatedButton.icon(
+        key: const Key('btn_sos'),
+        onPressed: () {
+          // WCAG 2.1: Error prevention - show confirmation dialog
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Emergency SOS'),
+              content: const Text(
+                'Are you sure you want to activate Emergency SOS? This will alert all your emergency contacts with your current location.',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Cancel'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    onTap();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                  ),
+                  child: const Text('Activate SOS'),
+                ),
+              ],
+            ),
+          );
+        },
+        icon: const Icon(Icons.phone),
+        label: const Text(
+          "Emergency SOS",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.red,
+          padding: const EdgeInsets.symmetric(vertical: 22),
+          minimumSize: const Size.fromHeight(56), // WCAG 2.1: Larger touch target for critical action
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
         ),
       ),
     );
