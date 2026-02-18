@@ -1,0 +1,38 @@
+appId: org.reactjs.native.example.CareConnectApp
+name: "Medication Management Flow"
+---
+# Launch the app fresh and log in
+- launchApp:
+    clearState: true
+
+# Login to reach Dashboard
+- tapOn: "Log in to existing account"
+- tapOn:
+    text: "Email address"
+    index: 1
+- inputText: "user@example.com"
+- tapOn:
+    text: "^Password$"
+    index: 1
+- inputText: "password123"
+- hideKeyboard
+- tapOn: "Sign in to your account"
+- extendedWaitUntil:
+    visible: "Today's Schedule"
+    timeout: 5000
+
+# Tap "Medications" quick action on the dashboard (accessibilityLabel)
+- tapOn: "Medications"
+
+# Assert medication list renders
+- assertVisible: "Today"
+- assertVisible: "Yesterday"
+
+# Toggle Vitamin D medication status (accessibilityLabel)
+- tapOn: "Vitamin D at 6:00 PM, not taken"
+
+# Navigate back to dashboard (accessibilityLabel)
+- tapOn: "Go back to dashboard"
+
+# Verify we're back on the dashboard
+- assertVisible: "Today's Schedule"

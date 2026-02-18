@@ -1,0 +1,56 @@
+appId: org.reactjs.native.example.CareConnectApp
+name: "Registration Flow"
+---
+# Launch the app fresh
+- launchApp:
+    clearState: true
+
+# Welcome screen — tap Get Started button (accessibilityLabel)
+- tapOn: "Get started with CareConnect"
+
+# Verify registration screen
+- assertVisible: "Join CareConnect"
+
+# Fill in Full Name (index: 1 skips the label Text, targets the TextInput)
+- tapOn:
+    text: "Full name"
+    index: 1
+- inputText: "Jane Doe"
+
+# Fill in Email (index: 1 skips the label Text, targets the TextInput)
+- tapOn:
+    text: "Email address"
+    index: 1
+- inputText: "jane@example.com"
+
+# Dismiss keyboard so Password field is visible
+- hideKeyboard
+
+# Fill in Password (index: 1 skips the label Text, targets the TextInput)
+- tapOn:
+    text: "^Password$"
+    index: 1
+- inputText: "SecurePass123"
+
+# Dismiss keyboard so Confirm Password field is visible
+- hideKeyboard
+
+# Fill in Confirm Password (index: 1 skips the label Text, targets the TextInput)
+- tapOn:
+    text: "Confirm password"
+    index: 1
+- inputText: "SecurePass123"
+
+# Hide keyboard so Create Account button is tappable
+- hideKeyboard
+
+# Tap Create Account button (accessibilityLabel)
+- tapOn: "Create a new account"
+
+# Wait for the simulated registration delay
+- extendedWaitUntil:
+    visible: "Today's Schedule"
+    timeout: 5000
+
+# Assert dashboard appears
+- assertVisible: "Today's Schedule"
