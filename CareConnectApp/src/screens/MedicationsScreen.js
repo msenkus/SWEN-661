@@ -56,11 +56,19 @@ const MedicationsScreen = ({
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <View style={styles.header}>
-        <Pressable onPress={() => onNavigate('dashboard')} hitSlop={10}>
+        <Pressable
+          onPress={() => onNavigate('dashboard')}
+          hitSlop={10}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel="Go back to dashboard"
+          accessibilityHint="Returns to the dashboard"
+          style={{ minWidth: 44, minHeight: 44 }}
+        >
           <ArrowLeft size={24} color="#2563EB" />
         </Pressable>
 
-        <Text style={styles.screenTitle}>Medications</Text>
+        <Text style={styles.screenTitle} accessibilityRole="header">Medications</Text>
       </View>
 
 
@@ -69,7 +77,7 @@ const MedicationsScreen = ({
           <View style={styles.dayHeader}>
             <Calendar size={20} color="#7C3AED" />
             <View>
-              <Text style={styles.dayTitle}>{day.date}</Text>
+              <Text style={styles.dayTitle} accessibilityRole="header">{day.date}</Text>
               <Text style={styles.daySubtitle}>{day.fullDate}</Text>
             </View>
           </View>
@@ -82,9 +90,11 @@ const MedicationsScreen = ({
                 !med.taken && styles.medMissed,
               ]}
               onPress={() => toggleMed(med.id)}
+              accessible={true}
               accessibilityRole="checkbox"
               accessibilityState={{ checked: med.taken }}
               accessibilityLabel={`${med.name} at ${med.time}, ${med.taken ? 'taken' : 'not taken'}`}
+              accessibilityHint="Double tap to toggle medication status"
             >
               {med.taken ? (
                 <CheckCircle2 size={22} color="#22C55E" />
@@ -115,7 +125,14 @@ const MedicationsScreen = ({
         </View>
       ))}
 
-      <Pressable style={styles.historyButton} onPress={() => onNavigate('task-history')}>
+      <Pressable
+        style={styles.historyButton}
+        onPress={() => onNavigate('task-history')}
+        accessible={true}
+        accessibilityRole="button"
+        accessibilityLabel="View full medication history"
+        accessibilityHint="Opens task history screen"
+      >
         <Text style={styles.historyText}>View Full Medication History</Text>
       </Pressable>
     </ScrollView>
@@ -188,7 +205,7 @@ const styles = StyleSheet.create({
   },
   takenChip: { backgroundColor: '#DCFCE7' },
   missedChip: { backgroundColor: '#FFEDD5' },
-  chipText: { fontSize: 12, fontWeight: '600' },
+  chipText: { fontSize: 12, fontWeight: '600', color: '#0F172A' },
 
   historyButton: {
     marginTop: 24,

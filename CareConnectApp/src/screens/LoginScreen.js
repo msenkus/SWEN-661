@@ -30,13 +30,15 @@ const LoginScreen = ({ onNavigate, isTablet = false }) => {
       <View style={styles.header}>
         <Pressable
           onPress={() => onNavigate('welcome')}
+          accessible={true}
           accessibilityRole="button"
           accessibilityLabel="Go back to welcome screen"
+          accessibilityHint="Returns to the welcome screen"
           style={styles.backButton}
         >
           <Ionicons name="arrow-back" size={24} color="#334155" />
         </Pressable>
-        <Text style={styles.headerTitle}>Sign In</Text>
+        <Text style={styles.headerTitle} accessibilityRole="header">Sign In</Text>
       </View>
 
       <ScrollView
@@ -72,7 +74,9 @@ const LoginScreen = ({ onNavigate, isTablet = false }) => {
                 keyboardType="email-address"
                 autoCapitalize="none"
                 style={styles.input}
+                accessible={true}
                 accessibilityLabel="Email address"
+                accessibilityHint="Enter your email to sign in"
               />
             </View>
 
@@ -86,14 +90,18 @@ const LoginScreen = ({ onNavigate, isTablet = false }) => {
                   placeholder="Enter your password"
                   secureTextEntry={!showPassword}
                   style={styles.input}
+                  accessible={true}
                   accessibilityLabel="Password"
+                  accessibilityHint="Enter your password to sign in"
                 />
                 <Pressable
                   onPress={() => setShowPassword(!showPassword)}
+                  accessible={true}
                   accessibilityRole="button"
                   accessibilityLabel={
                     showPassword ? 'Hide password' : 'Show password'
                   }
+                  accessibilityHint="Toggles password visibility"
                   style={styles.eyeButton}
                 >
                   <Ionicons
@@ -116,7 +124,12 @@ const LoginScreen = ({ onNavigate, isTablet = false }) => {
                 <Text style={styles.rememberText}>Remember me</Text>
               </View>
 
-              <Pressable accessibilityRole="button">
+              <Pressable
+                accessible={true}
+                accessibilityRole="link"
+                accessibilityLabel="Forgot password"
+                accessibilityHint="Opens password recovery"
+              >
                 <Text style={styles.forgotText}>Forgot Password?</Text>
               </Pressable>
             </View>
@@ -125,8 +138,11 @@ const LoginScreen = ({ onNavigate, isTablet = false }) => {
             <Pressable
               onPress={handleLogin}
               disabled={loading}
+              accessible={true}
               accessibilityRole="button"
               accessibilityLabel="Sign in to your account"
+              accessibilityHint="Signs you in and navigates to dashboard"
+              accessibilityState={{ disabled: loading, busy: loading }}
               style={({ pressed }) => [
                 styles.loginButton,
                 pressed && styles.pressed,
@@ -149,6 +165,10 @@ const LoginScreen = ({ onNavigate, isTablet = false }) => {
                 <Text
                   onPress={() => onNavigate('register')}
                   style={styles.linkText}
+                  accessible={true}
+                  accessibilityRole="link"
+                  accessibilityLabel="Sign up for CareConnect"
+                  accessibilityHint="Navigates to registration form"
                 >
                   Sign up for CareConnect
                 </Text>
@@ -181,6 +201,8 @@ const styles = StyleSheet.create({
   backButton: {
     padding: 8,
     borderRadius: 20,
+    minWidth: 44,
+    minHeight: 44,
   },
 
   headerTitle: {
@@ -271,9 +293,13 @@ const styles = StyleSheet.create({
 
   eyeButton: {
     position: 'absolute',
-    right: 16,
+    right: 8,
     top: '50%',
-    transform: [{ translateY: -10 }],
+    transform: [{ translateY: -22 }],
+    minWidth: 44,
+    minHeight: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   row: {
@@ -308,6 +334,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 8,
+    minHeight: 48,
   },
 
   loginText: {

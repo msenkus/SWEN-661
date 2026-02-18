@@ -24,13 +24,15 @@ const AppointmentDetail = ({ onNavigate }) => {
       <View style={styles.backHeader}>
         <Pressable
           onPress={() => onNavigate('appointments')}
+          accessible={true}
           accessibilityRole="button"
           accessibilityLabel="Go back to appointments"
+          accessibilityHint="Returns to appointments list"
           style={styles.backButton}
         >
           <ArrowLeft size={24} color="#334155" />
         </Pressable>
-        <Text style={styles.backHeaderTitle}>Appointment Details</Text>
+        <Text style={styles.backHeaderTitle} accessibilityRole="header">Appointment Details</Text>
       </View>
 
       {/* Header Card */}
@@ -65,14 +67,20 @@ const AppointmentDetail = ({ onNavigate }) => {
             <MapPin size={18} color="#2563EB" />
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.cardTitle}>Location</Text>
+            <Text style={styles.cardTitle} accessibilityRole="header">Location</Text>
             <Text style={styles.cardText}>Main Street Medical Center</Text>
             <Text style={styles.cardSubText}>123 Main Street, Suite 400</Text>
             <Text style={styles.cardSubText}>Springfield, IL 62701</Text>
           </View>
         </View>
 
-        <Pressable style={styles.secondaryButton}>
+        <Pressable
+          style={styles.secondaryButton}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel="Get directions to Main Street Medical Center"
+          accessibilityHint="Opens navigation directions"
+        >
           <Navigation size={16} color="#2563EB" />
           <Text style={styles.secondaryButtonText}>Get Directions</Text>
         </Pressable>
@@ -80,7 +88,7 @@ const AppointmentDetail = ({ onNavigate }) => {
 
       {/* Contact */}
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>Contact Information</Text>
+        <Text style={styles.cardTitle} accessibilityRole="header">Contact Information</Text>
 
         <View style={styles.row}>
           <View style={styles.iconGreen}>
@@ -110,7 +118,7 @@ const AppointmentDetail = ({ onNavigate }) => {
             <FileText size={18} color="#EA580C" />
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.cardTitle}>Appointment Notes</Text>
+            <Text style={styles.cardTitle} accessibilityRole="header">Appointment Notes</Text>
             <Text style={styles.listItem}>• Annual physical examination</Text>
             <Text style={styles.listItem}>• Medication review</Text>
             <Text style={styles.listItem}>
@@ -122,7 +130,7 @@ const AppointmentDetail = ({ onNavigate }) => {
 
       {/* Prep Tips */}
       <View style={styles.tipCard}>
-        <Text style={styles.tipTitle}>Before Your Visit</Text>
+        <Text style={styles.tipTitle} accessibilityRole="header">Before Your Visit</Text>
         <Text style={styles.tipText}>✓ Bring your insurance card</Text>
         <Text style={styles.tipText}>✓ List of current medications</Text>
         <Text style={styles.tipText}>✓ Arrive 15 minutes early</Text>
@@ -130,22 +138,46 @@ const AppointmentDetail = ({ onNavigate }) => {
       </View>
 
       {/* Actions */}
-      <Pressable style={styles.primaryButton}>
+      <Pressable
+        style={styles.primaryButton}
+        accessible={true}
+        accessibilityRole="button"
+        accessibilityLabel="Add appointment to calendar"
+        accessibilityHint="Adds this appointment to your calendar"
+      >
         <Text style={styles.primaryButtonText}>Add to Calendar</Text>
       </Pressable>
 
       <View style={styles.actionRow}>
-        <Pressable style={styles.callButton}>
+        <Pressable
+          style={styles.callButton}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel="Call doctor's office"
+          accessibilityHint="Calls (555) 123-4567"
+        >
           <Phone size={16} color="#FFFFFF" />
           <Text style={styles.callText}>Call Office</Text>
         </Pressable>
 
-        <Pressable style={styles.secondaryGrayButton}>
+        <Pressable
+          style={styles.secondaryGrayButton}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel="Reschedule appointment"
+          accessibilityHint="Opens rescheduling options"
+        >
           <Text style={styles.secondaryGrayText}>Reschedule</Text>
         </Pressable>
       </View>
 
-      <Pressable style={styles.cancelButton}>
+      <Pressable
+        style={styles.cancelButton}
+        accessible={true}
+        accessibilityRole="button"
+        accessibilityLabel="Cancel appointment"
+        accessibilityHint="Cancels this appointment"
+      >
         <Text style={styles.cancelText}>Cancel Appointment</Text>
       </Pressable>
     </ScrollView>
@@ -170,6 +202,8 @@ const styles = StyleSheet.create({
   backButton: {
     padding: 8,
     marginRight: 8,
+    minWidth: 44,
+    minHeight: 44,
   },
 
   backHeaderTitle: {
@@ -204,12 +238,12 @@ const styles = StyleSheet.create({
   },
 
   specialty: {
-    color: '#DBEAFE',
+    color: '#FFFFFF',
     fontSize: 14,
   },
 
   subSpecialty: {
-    color: '#BFDBFE',
+    color: '#E0EFFE',
     fontSize: 12,
   },
 
@@ -222,7 +256,7 @@ const styles = StyleSheet.create({
   },
 
   headerMeta: {
-    color: '#DBEAFE',
+    color: '#FFFFFF',
     fontSize: 12,
   },
 
@@ -306,6 +340,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     alignItems: 'center',
     marginBottom: 12,
+    minHeight: 48,
   },
 
   primaryButtonText: {
@@ -329,6 +364,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     gap: 6,
+    minHeight: 48,
   },
 
   callText: {
@@ -342,6 +378,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     paddingVertical: 14,
     alignItems: 'center',
+    minHeight: 48,
   },
 
   secondaryGrayText: {
@@ -357,6 +394,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#FECACA',
     marginBottom: 32,
+    minHeight: 48,
   },
 
   cancelText: {

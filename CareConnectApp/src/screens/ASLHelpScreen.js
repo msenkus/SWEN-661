@@ -34,13 +34,15 @@ const ASLHelpScreen = ({ onNavigate }) => {
       <View style={styles.backHeader}>
         <Pressable
           onPress={() => onNavigate('accessibility')}
+          accessible={true}
           accessibilityRole="button"
           accessibilityLabel="Go back to accessibility settings"
+          accessibilityHint="Returns to accessibility settings"
           style={styles.backButton}
         >
           <ArrowLeft size={24} color="#334155" />
         </Pressable>
-        <Text style={styles.backHeaderTitle}>ASL Help</Text>
+        <Text style={styles.backHeaderTitle} accessibilityRole="header">ASL Help</Text>
       </View>
 
       {/* Featured Video */}
@@ -65,6 +67,10 @@ const ASLHelpScreen = ({ onNavigate }) => {
             <Pressable
               style={styles.playButton}
               onPress={() => setIsPlaying(!isPlaying)}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel={isPlaying ? 'Pause video' : 'Play video'}
+              accessibilityHint="Controls video playback"
             >
               {isPlaying ? (
                 <Pause size={24} color="#FFFFFF" />
@@ -74,7 +80,14 @@ const ASLHelpScreen = ({ onNavigate }) => {
             </Pressable>
 
             <View style={styles.controlIcons}>
-              <Pressable onPress={() => setIsMuted(!isMuted)}>
+              <Pressable
+                onPress={() => setIsMuted(!isMuted)}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel={isMuted ? 'Unmute audio' : 'Mute audio'}
+                accessibilityHint="Toggles audio"
+                style={{ minWidth: 44, minHeight: 44, justifyContent: 'center', alignItems: 'center' }}
+              >
                 {isMuted ? (
                   <VolumeX size={24} color="#FFFFFF" />
                 ) : (
@@ -82,7 +95,14 @@ const ASLHelpScreen = ({ onNavigate }) => {
                 )}
               </Pressable>
 
-              <Pressable onPress={() => setShowCaptions(!showCaptions)}>
+              <Pressable
+                onPress={() => setShowCaptions(!showCaptions)}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel={showCaptions ? 'Turn off captions' : 'Turn on captions'}
+                accessibilityHint="Toggles closed captions"
+                style={{ minWidth: 44, minHeight: 44, justifyContent: 'center', alignItems: 'center' }}
+              >
                 <Subtitles
                   size={24}
                   color={showCaptions ? '#60A5FA' : '#FFFFFF'}
@@ -92,7 +112,13 @@ const ASLHelpScreen = ({ onNavigate }) => {
           </View>
 
           {/* Progress */}
-          <View style={styles.progressBar}>
+          <View
+            style={styles.progressBar}
+            accessible={true}
+            accessibilityRole="progressbar"
+            accessibilityLabel="Video progress"
+            accessibilityValue={{ min: 0, max: 100, now: 33 }}
+          >
             <View style={styles.progressFill} />
           </View>
 
@@ -103,16 +129,23 @@ const ASLHelpScreen = ({ onNavigate }) => {
         </View>
       </View>
 
-      <Text style={styles.sectionTitle}>How to Take Your Medication</Text>
+      <Text style={styles.sectionTitle} accessibilityRole="header">How to Take Your Medication</Text>
       <Text style={styles.sectionSubtitle}>
         Learn the step-by-step process with ASL interpretation and captions
       </Text>
 
       {/* Video Library */}
-      <Text style={styles.libraryTitle}>More Help Videos</Text>
+      <Text style={styles.libraryTitle} accessibilityRole="header">More Help Videos</Text>
 
       {aslVideos.map((video) => (
-        <Pressable key={video.id} style={styles.videoRow}>
+        <Pressable
+          key={video.id}
+          style={styles.videoRow}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel={`${video.title}, duration ${video.duration}`}
+          accessibilityHint="Plays this help video"
+        >
           <View style={styles.thumbnail}>
             <Text style={styles.thumbnailEmoji}>{video.emoji}</Text>
           </View>
@@ -158,6 +191,8 @@ const styles = StyleSheet.create({
   backButton: {
     padding: 8,
     marginRight: 8,
+    minWidth: 44,
+    minHeight: 44,
   },
   backHeaderTitle: {
     fontSize: 20,

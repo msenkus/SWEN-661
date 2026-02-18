@@ -6,6 +6,7 @@ import {
   Image,
   Pressable,
   Dimensions,
+  Platform,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -13,7 +14,7 @@ const { height } = Dimensions.get('window');
 
 const WelcomeScreen = ({ onNavigate, isTablet = false }) => {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} {...(Platform.OS === 'ios' ? { accessibilityLanguage: 'en-US' } : {})}>
       {/* Hero Image Section */}
       <View style={styles.heroContainer}>
         <Image
@@ -21,11 +22,13 @@ const WelcomeScreen = ({ onNavigate, isTablet = false }) => {
             uri: 'https://images.unsplash.com/photo-1758686254056-6cd980b9aaee?fm=jpg&q=80&w=1080',
           }}
           style={styles.heroImage}
+          accessible={true}
+          accessibilityRole="image"
           accessibilityLabel="Elderly couple enjoying life"
         />
 
         {/* Gradient Overlay (simulated) */}
-        <View style={styles.overlay} />
+        <View style={styles.overlay} importantForAccessibility="no" accessibilityElementsHidden={true} />
 
         {/* Logo Overlay */}
         <View style={styles.logoContainer}>
@@ -60,8 +63,10 @@ const WelcomeScreen = ({ onNavigate, isTablet = false }) => {
               styles.primaryButton,
               pressed && styles.pressed,
             ]}
+            accessible={true}
             accessibilityRole="button"
             accessibilityLabel="Get started with CareConnect"
+            accessibilityHint="Navigates to registration form"
             onPress={() => onNavigate('register')}
           >
             <Text style={styles.primaryButtonText}>Get Started</Text>
@@ -72,8 +77,10 @@ const WelcomeScreen = ({ onNavigate, isTablet = false }) => {
               styles.secondaryButton,
               pressed && styles.pressed,
             ]}
+            accessible={true}
             accessibilityRole="button"
             accessibilityLabel="Log in to existing account"
+            accessibilityHint="Navigates to sign in form"
             onPress={() => onNavigate('login')}
           >
             <Text style={styles.secondaryButtonText}>
@@ -187,6 +194,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     borderRadius: 16,
     alignItems: 'center',
+    minHeight: 48,
   },
 
   primaryButtonText: {
@@ -202,6 +210,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E2E8F0',
     alignItems: 'center',
+    minHeight: 48,
   },
 
   secondaryButtonText: {
@@ -217,7 +226,7 @@ const styles = StyleSheet.create({
   legalText: {
     marginTop: 32,
     fontSize: 12,
-    color: '#94A3B8',
+    color: '#64748B',
     textAlign: 'center',
   },
 });

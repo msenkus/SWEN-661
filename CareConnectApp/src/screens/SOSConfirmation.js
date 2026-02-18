@@ -7,6 +7,7 @@ import {
   Animated,
   PanResponder,
   ScrollView,
+  Platform,
 } from 'react-native';
 import {
   Phone,
@@ -73,7 +74,11 @@ export default function SOSConfirmation({ onNavigate }) {
   /* ACTIVATED STATE */
   if (activated) {
     return (
-      <View style={styles.activeContainer}>
+      <View
+        style={styles.activeContainer}
+        accessible={true}
+        accessibilityLabel="Calling emergency services, 911"
+      >
         <View style={styles.pulse}>
           <Phone size={64} color="#FFFFFF" />
         </View>
@@ -88,6 +93,10 @@ export default function SOSConfirmation({ onNavigate }) {
             slideX.setValue(0);
             onNavigate('dashboard');
           }}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel="End emergency call"
+          accessibilityHint="Ends the call and returns to dashboard"
         >
           <Text style={styles.endButtonText}>End Call</Text>
         </Pressable>
@@ -101,17 +110,24 @@ export default function SOSConfirmation({ onNavigate }) {
       <View style={styles.backHeader}>
         <Pressable
           onPress={() => onNavigate('dashboard')}
+          accessible={true}
           accessibilityRole="button"
           accessibilityLabel="Go back to dashboard"
+          accessibilityHint="Returns to the dashboard"
           style={styles.backButton}
         >
           <ArrowLeft size={24} color="#334155" />
         </Pressable>
-        <Text style={styles.backHeaderTitle}>SOS</Text>
+        <Text style={styles.backHeaderTitle} accessibilityRole="header">SOS</Text>
       </View>
 
       {/* Warning */}
-      <View style={styles.warning}>
+      <View
+        style={styles.warning}
+        accessible={true}
+        accessibilityRole="alert"
+        accessibilityLabel="Emergency assistance. Slide to immediately call emergency services."
+      >
         <AlertCircle size={36} color="#FFFFFF" />
         <Text style={styles.warningTitle}>Emergency Assistance</Text>
         <Text style={styles.warningText}>
@@ -121,7 +137,12 @@ export default function SOSConfirmation({ onNavigate }) {
 
       {/* Countdown */}
       {countdown !== null ? (
-        <View style={styles.countdownBox}>
+        <View
+          style={styles.countdownBox}
+          accessible={true}
+          accessibilityLiveRegion="assertive"
+          accessibilityLabel={`Calling emergency services in ${countdown} seconds`}
+        >
           <Text style={styles.countdown}>{countdown}</Text>
           <Text style={styles.countdownLabel}>
             Calling Emergency Services…
@@ -132,6 +153,10 @@ export default function SOSConfirmation({ onNavigate }) {
               setCountdown(null);
               slideX.setValue(0);
             }}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="Cancel emergency call"
+            accessibilityHint="Cancels the countdown and returns to SOS screen"
           >
             <Text style={styles.cancelText}>Cancel</Text>
           </Pressable>
@@ -143,7 +168,13 @@ export default function SOSConfirmation({ onNavigate }) {
             Slide to Call Emergency Services
           </Text>
 
-          <View style={styles.slider}>
+          <View
+            style={styles.slider}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="Slide to call emergency services"
+            accessibilityHint="Drag to the right to initiate emergency call"
+          >
             <View style={styles.chevrons}>
               <ChevronRight size={24} color="rgba(255,255,255,0.4)" />
               <ChevronRight size={24} color="rgba(255,255,255,0.4)" />
@@ -183,6 +214,8 @@ const styles = StyleSheet.create({
   backButton: {
     padding: 8,
     marginRight: 8,
+    minWidth: 44,
+    minHeight: 44,
   },
   backHeaderTitle: {
     fontSize: 20,
