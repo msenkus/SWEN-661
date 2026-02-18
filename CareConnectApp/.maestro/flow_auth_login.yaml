@@ -1,0 +1,37 @@
+appId: org.reactjs.native.example.CareConnectApp
+name: "Login Flow"
+---
+# Launch the app fresh
+- launchApp:
+    clearState: true
+
+# Welcome screen — tap login button (accessibilityLabel)
+- tapOn: "Log in to existing account"
+
+# Tap email input (accessibilityLabel="Email address", lowercase 'a' distinguishes from label text)
+- tapOn:
+    text: "Email address"
+    index: 1
+- inputText: "user@example.com"
+
+# Tap password input (same text as label, use index to target the TextInput)
+- tapOn:
+    text: "^Password$"
+    index: 1
+- inputText: "password123"
+
+# Dismiss keyboard so the Sign In button is visible
+- hideKeyboard
+
+# Tap Sign In button (accessibilityLabel)
+- tapOn: "Sign in to your account"
+
+# Wait for the simulated login delay then verify dashboard
+- extendedWaitUntil:
+    visible: "Today's Schedule"
+    timeout: 5000
+
+# Assert dashboard screen appears
+- assertVisible: "Today's Schedule"
+- assertVisible: "Medications"
+- assertVisible: "Appointments"

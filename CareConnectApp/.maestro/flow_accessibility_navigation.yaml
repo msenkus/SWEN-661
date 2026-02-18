@@ -1,0 +1,59 @@
+appId: org.reactjs.native.example.CareConnectApp
+name: "Accessibility Navigation Flow"
+---
+# Launch the app fresh and log in
+- launchApp:
+    clearState: true
+
+# Login to reach Dashboard
+- tapOn: "Log in to existing account"
+- tapOn:
+    text: "Email address"
+    index: 1
+- inputText: "user@example.com"
+- tapOn:
+    text: "^Password$"
+    index: 1
+- inputText: "password123"
+- hideKeyboard
+- tapOn: "Sign in to your account"
+- extendedWaitUntil:
+    visible: "Today's Schedule"
+    timeout: 5000
+
+# Tap "Settings" quick action to open Accessibility Settings
+- tapOn: "Settings"
+
+# Verify Accessibility Settings screen renders
+- assertVisible: "Customize Your Experience"
+
+# Toggle "Large Text" setting
+- tapOn: "Large Text"
+
+# Toggle "High Contrast Mode" setting
+- tapOn: "High Contrast Mode"
+
+# Scroll down to the ASL button and tap it
+- swipe:
+    start: 50%, 80%
+    end: 50%, 20%
+- swipe:
+    start: 50%, 80%
+    end: 50%, 20%
+- tapOn: "Watch ASL help videos"
+
+# Verify ASL Help screen renders
+- assertVisible: "ASL Help"
+- assertVisible: "More Help Videos"
+
+# Navigate back to Accessibility Settings
+- tapOn: "Go back to accessibility settings"
+
+# Verify we're back on Accessibility Settings
+- assertVisible: "Customize Your Experience"
+
+# Navigate back to Dashboard
+- tapOn: "Go back to dashboard"
+
+# Verify we're back on the Dashboard
+- assertVisible: "Today's Schedule"

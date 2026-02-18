@@ -1,0 +1,39 @@
+appId: org.reactjs.native.example.CareConnectApp
+name: "Step-by-Step Task Completion Flow"
+---
+# Launch the app fresh and log in
+- launchApp:
+    clearState: true
+
+# Login to reach Dashboard
+- tapOn: "Log in to existing account"
+- tapOn:
+    text: "Email address"
+    index: 1
+- inputText: "user@example.com"
+- tapOn:
+    text: "^Password$"
+    index: 1
+- inputText: "password123"
+- hideKeyboard
+- tapOn: "Sign in to your account"
+- extendedWaitUntil:
+    visible: "Today's Schedule"
+    timeout: 5000
+
+# Scroll to reveal the Physical Therapy task card
+- swipe:
+    start: 50%, 70%
+    end: 50%, 30%
+
+# Tap the current task to open the Step-by-Step screen
+- tapOn: "Physical Therapy Exercises at 10:30 AM, current task, exercise"
+
+# Verify Step-by-Step screen renders
+- assertVisible: "Exercise Task"
+
+# Navigate back to dashboard via the back button
+- tapOn: "Go back to dashboard"
+
+# Assert return to dashboard
+- assertVisible: "Today's Schedule"
