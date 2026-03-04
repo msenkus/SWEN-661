@@ -1,0 +1,3943 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #f8fafc;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Window layout breakpoints: 1024px, 1440px, 1920px wide */
+:root {
+  --breakpoint-small: 1024px;
+  --breakpoint-medium: 1440px;
+  --breakpoint-large: 1920px;
+  --content-max-width: 1024px;
+  --content-padding: 24px;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --content-max-width: 1024px;
+    --content-padding: 24px;
+  }
+}
+
+@media (min-width: 1440px) {
+  :root {
+    --content-max-width: 1280px;
+    --content-padding: 32px;
+  }
+}
+
+@media (min-width: 1920px) {
+  :root {
+    --content-max-width: 1600px;
+    --content-padding: 40px;
+  }
+}
+
+/* Utility class for centered, max-width content at current breakpoint */
+.content-width {
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--content-padding);
+  padding-right: var(--content-padding);
+}
+
+/* Visible focus for keyboard/screen reader users (WCAG 2.4.7). High-contrast overrides below. */
+*:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+/* Login input uses custom focus ring; avoid double outline */
+.login-input:focus-visible {
+  outline: none;
+}
+
+/* Login screen – centered card layout */
+.login-page {
+  min-height: calc(100vh - 52px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--content-padding);
+  background: #f1f5f9;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.login-title {
+  margin: 0 0 4px 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.login-subtitle {
+  margin: 0 0 28px 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.login-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.login-input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  color: #0f172a;
+  background: #fff;
+}
+
+.login-input::placeholder {
+  color: #94a3b8;
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+.login-password-wrap {
+  position: relative;
+}
+
+.login-password-wrap .login-input {
+  padding-right: 44px;
+}
+
+.login-password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 4px;
+  border: none;
+  background: none;
+  color: #64748b;
+  cursor: pointer;
+}
+
+.login-password-toggle:hover {
+  color: #0f172a;
+}
+
+.login-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.login-remember {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #475569;
+  cursor: pointer;
+}
+
+.login-remember input {
+  width: 16px;
+  height: 16px;
+}
+
+.login-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}
+
+.login-submit {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background: #2563eb;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.login-submit:hover {
+  background: #1d4ed8;
+}
+
+.login-submit-secondary {
+  background: #fff !important;
+  color: #2563eb !important;
+  border: 2px solid #2563eb !important;
+}
+
+.login-submit-secondary:hover {
+  background: #f8fafc !important;
+  border-color: #1d4ed8 !important;
+  color: #1d4ed8 !important;
+}
+
+.login-back {
+  display: block;
+  text-align: center;
+  margin-top: 24px;
+  font-size: 14px;
+  color: #64748b;
+  text-decoration: none;
+}
+
+.login-back:hover {
+  color: #0f172a;
+  text-decoration: underline;
+}
+
+.login-signup {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.login-signup a {
+  color: #2563eb;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.login-signup a:hover {
+  text-decoration: underline;
+}
+
+.login-note {
+  margin: 20px 0 0 0;
+  padding-top: 16px;
+  border-top: 1px solid #e2e8f0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #64748b;
+}
+
+/* ========== Dashboard layout: sidebar + main (desktop dimensions) ========== */
+.dashboard-layout {
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-width: calc(var(--sidebar-width, 260px) + var(--content-max-width));
+  margin-left: auto;
+  margin-right: auto;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Skip link: visible on focus for keyboard users (WCAG 2.4.1 Bypass Blocks) */
+.dashboard-skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  padding: 12px 20px;
+  background: #2563eb;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0 0 8px 0;
+  transform: translateY(-100%);
+  transition: transform 0.2s ease;
+}
+.dashboard-skip-link:focus {
+  transform: translateY(0);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.5);
+}
+
+.dashboard-sidebar {
+  width: var(--sidebar-width, 260px);
+  min-width: var(--sidebar-width, 260px);
+  height: 100%;
+  background: #1e3a5f;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.dashboard-sidebar-top {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0 16px;
+}
+
+.dashboard-sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  margin-bottom: 16px;
+}
+
+.dashboard-sidebar-logo-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-sidebar-brand {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.dashboard-sidebar-tagline {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 2px;
+}
+
+.dashboard-sidebar-nav {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 12px;
+}
+
+.dashboard-sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+}
+
+.dashboard-sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.dashboard-sidebar-link--active {
+  background: rgba(37, 99, 235, 0.5);
+  color: #fff;
+}
+
+.dashboard-sidebar-link-arrow {
+  margin-left: auto;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.dashboard-sidebar-link:not(.dashboard-sidebar-link--active) .dashboard-sidebar-link-arrow {
+  display: none;
+}
+
+.dashboard-sidebar-bottom {
+  flex-shrink: 0;
+  padding: 16px 20px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: auto;
+}
+
+.dashboard-sidebar-sos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 16px;
+  background: #dc2626;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.dashboard-sidebar-sos:hover {
+  background: #b91c1c;
+}
+
+.dashboard-sidebar-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dashboard-sidebar-profile-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.dashboard-sidebar-profile-info {
+  min-width: 0;
+}
+
+.dashboard-sidebar-profile-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.dashboard-sidebar-profile-link {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+}
+
+.dashboard-sidebar-profile-link:hover {
+  text-decoration: underline;
+}
+
+.dashboard-main {
+  flex: 1;
+  min-width: 0;
+  max-width: var(--content-max-width);
+  overflow: auto;
+  background: #f1f5f9;
+}
+
+/* Dashboard screen content – uses full desktop width */
+.dashboard-screen {
+  min-height: 100%;
+  padding: 24px 32px 32px;
+}
+
+.dashboard-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 20px;
+  background: #0f172a;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  animation: dashboard-toast-in 0.2s ease;
+}
+
+@keyframes dashboard-toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.dashboard-header-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.dashboard-title {
+  margin: 0 0 4px 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.dashboard-date {
+  margin: 0;
+  font-size: 15px;
+  color: #64748b;
+}
+
+.dashboard-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dashboard-icon-btn {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  border: none;
+  background: #fff;
+  color: #475569;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  transition: background 0.15s, color 0.15s;
+  text-decoration: none;
+}
+
+.dashboard-icon-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.dashboard-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  background: #dc2626;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: 24px;
+}
+
+.dashboard-grid--top {
+  grid-template-columns: 1fr 1fr;
+}
+
+.dashboard-grid--main {
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (min-width: 1440px) {
+  .dashboard-grid--main {
+    grid-template-columns: 1.2fr 0.8fr;
+  }
+}
+
+@media (min-width: 1920px) {
+  .dashboard-screen {
+    padding: 32px 48px 48px;
+  }
+  .dashboard-title {
+    font-size: 32px;
+  }
+  .dashboard-grid--main {
+    grid-template-columns: 1.3fr 0.7fr;
+  }
+}
+
+.dashboard-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.dashboard-card-title {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.dashboard-card--progress {
+  background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+  color: #fff;
+}
+
+.dashboard-card--progress .dashboard-card-title {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.dashboard-progress-stats {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.dashboard-progress-count {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.dashboard-progress-pct {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.dashboard-progress-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.dashboard-progress-bar-fill {
+  height: 100%;
+  background: #fff;
+  border-radius: 4px;
+  transition: width 0.3s;
+}
+
+.dashboard-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dashboard-stat {
+  font-size: 15px;
+  color: #475569;
+}
+
+.dashboard-stat--success {
+  color: #16a34a;
+  font-weight: 500;
+}
+
+.dashboard-schedule {
+  min-height: 320px;
+}
+
+.dashboard-schedule-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-schedule-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: #fafafa;
+}
+
+.dashboard-schedule-item--clickable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.dashboard-schedule-item--clickable:hover {
+  background: #f1f5f9;
+}
+
+.dashboard-schedule-item--current {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.dashboard-schedule-item--done {
+  opacity: 0.85;
+}
+
+.dashboard-schedule-status {
+  flex-shrink: 0;
+}
+
+.dashboard-schedule-check {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #16a34a;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-schedule-circle {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #cbd5e1;
+  background: #fff;
+}
+
+.dashboard-schedule-item--current .dashboard-schedule-circle {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.dashboard-schedule-time {
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #64748b;
+  width: 72px;
+}
+
+.dashboard-schedule-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dashboard-schedule-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: #0f172a;
+}
+
+.dashboard-tag {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 6px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.dashboard-tag--purple {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.dashboard-tag--green {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.dashboard-tag--blue {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.dashboard-tag--orange {
+  background: #ffedd5;
+  color: #ea580c;
+}
+
+.dashboard-tag--current {
+  background: #2563eb;
+  color: #fff;
+  margin-left: auto;
+}
+
+.dashboard-schedule-info {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  color: #2563eb;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.dashboard-schedule-info:hover {
+  background: rgba(37, 99, 235, 0.15);
+}
+
+.dashboard-quick-actions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dashboard-quick-action {
+  display: block;
+  padding: 16px 18px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  color: #0f172a;
+  transition: background 0.15s, transform 0.05s;
+}
+
+.dashboard-quick-action:hover {
+  transform: translateY(-1px);
+}
+
+.dashboard-quick-action--purple {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+.dashboard-quick-action--purple:hover {
+  background: #ddd6fe;
+}
+
+.dashboard-quick-action--orange {
+  background: #ffedd5;
+  color: #c2410c;
+}
+
+.dashboard-quick-action--orange:hover {
+  background: #fed7aa;
+}
+
+.dashboard-quick-action--blue {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.dashboard-quick-action--blue:hover {
+  background: #bfdbfe;
+}
+
+/* ========== Patient Profile screen ========== */
+.profile-screen {
+  min-height: 100%;
+  padding: 24px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.profile-header-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.profile-header-banner {
+  height: 72px;
+  background: #2563eb;
+  width: 100%;
+}
+
+.profile-header-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 24px 24px;
+  margin-top: 0;
+  position: relative;
+  flex-wrap: wrap;
+}
+
+.profile-avatar {
+  width: 96px;
+  height: 96px;
+  margin-top: -72px;
+  border-radius: 50%;
+  background: #fff;
+  border: 4px solid #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.profile-header-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-patient-name {
+  margin: 0 0 4px 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.profile-patient-id {
+  margin: 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.profile-edit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2563eb;
+  background: #fff;
+  border: 1px solid #2563eb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.profile-edit-btn:hover {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+  flex: 1;
+  align-content: start;
+}
+
+.profile-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+}
+
+.profile-card-title {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2563eb;
+}
+
+.profile-vitals-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.profile-vital-chip {
+  flex: 1;
+  min-width: 100px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.profile-vital-chip--blue {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.profile-vital-chip--green {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.profile-vital-label {
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.profile-vital-value {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.profile-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.profile-list--bullets li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #475569;
+}
+
+.profile-list--bullets li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #dc2626;
+}
+
+.profile-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.profile-tag {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  display: inline-block;
+}
+
+.profile-tag--alert {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.profile-contact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.profile-contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.profile-contact-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.profile-contact-relation {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.profile-contact-call {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #16a34a;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.profile-contact-call:hover {
+  background: #15803d;
+}
+
+.profile-footer {
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+.profile-sign-out {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  background: #dc2626;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.15s;
+  border: 2px solid #dc2626;
+}
+
+.profile-sign-out:hover {
+  background: #b91c1c;
+  border-color: #b91c1c;
+  color: #fff;
+}
+
+@media (max-width: 1023px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 1920px) {
+  .profile-screen {
+    padding: 32px 48px 48px;
+  }
+}
+
+/* ========== Medications screen (from wireframes) ========== */
+.medications-screen {
+  min-height: 100%;
+  padding: 24px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.medications-nav-bar {
+  background: #2563eb;
+  color: #fff;
+  padding: 12px 32px 12px 20px;
+  margin: 0 -32px 24px -32px;
+}
+
+.medications-nav-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.medications-nav-back:hover {
+  text-decoration: underline;
+}
+
+.medications-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.medications-summary-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%);
+  color: #fff;
+  padding: 24px 28px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(109, 40, 217, 0.25);
+  flex-shrink: 0;
+}
+
+.medications-summary-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.medications-summary-label {
+  font-size: 14px;
+  opacity: 0.95;
+}
+
+.medications-summary-count {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.medications-summary-icon {
+  opacity: 0.9;
+}
+
+/* Two-column grid, cards size to content */
+.medications-list {
+  list-style: none;
+  margin: 0 0 24px 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  align-content: start;
+  align-items: start;
+}
+
+/* Single card: header + body (details + one action button) */
+.medications-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  width: 100%;
+}
+
+.medications-card-header {
+  padding: 16px 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.medications-card-header--blue {
+  background: #2563eb;
+  color: #fff;
+}
+
+.medications-card-header--green {
+  background: #16a34a;
+  color: #fff;
+}
+
+.medications-card-header--purple {
+  background: #7c3aed;
+  color: #fff;
+}
+
+.medications-card-header--red {
+  background: #dc2626;
+  color: #fff;
+}
+
+.medications-card-header--orange {
+  background: #ea580c;
+  color: #fff;
+}
+
+.medications-card-header-title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.medications-card-header-pill {
+  flex-shrink: 0;
+  opacity: 0.95;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.medications-card-name {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.medications-card-dosage {
+  font-size: 14px;
+  opacity: 0.95;
+}
+
+.medications-card-header-check {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Card body: time, instructions, then one action (button or “Marked as Taken”) */
+.medications-card-body {
+  padding: 16px 20px;
+  background: #fff;
+}
+
+.medications-card-detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #475569;
+  margin-bottom: 8px;
+}
+
+.medications-card-detail:last-of-type {
+  margin-bottom: 12px;
+}
+
+.medications-card-detail svg {
+  flex-shrink: 0;
+  color: #64748b;
+}
+
+/* One action per card: blue “Mark as Taken” or green “Marked as Taken” – both clickable */
+.medications-card-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
+  box-sizing: border-box;
+}
+
+.medications-card-action--default {
+  background: #2563eb;
+  color: #fff;
+}
+
+.medications-card-action--default:hover {
+  background: #1d4ed8;
+}
+
+.medications-card-action--taken {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.medications-card-action--taken:hover {
+  background: #bbf7d0;
+}
+
+.medications-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+.medications-footer-link {
+  font-size: 14px;
+  color: #2563eb;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.medications-footer-link:hover {
+  text-decoration: underline;
+}
+
+.medications-footer-help {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.medications-footer-help:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+@media (max-width: 1023px) {
+  .medications-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 1920px) {
+  .medications-screen {
+    padding: 32px 48px 48px;
+  }
+  .medications-nav-bar {
+    margin-left: -48px;
+    margin-right: -48px;
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+
+/* ========== Appointments screen ========== */
+.appointments-screen {
+  min-height: 100%;
+  padding: 24px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.appointments-nav-bar {
+  background: #2563eb;
+  color: #fff;
+  padding: 12px 32px 12px 20px;
+  margin: 0 -32px 24px -32px;
+}
+
+.appointments-nav-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.appointments-nav-back:hover {
+  text-decoration: underline;
+}
+
+.appointments-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.appointments-summary-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #ea580c 0%, #f97316 100%);
+  color: #fff;
+  padding: 24px 28px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.25);
+  flex-shrink: 0;
+}
+
+.appointments-summary-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.appointments-summary-label {
+  font-size: 14px;
+  opacity: 0.95;
+}
+
+.appointments-summary-count {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.appointments-summary-icon {
+  opacity: 0.9;
+}
+
+.appointments-filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
+.appointments-filter-btn {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 9999px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #64748b;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.appointments-filter-btn:hover {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.appointments-filter-btn--active {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+}
+
+.appointments-list {
+  list-style: none;
+  margin: 0 0 24px 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.appointments-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  width: 100%;
+}
+
+.appointments-card-header {
+  padding: 16px 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.appointments-card-header--blue {
+  background: #2563eb;
+  color: #fff;
+}
+
+.appointments-card-header--green {
+  background: #16a34a;
+  color: #fff;
+}
+
+.appointments-card-header--purple {
+  background: #7c3aed;
+  color: #fff;
+}
+
+.appointments-card-header--orange {
+  background: #ea580c;
+  color: #fff;
+}
+
+.appointments-card-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.appointments-card-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.appointments-card-header-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.appointments-card-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.appointments-card-subtitle {
+  font-size: 14px;
+  opacity: 0.95;
+}
+
+.appointments-date-badge {
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.appointments-date-badge--blue { background: #93c5fd; color: #1e40af; }
+.appointments-date-badge--green { background: #bbf7d0; color: #166534; }
+.appointments-date-badge--purple { background: #ddd6fe; color: #5b21b6; }
+.appointments-date-badge--orange { background: #fed7aa; color: #c2410c; }
+
+.appointments-card-time {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.appointments-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.appointments-card-video,
+.appointments-card-pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.appointments-card-body {
+  padding: 16px 20px;
+  background: #fff;
+}
+
+.appointments-card-detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #475569;
+  margin-bottom: 8px;
+}
+
+.appointments-card-detail svg {
+  flex-shrink: 0;
+  color: #64748b;
+}
+
+.appointments-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.appointments-card-link:hover {
+  text-decoration: underline;
+}
+
+.appointments-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+.appointments-schedule-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  background: #2563eb;
+  border: 2px solid #2563eb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.appointments-schedule-btn:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+.appointments-footer-help {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.appointments-footer-help:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+@media (min-width: 1920px) {
+  .appointments-screen {
+    padding: 32px 48px 48px;
+  }
+  .appointments-nav-bar {
+    margin-left: -48px;
+    margin-right: -48px;
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+
+/* ========== Task History screen ========== */
+.task-history-screen {
+  min-height: 100%;
+  padding: 24px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.task-history-nav-bar {
+  background: #2563eb;
+  color: #fff;
+  padding: 12px 32px 12px 20px;
+  margin: 0 -32px 24px -32px;
+}
+
+.task-history-nav-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.task-history-nav-back:hover {
+  text-decoration: underline;
+}
+
+.task-history-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.task-history-summary {
+  background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+  color: #fff;
+  padding: 24px 28px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.25);
+  flex-shrink: 0;
+}
+
+.task-history-summary-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.task-history-summary-trend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.task-history-summary-label {
+  font-size: 16px;
+  font-weight: 600;
+  opacity: 0.95;
+}
+
+.task-history-summary-pct {
+  font-size: 28px;
+  font-weight: 700;
+  margin-left: auto;
+}
+
+.task-history-summary-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.task-history-stat {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 14px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.task-history-stat-value {
+  display: block;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.task-history-filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
+.task-history-filter-btn {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 9999px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #64748b;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.task-history-filter-btn:hover {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.task-history-filter-btn--active {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+}
+
+.task-history-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.task-history-day {
+  flex-shrink: 0;
+}
+
+.task-history-day-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.task-history-day-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.task-history-day-label svg {
+  color: #64748b;
+}
+
+.task-history-day-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.task-history-day-pct {
+  font-weight: 700;
+}
+
+.task-history-day-pct--green { color: #16a34a; }
+.task-history-day-pct--orange { color: #ea580c; }
+.task-history-day-pct--red { color: #dc2626; }
+
+.task-history-day-date {
+  margin: 0 0 12px 26px;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.task-history-tasks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task-history-task {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  transition: border-color 0.15s;
+}
+
+.task-history-task--missed {
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.task-history-task-status {
+  flex-shrink: 0;
+}
+
+.task-history-task-check {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #16a34a;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.task-history-task-x {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #dc2626;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.task-history-task-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.task-history-task-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.task-history-task-meta {
+  font-size: 13px;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.task-history-task-type {
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.task-history-task-type--medication { background: #ede9fe; color: #6d28d9; }
+.task-history-task-type--meal { background: #dcfce7; color: #16a34a; }
+.task-history-task-type--appointment { background: #ffedd5; color: #ea580c; }
+.task-history-task-type--exercise { background: #dbeafe; color: #2563eb; }
+
+.task-history-task-done {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.task-history-task-missed {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  background: #fecaca;
+  color: #dc2626;
+}
+
+.task-history-load-more {
+  margin: 24px 0;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  align-self: center;
+  transition: background 0.15s, color 0.15s;
+}
+
+.task-history-load-more:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.task-history-week-message {
+  padding: 20px 24px;
+  background: #eff6ff;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  flex-shrink: 0;
+}
+
+.task-history-week-title {
+  margin: 0 0 6px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e40af;
+}
+
+.task-history-week-text {
+  margin: 0;
+  font-size: 14px;
+  color: #1e40af;
+  opacity: 0.9;
+}
+
+.task-history-footer {
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.task-history-footer-help {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.task-history-footer-help:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+@media (min-width: 1920px) {
+  .task-history-screen {
+    padding: 32px 48px 48px;
+  }
+  .task-history-nav-bar {
+    margin-left: -48px;
+    margin-right: -48px;
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+
+/* ========== ASL Help screen ========== */
+.asl-help-screen {
+  min-height: 100%;
+  padding: 24px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.asl-help-nav-bar {
+  background: #2563eb;
+  color: #fff;
+  padding: 12px 32px 12px 20px;
+  margin: 0 -32px 24px -32px;
+}
+
+.asl-help-nav-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.asl-help-nav-back:hover {
+  text-decoration: underline;
+}
+
+.asl-help-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.asl-help-video-section {
+  margin-bottom: 32px;
+  flex-shrink: 0;
+}
+
+.asl-help-video-wrapper {
+  background: #1e293b;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.asl-help-video-placeholder {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: #1e3a5f;
+}
+
+.asl-help-video-emoji {
+  font-size: 5rem;
+  line-height: 1;
+}
+
+.asl-help-video-overlay {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.asl-help-video-description-bar {
+  padding: 14px 20px;
+  background: #334155;
+  color: #fff;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.asl-help-video-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #0f172a;
+  color: #fff;
+}
+
+.asl-help-video-control-play {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: opacity 0.15s;
+}
+
+.asl-help-video-control-play:hover {
+  opacity: 0.9;
+}
+
+.asl-help-video-time-current,
+.asl-help-video-time-total {
+  font-size: 14px;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.asl-help-video-progress {
+  flex: 1;
+  height: 6px;
+  background: #475569;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.asl-help-video-progress-fill {
+  height: 100%;
+  background: #38bdf8;
+  border-radius: 3px;
+  transition: width 0.2s;
+}
+
+.asl-help-video-control-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: transparent;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: opacity 0.15s;
+}
+
+.asl-help-video-control-icon:hover {
+  opacity: 0.85;
+}
+
+.asl-help-video-title {
+  margin: 0 0 6px 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.asl-help-video-subtitle {
+  margin: 0 0 0 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.asl-help-more {
+  margin-bottom: 24px;
+  flex-shrink: 0;
+}
+
+.asl-help-more-title {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.asl-help-more-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.asl-help-more-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.asl-help-more-card:hover {
+  border-color: #2563eb;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+}
+
+.asl-help-more-icon {
+  color: #64748b;
+}
+
+.asl-help-more-card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.asl-help-more-meta {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.asl-help-more-arrow {
+  align-self: flex-end;
+  margin-top: auto;
+  color: #94a3b8;
+}
+
+.asl-help-accessibility {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px 24px;
+  background: #eff6ff;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
+.asl-help-accessibility-icon {
+  color: #2563eb;
+  flex-shrink: 0;
+}
+
+.asl-help-accessibility-text {
+  margin: 0;
+  font-size: 14px;
+  color: #1e40af;
+  line-height: 1.5;
+}
+
+.asl-help-footer {
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.asl-help-footer-help {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.asl-help-footer-help:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+@media (min-width: 1920px) {
+  .asl-help-screen {
+    padding: 32px 48px 48px;
+  }
+  .asl-help-nav-bar {
+    margin-left: -48px;
+    margin-right: -48px;
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+
+/* ========== Settings screen ========== */
+.settings-screen {
+  min-height: 100%;
+  padding: 0 var(--content-padding);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+.settings-header {
+  background: #dbeafe;
+  padding: 20px var(--content-padding) 24px;
+  margin-left: calc(-1 * var(--content-padding));
+  margin-right: calc(-1 * var(--content-padding));
+}
+
+.settings-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 100%;
+  max-width: 100%;
+  padding: 24px 0 32px;
+  box-sizing: border-box;
+}
+
+.settings-nav-bar {
+  background: #2563eb;
+  color: #fff;
+  padding: 12px var(--content-padding);
+  margin-left: calc(-1 * var(--content-padding));
+  margin-right: calc(-1 * var(--content-padding));
+}
+
+.settings-nav-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.settings-nav-back:hover {
+  text-decoration: underline;
+}
+
+.settings-nav-back--label {
+  cursor: default;
+  pointer-events: none;
+}
+
+.settings-nav-back--label:hover {
+  text-decoration: none;
+}
+
+.settings-accessibility-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #2563eb;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.settings-accessibility-link:hover {
+  text-decoration: underline;
+}
+
+.settings-accessibility-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.settings-accessibility-card:hover {
+  border-color: #2563eb;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+}
+
+.settings-accessibility-icon {
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.settings-accessibility-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.settings-accessibility-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.settings-accessibility-desc {
+  font-size: 14px;
+  color: #64748b;
+}
+
+.settings-accessibility-arrow {
+  color: #94a3b8;
+  font-size: 18px;
+}
+
+.settings-section {
+  flex-shrink: 0;
+}
+
+.settings-section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.settings-section-icon {
+  flex-shrink: 0;
+  color: #2563eb;
+}
+
+.settings-section-icon--audio,
+.settings-section-icon--haptic,
+.settings-section-icon--visual,
+.settings-section-icon--bell,
+.settings-section-icon--text {
+  color: #2563eb;
+}
+
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.settings-row:last-child {
+  border-bottom: none;
+}
+
+.settings-row-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.settings-row-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.settings-row-desc {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.settings-toggle {
+  flex-shrink: 0;
+  width: 48px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 14px;
+}
+
+.settings-toggle-track {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #cbd5e1;
+  border-radius: 14px;
+  position: relative;
+  transition: background 0.2s;
+}
+
+.settings-toggle--on .settings-toggle-track {
+  background: #2563eb;
+}
+
+.settings-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 24px;
+  height: 24px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.settings-toggle--on .settings-toggle-thumb {
+  transform: translateX(20px);
+}
+
+.settings-preview-box {
+  padding: 20px 24px;
+  background: #eff6ff;
+  border-radius: 12px;
+  border: 1px solid #bfdbfe;
+}
+
+.settings-section--preview .settings-section-title {
+  margin-bottom: 12px;
+}
+
+.settings-preview-title {
+  margin-top: 0;
+}
+
+.settings-preview-text {
+  margin: 0 0 8px 0;
+  font-size: 15px;
+  color: #0f172a;
+  line-height: 1.5;
+}
+
+.settings-preview-size {
+  margin: 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.settings-preview-size-value {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.settings-notification-sub {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.settings-notification-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.settings-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.05s;
+}
+
+.settings-pill-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-pill--active .settings-pill-icon {
+  color: inherit;
+}
+
+.settings-pill:hover {
+  opacity: 0.9;
+}
+
+.settings-pill--blue {
+  background: #2563eb;
+  color: #fff;
+}
+
+.settings-pill--orange {
+  background: #ea580c;
+  color: #fff;
+}
+
+.settings-pill--yellow {
+  background: #ca8a04;
+  color: #fff;
+}
+
+.settings-pill--green {
+  background: #16a34a;
+  color: #fff;
+}
+
+.settings-pill:not(.settings-pill--active) {
+  background: #e2e8f0 !important;
+  color: #64748b !important;
+}
+
+.settings-asl-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 24px;
+  background: #2563eb;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.settings-asl-btn:hover {
+  background: #1d4ed8;
+}
+
+.settings-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.settings-footer-help {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #9ca3af;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.settings-footer-help:hover {
+  background: #6b7280;
+}
+
+/* Accessibility sub-screen */
+.accessibility-screen .settings-content {
+  max-width: 640px;
+  padding-top: 24px;
+}
+
+.accessibility-screen .settings-nav-bar {
+  margin-bottom: 0;
+}
+
+.accessibility-page-title,
+.accessibility-title {
+  margin: 0 0 16px 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.accessibility-cta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  background: #16a34a;
+  color: #fff;
+  border-radius: 12px;
+  transition: background 0.15s;
+}
+
+.accessibility-cta:hover {
+  background: #15803d;
+}
+
+.accessibility-cta-icon {
+  flex-shrink: 0;
+  opacity: 0.95;
+}
+
+.accessibility-cta-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.accessibility-cta-label {
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.accessibility-cta-desc {
+  font-size: 14px;
+  opacity: 0.95;
+}
+
+.accessibility-cta--inline {
+  margin-top: 0;
+}
+
+/* Dark mode – WCAG 2.1 Level AA contrast (text ≥4.5:1, UI ≥3:1) */
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+[data-theme="dark"] *:focus-visible {
+  outline-color: #60a5fa;
+}
+[data-theme="dark"] body,
+[data-theme="dark"] .dashboard-main,
+[data-theme="dark"] .settings-screen {
+  background: #1e293b;
+}
+[data-theme="dark"] .dashboard-screen,
+[data-theme="dark"] .medications-screen,
+[data-theme="dark"] .appointments-screen,
+[data-theme="dark"] .task-history-screen,
+[data-theme="dark"] .asl-help-screen,
+[data-theme="dark"] .profile-screen {
+  background: transparent;
+}
+[data-theme="dark"] .dashboard-header.settings-header {
+  background: #334155;
+}
+[data-theme="dark"] .dashboard-title,
+[data-theme="dark"] .settings-row-label,
+[data-theme="dark"] .settings-section-title,
+[data-theme="dark"] .settings-preview-text,
+[data-theme="dark"] .medications-card-name,
+[data-theme="dark"] .accessibility-page-title,
+[data-theme="dark"] .accessibility-cta-label,
+[data-theme="dark"] .asl-help-video-title,
+[data-theme="dark"] .profile-patient-name,
+[data-theme="dark"] .profile-card-title {
+  color: #f1f5f9;
+}
+[data-theme="dark"] .dashboard-date,
+[data-theme="dark"] .settings-row-desc,
+[data-theme="dark"] .settings-preview-size,
+[data-theme="dark"] .medications-card-dosage,
+[data-theme="dark"] .accessibility-cta-desc,
+[data-theme="dark"] .asl-help-video-description,
+[data-theme="dark"] .profile-patient-id,
+[data-theme="dark"] .profile-contact-relation {
+  color: #cbd5e1;
+}
+[data-theme="dark"] .settings-list,
+[data-theme="dark"] .settings-preview-box,
+[data-theme="dark"] .medications-card,
+[data-theme="dark"] .appointments-card,
+[data-theme="dark"] .dashboard-card,
+[data-theme="dark"] .asl-help-more-card,
+[data-theme="dark"] .profile-header-card,
+[data-theme="dark"] .profile-card {
+  background: #334155;
+  border-color: #475569;
+}
+[data-theme="dark"] .settings-row {
+  border-color: #475569;
+}
+[data-theme="dark"] .settings-preview-size-value {
+  color: #93c5fd;
+}
+[data-theme="dark"] .dashboard-icon-btn {
+  color: #cbd5e1;
+  background: #334155;
+}
+[data-theme="dark"] .dashboard-icon-btn:hover {
+  background: #475569;
+  color: #f1f5f9;
+}
+[data-theme="dark"] .dashboard-badge {
+  background: #b91c1c;
+  color: #fff;
+}
+[data-theme="dark"] .profile-header-banner {
+  background: #1e40af;
+}
+[data-theme="dark"] .profile-avatar {
+  background: #334155;
+  border-color: #475569;
+  color: #94a3b8;
+}
+[data-theme="dark"] .profile-edit-btn {
+  background: #334155;
+  color: #93c5fd;
+  border-color: #475569;
+}
+[data-theme="dark"] .profile-edit-btn:hover {
+  background: #475569;
+  color: #bfdbfe;
+}
+[data-theme="dark"] .profile-vital-chip--blue {
+  background: #1e3a5f;
+  color: #93c5fd;
+}
+[data-theme="dark"] .profile-vital-chip--green {
+  background: #14532d;
+  color: #86efac;
+}
+[data-theme="dark"] .profile-vital-label {
+  color: #cbd5e1;
+}
+[data-theme="dark"] .profile-list--bullets li {
+  color: #cbd5e1;
+}
+[data-theme="dark"] .profile-list--bullets li::before {
+  background: #f87171;
+}
+[data-theme="dark"] .profile-tag--alert {
+  background: #451a1a;
+  color: #fca5a5;
+  border-color: #7f1d1d;
+}
+[data-theme="dark"] .profile-contact-name {
+  color: #f1f5f9;
+}
+[data-theme="dark"] .profile-contact-call {
+  background: #166534;
+  color: #86efac;
+}
+[data-theme="dark"] .profile-contact-call:hover {
+  background: #15803d;
+  color: #bbf7d0;
+}
+[data-theme="dark"] .profile-card-icon {
+  color: #93c5fd;
+}
+[data-theme="dark"] .profile-footer {
+  border-top-color: #475569;
+}
+[data-theme="dark"] .profile-sign-out {
+  background: #b91c1c;
+  border-color: #b91c1c;
+  color: #fff;
+}
+[data-theme="dark"] .profile-sign-out:hover {
+  background: #991b1b;
+  border-color: #991b1b;
+  color: #fff;
+}
+[data-theme="dark"] .dashboard-card-title {
+  color: #f1f5f9;
+}
+[data-theme="dark"] .dashboard-card--progress {
+  background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+  color: #f1f5f9;
+  border: 1px solid #1e40af;
+}
+[data-theme="dark"] .dashboard-card--progress .dashboard-card-title {
+  color: #f1f5f9;
+}
+[data-theme="dark"] .dashboard-progress-count,
+[data-theme="dark"] .dashboard-progress-pct {
+  color: #f1f5f9;
+}
+[data-theme="dark"] .dashboard-progress-bar {
+  background: rgba(255, 255, 255, 0.25);
+}
+[data-theme="dark"] .dashboard-progress-bar-fill {
+  background: #e2e8f0;
+}
+[data-theme="dark"] .dashboard-stat {
+  color: #cbd5e1;
+}
+[data-theme="dark"] .dashboard-stat--success {
+  color: #86efac;
+}
+[data-theme="dark"] .dashboard-schedule-item {
+  background: #334155;
+  border-color: #475569;
+}
+[data-theme="dark"] .dashboard-schedule-item--clickable:hover {
+  background: #475569;
+}
+[data-theme="dark"] .dashboard-schedule-item--current {
+  border-color: #3b82f6;
+  background: #1e3a5f;
+}
+[data-theme="dark"] .dashboard-schedule-check {
+  background: #166534;
+  color: #86efac;
+}
+[data-theme="dark"] .dashboard-schedule-circle {
+  border-color: #64748b;
+  background: #1e293b;
+}
+[data-theme="dark"] .dashboard-schedule-item--current .dashboard-schedule-circle {
+  border-color: #3b82f6;
+  background: #1e3a5f;
+}
+[data-theme="dark"] .dashboard-schedule-time {
+  color: #94a3b8;
+}
+[data-theme="dark"] .dashboard-schedule-title {
+  color: #f1f5f9;
+}
+[data-theme="dark"] .dashboard-tag--purple {
+  background: #5b21b6;
+  color: #e9d5ff;
+}
+[data-theme="dark"] .dashboard-tag--green {
+  background: #166534;
+  color: #86efac;
+}
+[data-theme="dark"] .dashboard-tag--blue {
+  background: #1e40af;
+  color: #93c5fd;
+}
+[data-theme="dark"] .dashboard-tag--orange {
+  background: #c2410c;
+  color: #fdba74;
+}
+[data-theme="dark"] .dashboard-tag--current {
+  background: #2563eb;
+  color: #fff;
+}
+[data-theme="dark"] .dashboard-schedule-info {
+  color: #93c5fd;
+}
+[data-theme="dark"] .dashboard-schedule-info:hover {
+  background: rgba(59, 130, 246, 0.2);
+}
+[data-theme="dark"] .dashboard-quick-action {
+  color: #f1f5f9;
+}
+[data-theme="dark"] .dashboard-quick-action--purple {
+  background: #4c1d95;
+  color: #e9d5ff;
+}
+[data-theme="dark"] .dashboard-quick-action--purple:hover {
+  background: #5b21b6;
+  color: #f3e8ff;
+}
+[data-theme="dark"] .dashboard-quick-action--orange {
+  background: #9a3412;
+  color: #fed7aa;
+}
+[data-theme="dark"] .dashboard-quick-action--orange:hover {
+  background: #c2410c;
+  color: #ffedd5;
+}
+[data-theme="dark"] .dashboard-quick-action--blue {
+  background: #1e40af;
+  color: #93c5fd;
+}
+[data-theme="dark"] .dashboard-quick-action--blue:hover {
+  background: #2563eb;
+  color: #bfdbfe;
+}
+[data-theme="dark"] .dashboard-toast {
+  background: #334155;
+  color: #f1f5f9;
+  border: 1px solid #475569;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+[data-theme="dark"] .settings-footer-help {
+  background: #475569;
+  color: #f1f5f9;
+}
+[data-theme="dark"] .settings-footer-help:hover {
+  background: #64748b;
+}
+[data-theme="dark"] .medications-card-body,
+[data-theme="dark"] .medications-card-detail {
+  color: #cbd5e1;
+}
+[data-theme="dark"] .medications-card-body {
+  background: #334155;
+}
+[data-theme="dark"] .medications-card-action--default {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+}
+[data-theme="dark"] .medications-card-action--default:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  color: #fff;
+}
+[data-theme="dark"] .medications-summary-card {
+  background: linear-gradient(135deg, #4c1d95 0%, #5b21b6 100%);
+  color: #f1f5f9;
+  border: 1px solid #5b21b6;
+  box-shadow: 0 2px 8px rgba(91, 33, 182, 0.3);
+}
+[data-theme="dark"] .medications-summary-label,
+[data-theme="dark"] .medications-summary-count {
+  color: #f1f5f9;
+}
+[data-theme="dark"] .medications-summary-icon {
+  color: #e2e8f0;
+}
+[data-theme="dark"] .medications-nav-bar {
+  background: #1e40af;
+  color: #f1f5f9;
+}
+[data-theme="dark"] .medications-nav-back {
+  color: #f1f5f9;
+}
+[data-theme="dark"] .medications-nav-back:hover {
+  color: #e2e8f0;
+}
+[data-theme="dark"] .medications-card-header--blue {
+  background: #1e40af;
+  color: #f1f5f9;
+}
+[data-theme="dark"] .medications-card-header--green {
+  background: #166534;
+  color: #f1f5f9;
+}
+[data-theme="dark"] .medications-card-header--purple {
+  background: #5b21b6;
+  color: #f1f5f9;
+}
+[data-theme="dark"] .medications-card-header--red {
+  background: #b91c1c;
+  color: #f1f5f9;
+}
+[data-theme="dark"] .medications-card-header--orange {
+  background: #c2410c;
+  color: #f1f5f9;
+}
+[data-theme="dark"] .medications-card-header-pill,
+[data-theme="dark"] .medications-card-header-check {
+  color: #e2e8f0;
+}
+[data-theme="dark"] .medications-card-header-check {
+  background: rgba(255, 255, 255, 0.2);
+}
+[data-theme="dark"] .medications-card-action--taken {
+  background: #14532d;
+  color: #86efac;
+}
+[data-theme="dark"] .medications-card-action--taken:hover {
+  background: #166534;
+  color: #bbf7d0;
+}
+[data-theme="dark"] .medications-card-detail svg {
+  color: #94a3b8;
+}
+[data-theme="dark"] .medications-footer {
+  border-top-color: #475569;
+}
+[data-theme="dark"] .medications-footer-link {
+  color: #93c5fd;
+}
+[data-theme="dark"] .medications-footer-link:hover {
+  color: #bfdbfe;
+}
+[data-theme="dark"] .medications-footer-help {
+  background: #475569;
+  color: #f1f5f9;
+  border-color: #64748b;
+}
+[data-theme="dark"] .medications-footer-help:hover {
+  background: #64748b;
+  color: #f1f5f9;
+}
+[data-theme="dark"] .login-page {
+  background: #1e293b;
+}
+[data-theme="dark"] .login-card {
+  background: #334155;
+  border: 1px solid #475569;
+}
+[data-theme="dark"] .login-title,
+[data-theme="dark"] .login-label {
+  color: #f1f5f9;
+}
+[data-theme="dark"] .login-subtitle,
+[data-theme="dark"] .login-signup,
+[data-theme="dark"] .login-note {
+  color: #cbd5e1;
+}
+[data-theme="dark"] .login-input {
+  background: #1e293b;
+  border-color: #475569;
+  color: #f1f5f9;
+}
+[data-theme="dark"] .login-input::placeholder {
+  color: #94a3b8;
+}
+[data-theme="dark"] .login-input:focus {
+  border-color: #60a5fa;
+  outline-color: #60a5fa;
+}
+[data-theme="dark"] .asl-help-video-placeholder,
+[data-theme="dark"] .asl-help-video-description-bar,
+[data-theme="dark"] .asl-help-video-controls {
+  background: #0f172a;
+}
+[data-theme="dark"] .asl-help-accessibility {
+  background: #1e3a5f;
+}
+[data-theme="dark"] .asl-help-accessibility-text {
+  color: #e2e8f0;
+}
+[data-theme="dark"] .task-history-summary {
+  background: linear-gradient(135deg, #166534 0%, #15803d 100%);
+  color: #f1f5f9;
+  border: 1px solid #14532d;
+}
+[data-theme="dark"] .task-history-summary-label,
+[data-theme="dark"] .task-history-summary-pct {
+  color: #f1f5f9;
+}
+[data-theme="dark"] .task-history-stat {
+  background: rgba(255, 255, 255, 0.15);
+  color: #e2e8f0;
+}
+[data-theme="dark"] .task-history-stat-value {
+  color: #f1f5f9;
+}
+[data-theme="dark"] .task-history-filter-btn {
+  background: #334155;
+  color: #cbd5e1;
+  border-color: #475569;
+}
+[data-theme="dark"] .task-history-filter-btn:hover {
+  background: #475569;
+  color: #f1f5f9;
+}
+[data-theme="dark"] .task-history-filter-btn--active {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+}
+[data-theme="dark"] .task-history-day-label {
+  color: #f1f5f9;
+}
+[data-theme="dark"] .task-history-day-label svg {
+  color: #94a3b8;
+}
+[data-theme="dark"] .task-history-day-meta,
+[data-theme="dark"] .task-history-day-date {
+  color: #cbd5e1;
+}
+[data-theme="dark"] .task-history-day-pct--green {
+  color: #4ade80;
+}
+[data-theme="dark"] .task-history-day-pct--orange {
+  color: #fb923c;
+}
+[data-theme="dark"] .task-history-day-pct--red {
+  color: #f87171;
+}
+[data-theme="dark"] .task-history-task {
+  background: #334155;
+  border-color: #475569;
+}
+[data-theme="dark"] .task-history-task--missed {
+  background: #451a1a;
+  border-color: #7f1d1d;
+}
+[data-theme="dark"] .task-history-task-title {
+  color: #f1f5f9;
+}
+[data-theme="dark"] .task-history-task-meta {
+  color: #cbd5e1;
+}
+[data-theme="dark"] .task-history-task-type--medication {
+  background: #4c1d95;
+  color: #c4b5fd;
+}
+[data-theme="dark"] .task-history-task-type--meal {
+  background: #14532d;
+  color: #86efac;
+}
+[data-theme="dark"] .task-history-task-type--appointment {
+  background: #7c2d12;
+  color: #fdba74;
+}
+[data-theme="dark"] .task-history-task-type--exercise {
+  background: #1e3a8a;
+  color: #93c5fd;
+}
+[data-theme="dark"] .task-history-task-done {
+  background: #14532d;
+  color: #86efac;
+}
+[data-theme="dark"] .task-history-task-missed {
+  background: #7f1d1d;
+  color: #fca5a5;
+}
+[data-theme="dark"] .task-history-load-more {
+  background: #334155;
+  color: #cbd5e1;
+  border-color: #475569;
+}
+[data-theme="dark"] .task-history-load-more:hover {
+  background: #475569;
+  color: #f1f5f9;
+}
+[data-theme="dark"] .task-history-week-message {
+  background: #1e3a5f;
+  border: 1px solid #334155;
+}
+[data-theme="dark"] .task-history-week-title {
+  color: #e2e8f0;
+}
+[data-theme="dark"] .task-history-week-text {
+  color: #cbd5e1;
+}
+[data-theme="dark"] .task-history-footer-help {
+  background: #475569;
+  color: #f1f5f9;
+  border-color: #64748b;
+}
+[data-theme="dark"] .task-history-footer-help:hover {
+  background: #64748b;
+  color: #f1f5f9;
+}
+[data-theme="dark"] .appointments-card-title,
+[data-theme="dark"] .appointments-summary-count {
+  color: #f1f5f9;
+}
+[data-theme="dark"] .appointments-card-subtitle,
+[data-theme="dark"] .appointments-summary-label {
+  color: #cbd5e1;
+}
+[data-theme="dark"] .appointments-nav-bar {
+  background: #1e40af;
+  color: #f1f5f9;
+}
+[data-theme="dark"] .appointments-nav-back {
+  color: #f1f5f9;
+}
+[data-theme="dark"] .appointments-nav-back:hover {
+  color: #e2e8f0;
+}
+[data-theme="dark"] .appointments-summary-card {
+  background: linear-gradient(135deg, #c2410c 0%, #ea580c 100%);
+  color: #f1f5f9;
+  border: 1px solid #9a3412;
+  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.3);
+}
+[data-theme="dark"] .appointments-summary-icon {
+  color: #f1f5f9;
+}
+[data-theme="dark"] .appointments-filter-btn {
+  background: #334155;
+  color: #cbd5e1;
+  border-color: #475569;
+}
+[data-theme="dark"] .appointments-filter-btn:hover {
+  background: #475569;
+  color: #f1f5f9;
+}
+[data-theme="dark"] .appointments-filter-btn--active {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+}
+[data-theme="dark"] .appointments-card-header--blue {
+  background: #1e40af;
+  color: #f1f5f9;
+}
+[data-theme="dark"] .appointments-card-header--green {
+  background: #166534;
+  color: #f1f5f9;
+}
+[data-theme="dark"] .appointments-card-header--purple {
+  background: #5b21b6;
+  color: #f1f5f9;
+}
+[data-theme="dark"] .appointments-card-header--orange {
+  background: #c2410c;
+  color: #f1f5f9;
+}
+[data-theme="dark"] .appointments-date-badge--blue {
+  background: #3b82f6;
+  color: #e0e7ff;
+}
+[data-theme="dark"] .appointments-date-badge--green {
+  background: #16a34a;
+  color: #dcfce7;
+}
+[data-theme="dark"] .appointments-date-badge--purple {
+  background: #6d28d9;
+  color: #ede9fe;
+}
+[data-theme="dark"] .appointments-date-badge--orange {
+  background: #ea580c;
+  color: #ffedd5;
+}
+[data-theme="dark"] .appointments-card-time {
+  color: #e2e8f0;
+}
+[data-theme="dark"] .appointments-card-icon {
+  color: #e2e8f0;
+}
+[data-theme="dark"] .appointments-card-body {
+  background: #334155;
+}
+[data-theme="dark"] .appointments-card-detail {
+  color: #cbd5e1;
+}
+[data-theme="dark"] .appointments-card-detail svg {
+  color: #94a3b8;
+}
+[data-theme="dark"] .appointments-card-link {
+  color: #93c5fd;
+}
+[data-theme="dark"] .appointments-card-link:hover {
+  color: #bfdbfe;
+}
+[data-theme="dark"] .appointments-footer {
+  border-top-color: #475569;
+}
+[data-theme="dark"] .appointments-schedule-btn {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+}
+[data-theme="dark"] .appointments-schedule-btn:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
+[data-theme="dark"] .appointments-footer-help {
+  background: #475569;
+  color: #f1f5f9;
+  border-color: #64748b;
+}
+[data-theme="dark"] .appointments-footer-help:hover {
+  background: #64748b;
+  color: #f1f5f9;
+}
+[data-theme="dark"] .settings-pill:not(.settings-pill--active) {
+  background: #475569 !important;
+  color: #cbd5e1 !important;
+}
+
+/* ========== High Contrast Mode – WCAG 2.1 Level AA (≥4.5:1 text, ≥3:1 UI) ========== */
+[data-high-contrast="true"] {
+  color-scheme: light;
+}
+[data-high-contrast="true"] body,
+[data-high-contrast="true"] .dashboard-main,
+[data-high-contrast="true"] .login-page,
+[data-high-contrast="true"] .settings-screen {
+  background: #fff !important;
+}
+[data-high-contrast="true"] .dashboard-screen,
+[data-high-contrast="true"] .medications-screen,
+[data-high-contrast="true"] .appointments-screen,
+[data-high-contrast="true"] .task-history-screen,
+[data-high-contrast="true"] .asl-help-screen,
+[data-high-contrast="true"] .profile-screen {
+  background: #fff !important;
+}
+[data-high-contrast="true"] .dashboard-title,
+[data-high-contrast="true"] .dashboard-card-title,
+[data-high-contrast="true"] .dashboard-schedule-title,
+[data-high-contrast="true"] .settings-section-title,
+[data-high-contrast="true"] .settings-row-label,
+[data-high-contrast="true"] .accessibility-page-title,
+[data-high-contrast="true"] .accessibility-cta-label,
+[data-high-contrast="true"] .medications-card-name,
+[data-high-contrast="true"] .appointments-card-title,
+[data-high-contrast="true"] .task-history-task-title,
+[data-high-contrast="true"] .asl-help-video-title,
+[data-high-contrast="true"] .login-title,
+[data-high-contrast="true"] .login-label,
+[data-high-contrast="true"] .profile-patient-name,
+[data-high-contrast="true"] .profile-card-title,
+[data-high-contrast="true"] .profile-contact-name {
+  color: #000 !important;
+}
+[data-high-contrast="true"] .dashboard-date,
+[data-high-contrast="true"] .settings-row-desc,
+[data-high-contrast="true"] .accessibility-cta-desc,
+[data-high-contrast="true"] .medications-card-dosage,
+[data-high-contrast="true"] .medications-card-detail,
+[data-high-contrast="true"] .appointments-card-subtitle,
+[data-high-contrast="true"] .appointments-summary-label,
+[data-high-contrast="true"] .task-history-task-meta,
+[data-high-contrast="true"] .asl-help-video-description,
+[data-high-contrast="true"] .login-subtitle,
+[data-high-contrast="true"] .login-signup,
+[data-high-contrast="true"] .login-note,
+[data-high-contrast="true"] .profile-patient-id,
+[data-high-contrast="true"] .profile-contact-relation,
+[data-high-contrast="true"] .profile-list--bullets li,
+[data-high-contrast="true"] .profile-vital-label {
+  color: #000 !important;
+}
+[data-high-contrast="true"] .dashboard-card,
+[data-high-contrast="true"] .medications-card,
+[data-high-contrast="true"] .appointments-card,
+[data-high-contrast="true"] .settings-list,
+[data-high-contrast="true"] .settings-row,
+[data-high-contrast="true"] .login-card,
+[data-high-contrast="true"] .dashboard-schedule-item,
+[data-high-contrast="true"] .task-history-task,
+[data-high-contrast="true"] .asl-help-more-card,
+[data-high-contrast="true"] .profile-header-card,
+[data-high-contrast="true"] .profile-card {
+  background: #fff !important;
+  border: 2px solid #000 !important;
+}
+[data-high-contrast="true"] .dashboard-icon-btn,
+[data-high-contrast="true"] .dashboard-stat,
+[data-high-contrast="true"] .dashboard-schedule-time,
+[data-high-contrast="true"] .settings-preview-text,
+[data-high-contrast="true"] .settings-preview-size,
+[data-high-contrast="true"] .medications-card-body,
+[data-high-contrast="true"] .appointments-card-body,
+[data-high-contrast="true"] .appointments-card-detail,
+[data-high-contrast="true"] .task-history-day-meta,
+[data-high-contrast="true"] .task-history-day-date {
+  color: #000 !important;
+}
+[data-high-contrast="true"] .dashboard-card--progress,
+[data-high-contrast="true"] .medications-summary-card,
+[data-high-contrast="true"] .appointments-summary-card,
+[data-high-contrast="true"] .medications-nav-bar,
+[data-high-contrast="true"] .appointments-nav-bar,
+[data-high-contrast="true"] .task-history-summary,
+[data-high-contrast="true"] .dashboard-sidebar-sos,
+[data-high-contrast="true"] .profile-header-banner,
+[data-high-contrast="true"] .profile-sign-out {
+  background: #000 !important;
+  color: #fff !important;
+  border: 2px solid #000 !important;
+}
+[data-high-contrast="true"] .dashboard-card--progress .dashboard-card-title,
+[data-high-contrast="true"] .dashboard-progress-count,
+[data-high-contrast="true"] .dashboard-progress-pct,
+[data-high-contrast="true"] .medications-summary-label,
+[data-high-contrast="true"] .medications-summary-count,
+[data-high-contrast="true"] .appointments-nav-back,
+[data-high-contrast="true"] .medications-nav-back,
+[data-high-contrast="true"] .task-history-summary-label,
+[data-high-contrast="true"] .task-history-summary-pct {
+  color: #fff !important;
+}
+[data-high-contrast="true"] .dashboard-progress-bar {
+  background: rgba(255, 255, 255, 0.4) !important;
+  border: 2px solid #fff !important;
+}
+[data-high-contrast="true"] .dashboard-progress-bar-fill {
+  background: #fff !important;
+}
+[data-high-contrast="true"] .medications-card-header--blue,
+[data-high-contrast="true"] .medications-card-header--green,
+[data-high-contrast="true"] .medications-card-header--purple,
+[data-high-contrast="true"] .medications-card-header--red,
+[data-high-contrast="true"] .medications-card-header--orange,
+[data-high-contrast="true"] .appointments-card-header--blue,
+[data-high-contrast="true"] .appointments-card-header--green,
+[data-high-contrast="true"] .appointments-card-header--purple,
+[data-high-contrast="true"] .appointments-card-header--orange {
+  background: #000 !important;
+  color: #fff !important;
+  border: 2px solid #000 !important;
+}
+[data-high-contrast="true"] .dashboard-stat--success,
+[data-high-contrast="true"] .medications-card-action--taken,
+[data-high-contrast="true"] .task-history-task-done,
+[data-high-contrast="true"] .task-history-day-pct--green {
+  background: #000 !important;
+  color: #fff !important;
+  border: 2px solid #000 !important;
+}
+[data-high-contrast="true"] .profile-edit-btn {
+  border: 2px solid #000 !important;
+  background: #fff !important;
+  color: #000 !important;
+}
+[data-high-contrast="true"] .profile-vital-chip--blue,
+[data-high-contrast="true"] .profile-vital-chip--green {
+  background: #000 !important;
+  color: #fff !important;
+  border: 2px solid #000 !important;
+}
+[data-high-contrast="true"] .profile-tag--alert {
+  background: #000 !important;
+  color: #fff !important;
+  border: 2px solid #000 !important;
+}
+[data-high-contrast="true"] .profile-contact-call {
+  background: #000 !important;
+  color: #fff !important;
+  border: 2px solid #000 !important;
+}
+[data-high-contrast="true"] .profile-footer {
+  border-top: 2px solid #000 !important;
+}
+[data-high-contrast="true"] .dashboard-icon-btn,
+[data-high-contrast="true"] .medications-card-action--default,
+[data-high-contrast="true"] .medications-footer-help,
+[data-high-contrast="true"] .appointments-filter-btn,
+[data-high-contrast="true"] .appointments-schedule-btn,
+[data-high-contrast="true"] .appointments-footer-help,
+[data-high-contrast="true"] .settings-footer-help,
+[data-high-contrast="true"] .task-history-filter-btn,
+[data-high-contrast="true"] .task-history-load-more,
+[data-high-contrast="true"] .task-history-footer-help,
+[data-high-contrast="true"] .dashboard-quick-action,
+[data-high-contrast="true"] .dashboard-schedule-info,
+[data-high-contrast="true"] .login-input {
+  border: 2px solid #000 !important;
+  background: #fff !important;
+  color: #000 !important;
+}
+[data-high-contrast="true"] .medications-card-action--default,
+[data-high-contrast="true"] .appointments-filter-btn--active,
+[data-high-contrast="true"] .appointments-schedule-btn,
+[data-high-contrast="true"] .task-history-filter-btn--active {
+  background: #000 !important;
+  color: #fff !important;
+  border: 2px solid #000 !important;
+}
+[data-high-contrast="true"] .dashboard-icon-btn:hover,
+[data-high-contrast="true"] .dashboard-schedule-item--clickable:hover,
+[data-high-contrast="true"] .medications-footer-help:hover,
+[data-high-contrast="true"] .appointments-filter-btn:hover,
+[data-high-contrast="true"] .appointments-footer-help:hover,
+[data-high-contrast="true"] .settings-footer-help:hover,
+[data-high-contrast="true"] .task-history-filter-btn:hover,
+[data-high-contrast="true"] .task-history-load-more:hover,
+[data-high-contrast="true"] .task-history-footer-help:hover {
+  background: #e0e0e0 !important;
+  color: #000 !important;
+  border: 2px solid #000 !important;
+}
+[data-high-contrast="true"] .dashboard-schedule-item--current {
+  background: #fff !important;
+  border: 3px solid #000 !important;
+}
+[data-high-contrast="true"] .dashboard-tag--purple,
+[data-high-contrast="true"] .dashboard-tag--green,
+[data-high-contrast="true"] .dashboard-tag--blue,
+[data-high-contrast="true"] .dashboard-tag--orange,
+[data-high-contrast="true"] .dashboard-tag--current,
+[data-high-contrast="true"] .appointments-date-badge--blue,
+[data-high-contrast="true"] .appointments-date-badge--green,
+[data-high-contrast="true"] .appointments-date-badge--purple,
+[data-high-contrast="true"] .appointments-date-badge--orange {
+  background: #000 !important;
+  color: #fff !important;
+  border: 2px solid #000 !important;
+}
+[data-high-contrast="true"] a,
+[data-high-contrast="true"] .medications-footer-link,
+[data-high-contrast="true"] .appointments-card-link {
+  color: #000 !important;
+  text-decoration: underline !important;
+}
+[data-high-contrast="true"] a:hover,
+[data-high-contrast="true"] .medications-footer-link:hover,
+[data-high-contrast="true"] .appointments-card-link:hover {
+  color: #000 !important;
+  outline: 3px solid #000 !important;
+  outline-offset: 2px;
+}
+[data-high-contrast="true"] .dashboard-badge {
+  background: #000 !important;
+  color: #fff !important;
+  border: 2px solid #000 !important;
+}
+[data-high-contrast="true"] .dashboard-toast {
+  background: #000 !important;
+  color: #fff !important;
+  border: 3px solid #000 !important;
+}
+[data-high-contrast="true"] *:focus-visible {
+  outline: 3px solid #000 !important;
+  outline-offset: 2px !important;
+}
+[data-high-contrast="true"] .dashboard-sidebar {
+  border-right: 2px solid #000 !important;
+}
+[data-high-contrast="true"] .settings-toggle {
+  border: 2px solid #000 !important;
+}
+[data-high-contrast="true"] .login-input::placeholder {
+  color: #000 !important;
+  opacity: 0.7;
+}
+
+/* High contrast + dark theme: white on black */
+[data-high-contrast="true"][data-theme="dark"] {
+  color-scheme: dark;
+}
+[data-high-contrast="true"][data-theme="dark"] body,
+[data-high-contrast="true"][data-theme="dark"] .dashboard-main,
+[data-high-contrast="true"][data-theme="dark"] .login-page,
+[data-high-contrast="true"][data-theme="dark"] .settings-screen {
+  background: #000 !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .dashboard-screen,
+[data-high-contrast="true"][data-theme="dark"] .medications-screen,
+[data-high-contrast="true"][data-theme="dark"] .appointments-screen,
+[data-high-contrast="true"][data-theme="dark"] .task-history-screen,
+[data-high-contrast="true"][data-theme="dark"] .asl-help-screen,
+[data-high-contrast="true"][data-theme="dark"] .profile-screen {
+  background: #000 !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .dashboard-title,
+[data-high-contrast="true"][data-theme="dark"] .dashboard-card-title,
+[data-high-contrast="true"][data-theme="dark"] .dashboard-schedule-title,
+[data-high-contrast="true"][data-theme="dark"] .settings-section-title,
+[data-high-contrast="true"][data-theme="dark"] .settings-row-label,
+[data-high-contrast="true"][data-theme="dark"] .accessibility-page-title,
+[data-high-contrast="true"][data-theme="dark"] .accessibility-cta-label,
+[data-high-contrast="true"][data-theme="dark"] .medications-card-name,
+[data-high-contrast="true"][data-theme="dark"] .appointments-card-title,
+[data-high-contrast="true"][data-theme="dark"] .task-history-task-title,
+[data-high-contrast="true"][data-theme="dark"] .asl-help-video-title,
+[data-high-contrast="true"][data-theme="dark"] .login-title,
+[data-high-contrast="true"][data-theme="dark"] .login-label,
+[data-high-contrast="true"][data-theme="dark"] .profile-patient-name,
+[data-high-contrast="true"][data-theme="dark"] .profile-card-title,
+[data-high-contrast="true"][data-theme="dark"] .profile-contact-name {
+  color: #fff !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .dashboard-date,
+[data-high-contrast="true"][data-theme="dark"] .settings-row-desc,
+[data-high-contrast="true"][data-theme="dark"] .accessibility-cta-desc,
+[data-high-contrast="true"][data-theme="dark"] .medications-card-dosage,
+[data-high-contrast="true"][data-theme="dark"] .medications-card-detail,
+[data-high-contrast="true"][data-theme="dark"] .appointments-card-subtitle,
+[data-high-contrast="true"][data-theme="dark"] .appointments-summary-label,
+[data-high-contrast="true"][data-theme="dark"] .task-history-task-meta,
+[data-high-contrast="true"][data-theme="dark"] .asl-help-video-description,
+[data-high-contrast="true"][data-theme="dark"] .login-subtitle,
+[data-high-contrast="true"][data-theme="dark"] .login-signup,
+[data-high-contrast="true"][data-theme="dark"] .login-note,
+[data-high-contrast="true"][data-theme="dark"] .profile-patient-id,
+[data-high-contrast="true"][data-theme="dark"] .profile-contact-relation {
+  color: #fff !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .dashboard-card,
+[data-high-contrast="true"][data-theme="dark"] .medications-card,
+[data-high-contrast="true"][data-theme="dark"] .appointments-card,
+[data-high-contrast="true"][data-theme="dark"] .settings-list,
+[data-high-contrast="true"][data-theme="dark"] .settings-row,
+[data-high-contrast="true"][data-theme="dark"] .login-card,
+[data-high-contrast="true"][data-theme="dark"] .dashboard-schedule-item,
+[data-high-contrast="true"][data-theme="dark"] .task-history-task,
+[data-high-contrast="true"][data-theme="dark"] .asl-help-more-card,
+[data-high-contrast="true"][data-theme="dark"] .profile-header-card,
+[data-high-contrast="true"][data-theme="dark"] .profile-card {
+  background: #000 !important;
+  border: 2px solid #fff !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .profile-vital-chip--blue,
+[data-high-contrast="true"][data-theme="dark"] .profile-vital-chip--green,
+[data-high-contrast="true"][data-theme="dark"] .profile-tag--alert {
+  background: #fff !important;
+  color: #000 !important;
+  border: 2px solid #fff !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .profile-footer {
+  border-top: 2px solid #fff !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .dashboard-icon-btn,
+[data-high-contrast="true"][data-theme="dark"] .dashboard-stat,
+[data-high-contrast="true"][data-theme="dark"] .dashboard-schedule-time,
+[data-high-contrast="true"][data-theme="dark"] .settings-preview-text,
+[data-high-contrast="true"][data-theme="dark"] .settings-preview-size,
+[data-high-contrast="true"][data-theme="dark"] .medications-card-body,
+[data-high-contrast="true"][data-theme="dark"] .appointments-card-body,
+[data-high-contrast="true"][data-theme="dark"] .appointments-card-detail,
+[data-high-contrast="true"][data-theme="dark"] .task-history-day-meta,
+[data-high-contrast="true"][data-theme="dark"] .task-history-day-date {
+  color: #fff !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .dashboard-card--progress,
+[data-high-contrast="true"][data-theme="dark"] .medications-summary-card,
+[data-high-contrast="true"][data-theme="dark"] .appointments-summary-card,
+[data-high-contrast="true"][data-theme="dark"] .medications-nav-bar,
+[data-high-contrast="true"][data-theme="dark"] .appointments-nav-bar,
+[data-high-contrast="true"][data-theme="dark"] .task-history-summary,
+[data-high-contrast="true"][data-theme="dark"] .dashboard-sidebar-sos,
+[data-high-contrast="true"][data-theme="dark"] .profile-header-banner,
+[data-high-contrast="true"][data-theme="dark"] .profile-sign-out {
+  background: #fff !important;
+  color: #000 !important;
+  border: 2px solid #fff !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .dashboard-card--progress .dashboard-card-title,
+[data-high-contrast="true"][data-theme="dark"] .dashboard-progress-count,
+[data-high-contrast="true"][data-theme="dark"] .dashboard-progress-pct,
+[data-high-contrast="true"][data-theme="dark"] .medications-summary-label,
+[data-high-contrast="true"][data-theme="dark"] .medications-summary-count,
+[data-high-contrast="true"][data-theme="dark"] .appointments-nav-back,
+[data-high-contrast="true"][data-theme="dark"] .medications-nav-back,
+[data-high-contrast="true"][data-theme="dark"] .task-history-summary-label,
+[data-high-contrast="true"][data-theme="dark"] .task-history-summary-pct {
+  color: #000 !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .dashboard-progress-bar {
+  background: rgba(0, 0, 0, 0.4) !important;
+  border: 2px solid #000 !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .dashboard-progress-bar-fill {
+  background: #000 !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .medications-card-header--blue,
+[data-high-contrast="true"][data-theme="dark"] .medications-card-header--green,
+[data-high-contrast="true"][data-theme="dark"] .medications-card-header--purple,
+[data-high-contrast="true"][data-theme="dark"] .medications-card-header--red,
+[data-high-contrast="true"][data-theme="dark"] .medications-card-header--orange,
+[data-high-contrast="true"][data-theme="dark"] .appointments-card-header--blue,
+[data-high-contrast="true"][data-theme="dark"] .appointments-card-header--green,
+[data-high-contrast="true"][data-theme="dark"] .appointments-card-header--purple,
+[data-high-contrast="true"][data-theme="dark"] .appointments-card-header--orange {
+  background: #fff !important;
+  color: #000 !important;
+  border: 2px solid #fff !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .dashboard-stat--success,
+[data-high-contrast="true"][data-theme="dark"] .medications-card-action--taken,
+[data-high-contrast="true"][data-theme="dark"] .task-history-task-done {
+  background: #fff !important;
+  color: #000 !important;
+  border: 2px solid #fff !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .dashboard-icon-btn,
+[data-high-contrast="true"][data-theme="dark"] .medications-card-action--default,
+[data-high-contrast="true"][data-theme="dark"] .medications-footer-help,
+[data-high-contrast="true"][data-theme="dark"] .appointments-filter-btn,
+[data-high-contrast="true"][data-theme="dark"] .appointments-schedule-btn,
+[data-high-contrast="true"][data-theme="dark"] .appointments-footer-help,
+[data-high-contrast="true"][data-theme="dark"] .settings-footer-help,
+[data-high-contrast="true"][data-theme="dark"] .task-history-filter-btn,
+[data-high-contrast="true"][data-theme="dark"] .task-history-load-more,
+[data-high-contrast="true"][data-theme="dark"] .task-history-footer-help,
+[data-high-contrast="true"][data-theme="dark"] .dashboard-quick-action,
+[data-high-contrast="true"][data-theme="dark"] .dashboard-schedule-info,
+[data-high-contrast="true"][data-theme="dark"] .login-input,
+[data-high-contrast="true"][data-theme="dark"] .profile-edit-btn,
+[data-high-contrast="true"][data-theme="dark"] .profile-contact-call {
+  border: 2px solid #fff !important;
+  background: #000 !important;
+  color: #fff !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .medications-card-action--default,
+[data-high-contrast="true"][data-theme="dark"] .appointments-filter-btn--active,
+[data-high-contrast="true"][data-theme="dark"] .appointments-schedule-btn,
+[data-high-contrast="true"][data-theme="dark"] .task-history-filter-btn--active {
+  background: #fff !important;
+  color: #000 !important;
+  border: 2px solid #fff !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .dashboard-icon-btn:hover,
+[data-high-contrast="true"][data-theme="dark"] .dashboard-schedule-item--clickable:hover,
+[data-high-contrast="true"][data-theme="dark"] .medications-footer-help:hover,
+[data-high-contrast="true"][data-theme="dark"] .appointments-filter-btn:hover,
+[data-high-contrast="true"][data-theme="dark"] .appointments-footer-help:hover,
+[data-high-contrast="true"][data-theme="dark"] .settings-footer-help:hover,
+[data-high-contrast="true"][data-theme="dark"] .task-history-filter-btn:hover,
+[data-high-contrast="true"][data-theme="dark"] .task-history-load-more:hover,
+[data-high-contrast="true"][data-theme="dark"] .task-history-footer-help:hover {
+  background: #333 !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .dashboard-schedule-item--current {
+  background: #000 !important;
+  border: 3px solid #fff !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .dashboard-tag--purple,
+[data-high-contrast="true"][data-theme="dark"] .dashboard-tag--green,
+[data-high-contrast="true"][data-theme="dark"] .dashboard-tag--blue,
+[data-high-contrast="true"][data-theme="dark"] .dashboard-tag--orange,
+[data-high-contrast="true"][data-theme="dark"] .dashboard-tag--current,
+[data-high-contrast="true"][data-theme="dark"] .appointments-date-badge--blue,
+[data-high-contrast="true"][data-theme="dark"] .appointments-date-badge--green,
+[data-high-contrast="true"][data-theme="dark"] .appointments-date-badge--purple,
+[data-high-contrast="true"][data-theme="dark"] .appointments-date-badge--orange {
+  background: #fff !important;
+  color: #000 !important;
+  border: 2px solid #fff !important;
+}
+[data-high-contrast="true"][data-theme="dark"] a,
+[data-high-contrast="true"][data-theme="dark"] .medications-footer-link,
+[data-high-contrast="true"][data-theme="dark"] .appointments-card-link {
+  color: #fff !important;
+  text-decoration: underline !important;
+}
+[data-high-contrast="true"][data-theme="dark"] a:hover,
+[data-high-contrast="true"][data-theme="dark"] .medications-footer-link:hover,
+[data-high-contrast="true"][data-theme="dark"] .appointments-card-link:hover {
+  color: #fff !important;
+  outline: 3px solid #fff !important;
+  outline-offset: 2px;
+}
+[data-high-contrast="true"][data-theme="dark"] .dashboard-badge {
+  background: #fff !important;
+  color: #000 !important;
+  border: 2px solid #fff !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .dashboard-toast {
+  background: #fff !important;
+  color: #000 !important;
+  border: 3px solid #fff !important;
+}
+[data-high-contrast="true"][data-theme="dark"] *:focus-visible {
+  outline: 3px solid #fff !important;
+  outline-offset: 2px !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .dashboard-sidebar {
+  border-right: 2px solid #fff !important;
+  background: #000 !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .dashboard-sidebar-brand,
+[data-high-contrast="true"][data-theme="dark"] .dashboard-sidebar-tagline,
+[data-high-contrast="true"][data-theme="dark"] .dashboard-sidebar-link,
+[data-high-contrast="true"][data-theme="dark"] .dashboard-sidebar-profile-name,
+[data-high-contrast="true"][data-theme="dark"] .dashboard-sidebar-profile-link {
+  color: #fff !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .settings-toggle {
+  border: 2px solid #fff !important;
+}
+[data-high-contrast="true"][data-theme="dark"] .login-input::placeholder {
+  color: #fff !important;
+  opacity: 0.7;
+}
