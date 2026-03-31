@@ -24,13 +24,18 @@ From the project root (`careconnect_mobile`):
 flutter test --coverage
 ```
 
-This produces `coverage/lcov.info`. To view an HTML report (optional):
+This produces `coverage/lcov.info` (gitignored). A **final HTML report** for the shared Dart `lib/` code (same coverage for **iOS and Android**—one codebase) is kept under version control at:
+
+- **`coverage/html/index.html`** — open locally or in any static file server to browse line coverage by file.
+
+Regenerate HTML after running tests (requires [lcov](https://github.com/linux-test-project/lcov), e.g. `brew install lcov` on macOS):
 
 ```bash
-# If you have lcov installed (e.g. brew install lcov)
-genhtml coverage/lcov.info -o coverage/html
+rm -rf coverage/html && genhtml coverage/lcov.info -o coverage/html
 open coverage/html/index.html
 ```
+
+The `./scripts/run_coverage.sh` script runs tests, enforces the 60% minimum, and **runs `genhtml` automatically** when `genhtml` is on your `PATH`.
 
 ## Enforcing the 60% minimum
 

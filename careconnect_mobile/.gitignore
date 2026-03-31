@@ -31,7 +31,8 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
-/coverage/
+# Machine-local LCOV data; HTML report under coverage/html/ is committed for review
+coverage/lcov.info
 
 # Symbolication related
 app.*.symbols

@@ -35,4 +35,15 @@ if [ "$COVERAGE_PCT" -lt "$MIN_COVERAGE" ]; then
 fi
 
 echo "PASS: Coverage meets minimum $MIN_COVERAGE%"
+
+if command -v genhtml >/dev/null 2>&1; then
+  echo ""
+  echo "Generating HTML coverage report at $COVERAGE_DIR/html/ ..."
+  rm -rf "$COVERAGE_DIR/html"
+  genhtml "$COVERAGE_DIR/lcov.info" -o "$COVERAGE_DIR/html" --quiet
+  echo "Open $COVERAGE_DIR/html/index.html in a browser to view the report."
+else
+  echo "Note: genhtml (lcov) not found; install e.g. brew install lcov to emit HTML."
+fi
+
 exit 0
