@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">55.55% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>5/9</span>
+                <span class='fraction'>7/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
@@ -295,7 +295,10 @@
 <a name='L230'></a><a href='#L230'>230</a>
 <a name='L231'></a><a href='#L231'>231</a>
 <a name='L232'></a><a href='#L232'>232</a>
-<a name='L233'></a><a href='#L233'>233</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L233'></a><a href='#L233'>233</a>
+<a name='L234'></a><a href='#L234'>234</a>
+<a name='L235'></a><a href='#L235'>235</a>
+<a name='L236'></a><a href='#L236'>236</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -309,8 +312,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">42x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -356,9 +364,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -370,9 +377,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -541,9 +547,14 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 &nbsp;
 const { height } = Dimensions.get('window');
 &nbsp;
+/** Merges base and pressed styles; exported for unit tests (Pressable rarely hits pressed=true in Jest). */
+export function mergePressableStyle(baseStyle, pressedStyle, pressed) {
+  return pressed ? [baseStyle, pressedStyle] : [baseStyle];
+}
+&nbsp;
 const WelcomeScreen = ({ onNavigate, isTablet = false }) =&gt; {
   return (
-    &lt;View style={styles.container} {...(Platform.OS === 'ios' ? { accessibilityLanguage: 'en-US' } : <span class="branch-1 cbranch-no" title="branch not covered" >{})</span>}&gt;
+    &lt;View style={styles.container} {...(Platform.OS === 'ios' ? { accessibilityLanguage: 'en-US' } : {})}&gt;
       {/* Hero Image Section */}
       &lt;View style={styles.heroContainer}&gt;
         &lt;Image
@@ -576,7 +587,7 @@ const WelcomeScreen = ({ onNavigate, isTablet = false }) =&gt; {
       &lt;View
         style={[
           styles.contentContainer,
-          isTablet &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >styles.tabletContent,</span>
+          isTablet &amp;&amp; styles.tabletContent,
         ]}
       &gt;
         &lt;View style={styles.headerText}&gt;
@@ -588,10 +599,9 @@ const WelcomeScreen = ({ onNavigate, isTablet = false }) =&gt; {
 &nbsp;
         &lt;View style={styles.buttonGroup}&gt;
           &lt;Pressable
-            style={({ pressed }) =&gt; [
-              styles.primaryButton,
-              pressed &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >styles.pressed,</span>
-            ]}
+            style={({ pressed }) =&gt;
+              mergePressableStyle(styles.primaryButton, styles.pressed, pressed)
+            }
             accessible={true}
             accessibilityRole="button"
             accessibilityLabel="Get started with CareConnect"
@@ -602,10 +612,9 @@ const WelcomeScreen = ({ onNavigate, isTablet = false }) =&gt; {
           &lt;/Pressable&gt;
 &nbsp;
           &lt;Pressable
-            style={({ pressed }) =&gt; [
-              styles.secondaryButton,
-              pressed &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >styles.pressed,</span>
-            ]}
+            style={({ pressed }) =&gt;
+              mergePressableStyle(styles.secondaryButton, styles.pressed, pressed)
+            }
             accessible={true}
             accessibilityRole="button"
             accessibilityLabel="Log in to existing account"
@@ -766,7 +775,7 @@ const styles = StyleSheet.create({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-03-31T23:38:35.404Z
+                at 2026-03-31T23:48:59.157Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

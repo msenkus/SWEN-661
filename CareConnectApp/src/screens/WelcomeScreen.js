@@ -12,6 +12,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const { height } = Dimensions.get('window');
 
+/** Merges base and pressed styles; exported for unit tests (Pressable rarely hits pressed=true in Jest). */
+export function mergePressableStyle(baseStyle, pressedStyle, pressed) {
+  return pressed ? [baseStyle, pressedStyle] : [baseStyle];
+}
+
 const WelcomeScreen = ({ onNavigate, isTablet = false }) => {
   return (
     <View style={styles.container} {...(Platform.OS === 'ios' ? { accessibilityLanguage: 'en-US' } : {})}>
@@ -59,10 +64,9 @@ const WelcomeScreen = ({ onNavigate, isTablet = false }) => {
 
         <View style={styles.buttonGroup}>
           <Pressable
-            style={({ pressed }) => [
-              styles.primaryButton,
-              pressed && styles.pressed,
-            ]}
+            style={({ pressed }) =>
+              mergePressableStyle(styles.primaryButton, styles.pressed, pressed)
+            }
             accessible={true}
             accessibilityRole="button"
             accessibilityLabel="Get started with CareConnect"
@@ -73,10 +77,9 @@ const WelcomeScreen = ({ onNavigate, isTablet = false }) => {
           </Pressable>
 
           <Pressable
-            style={({ pressed }) => [
-              styles.secondaryButton,
-              pressed && styles.pressed,
-            ]}
+            style={({ pressed }) =>
+              mergePressableStyle(styles.secondaryButton, styles.pressed, pressed)
+            }
             accessible={true}
             accessibilityRole="button"
             accessibilityLabel="Log in to existing account"

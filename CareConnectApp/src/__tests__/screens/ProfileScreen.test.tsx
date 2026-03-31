@@ -66,4 +66,10 @@ describe('ProfileScreen', () => {
     fireEvent.press(getByText('ArrowLeft'));
     expect(mockNavigate).toHaveBeenCalledWith('dashboard');
   });
+
+  it('navigates to login when Sign Out is pressed', () => {
+    const { getByLabelText } = renderScreen();
+    fireEvent.press(getByLabelText('Sign out'));
+    expect(mockNavigate).toHaveBeenCalledWith('login');
+  });
 });
