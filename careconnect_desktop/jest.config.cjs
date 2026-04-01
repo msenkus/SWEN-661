@@ -26,7 +26,7 @@ module.exports = {
     '!**/__tests__/**',
   ],
   coverageDirectory: 'coverage',
-  coverageReporters: ['text', 'lcov', 'html'],
+  coverageReporters: ['text', 'text-summary', 'lcov', 'html', 'json'],
   coverageThreshold: {
     global: {
       statements: 60,
