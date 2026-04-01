@@ -7,7 +7,7 @@
 
 ## What is measured
 
-Coverage is collected for the paths listed under `coverage.include` in `vitest.config.ts` (screens, layouts, store, hooks, selected UI helpers). **E2E** tests (`e2e/`, Playwright) are separate and not included in this report.
+Coverage is collected for the paths listed under `coverage.include` in `vitest.config.ts` (screens, layouts, store, hooks, selected UI helpers). **`useMediaQuery` / `useBreakpoint`** are covered in `src/__tests__/unit/useMediaQuery.test.ts`; **`DashboardLayout`** responsive behavior is covered in `src/__tests__/components/DashboardLayout.test.tsx`. **E2E** tests (`e2e/`, Playwright) are separate and not included in this report.
 
 The same bundle runs in **modern browsers**; this is one report for the tested **React** surface, not separate per-browser HTML outputs.
 

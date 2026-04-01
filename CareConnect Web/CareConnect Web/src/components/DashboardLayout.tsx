@@ -60,12 +60,13 @@ export function DashboardLayout() {
   };
 
   const getPageTitle = () => {
-    const activeNav = navigationItems.find(item => isActive(item.path));
-    if (activeNav) return activeNav.label;
+    // Resolve explicit routes before nav items so /app/task/* is not swallowed by Dashboard's isActive
     if (location.pathname.startsWith('/app/task')) return 'Task Details';
     if (location.pathname === '/app/missed-tasks') return 'Missed Tasks';
     if (location.pathname === '/app/sos') return 'Emergency SOS';
     if (location.pathname === '/app/profile') return 'Profile';
+    const activeNav = navigationItems.find(item => isActive(item.path));
+    if (activeNav) return activeNav.label;
     return 'CareConnect';
   };
 
@@ -109,6 +110,8 @@ export function DashboardLayout() {
           {/* Tablet collapse toggle */}
           {isTablet && (
             <button
+              type="button"
+              aria-label={tabletSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
               onClick={() => setTabletSidebarCollapsed(!tabletSidebarCollapsed)}
               className="p-2 hover:bg-white/10 rounded-lg"
             >
@@ -119,6 +122,8 @@ export function DashboardLayout() {
           {/* Mobile close button */}
           {isMobile && (
             <button
+              type="button"
+              aria-label="Close navigation menu"
               onClick={() => setMobileMenuOpen(false)}
               className="p-2 hover:bg-white/10 rounded-lg"
             >
@@ -198,14 +203,16 @@ export function DashboardLayout() {
         <div className="bg-white border-b border-gray-200 px-4 md:px-6 py-4 flex items-center justify-between shadow-sm">
           <div className="flex items-center gap-3">
             {/* Mobile hamburger menu */}
-            {isMobile && (
-              <button
-                onClick={() => setMobileMenuOpen(true)}
-                className="p-2 hover:bg-gray-100 rounded-lg"
-              >
-                <Menu className="w-6 h-6 text-gray-600" />
-              </button>
-            )}
+          {isMobile && (
+            <button
+              type="button"
+              aria-label="Open navigation menu"
+              onClick={() => setMobileMenuOpen(true)}
+              className="p-2 hover:bg-gray-100 rounded-lg"
+            >
+              <Menu className="w-6 h-6 text-gray-600" />
+            </button>
+          )}
             
             <div>
               <h2 className="text-lg md:text-xl font-bold text-gray-900">
