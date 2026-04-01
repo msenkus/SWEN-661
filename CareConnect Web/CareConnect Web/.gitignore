@@ -1,5 +1,8 @@
 node_modules/
-coverage/
+# Vitest: commit HTML under coverage/lcov-report; ignore raw artifacts
+coverage/**
+!coverage/lcov-report/
+!coverage/lcov-report/**
 build/
 dist/
 .env
