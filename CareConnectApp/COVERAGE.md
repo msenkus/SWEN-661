@@ -10,6 +10,10 @@
 - Jest runs in Node and instruments **`App.tsx`** and **`src/**/*.js`** (excluding `src/__tests__/**`).
 - **iOS and Android** ship the same JavaScript bundle; this is one report for shared app code, not separate native per-platform metrics.
 
+## App router (`App.tsx`)
+
+Integration tests cover most routes. **`App`** accepts an optional **`initialScreen`** prop (used in tests) to mount a specific screen so every `switch` branch—including **`profile`**, **`missed-tasks`**, and the **`default`** fallback—can be exercised without dead code in production UI.
+
 ## Commands
 
 ```bash

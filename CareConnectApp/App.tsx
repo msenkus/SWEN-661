@@ -33,8 +33,13 @@ export type Screen =
   | 'profile'
   | 'missed-tasks';
 
-export default function App() {
-  const [screen, setScreen] = useState<Screen>('welcome');
+export type AppProps = {
+  /** For tests: mount the app on a specific route without walking the UI. */
+  initialScreen?: Screen;
+};
+
+export default function App({ initialScreen = 'welcome' }: AppProps = {}) {
+  const [screen, setScreen] = useState<Screen>(initialScreen);
   const [hasMissedTasks, setHasMissedTasks] = useState(true);
 
   const onNavigate = (next: Screen) => {
